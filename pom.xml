@@ -113,7 +113,7 @@
             <id>default-cli</id>
             <configuration>
               <mainClass>
-                com.midnightdraft.poemofthedamned/com.midnightdraft.poemofthedamned.HelloApplication
+                com.midnightdraft.poemofthedamned/com.midnightdraft.poemofthedamned.App
               </mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
