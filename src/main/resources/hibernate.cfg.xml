@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
+    <property name="hibernate.connection.url">
+      jdbc:sqlite:${user.home}/.poemofthedamned/poem.db
+    </property>
+
+    <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
+
+    <property name="hibernate.connection.foreign_keys">true</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+
+    <property name="hibernate.hbm2ddl.auto">update</property>
+
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.User"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.Flag"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.GameScene"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.SaveSlot"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.SaveFlag"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.Dialogue"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.Choice"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.ChoiceEffect"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.Character"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.CharacterSprite"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.Achievement"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.UserAchievement"/>
+  </session-factory>
+</hibernate-configuration>
