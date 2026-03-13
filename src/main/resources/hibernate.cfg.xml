@@ -5,9 +5,7 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-    <property name="hibernate.connection.url">
-      jdbc:sqlite:${user.home}/.poemofthedamned/poem.db
-    </property>
+    <property name="hibernate.connection.url">jdbc:sqlite:poem.db</property>
 
     <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
 
