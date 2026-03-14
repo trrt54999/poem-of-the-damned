@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.SaveSlot;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.SaveSlotRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -19,6 +20,8 @@ public class SaveSlotRepositoryImpl extends BaseRepositoryImpl<SaveSlot> impleme
       return session.createQuery("FROM SaveSlot WHERE user.id = :userId", SaveSlot.class)
           .setParameter("userId", userId)
           .getResultList();
+    } catch (Exception e){
+      throw new EntityFetchException(SaveSlot.class.getSimpleName(), e);
     }
   }
 }

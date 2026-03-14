@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.User;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.UserRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User> implements User
       return session.createQuery("FROM User WHERE username = :username", User.class)
           .setParameter("username", username)
           .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(User.class.getSimpleName(), e);
     }
   }
 
@@ -27,6 +30,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User> implements User
       return session.createQuery("FROM User WHERE email = :email", User.class)
           .setParameter("email", email)
           .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(User.class.getSimpleName(), e);
     }
   }
 

@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.UserAchievement;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.UserAchievementRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -19,6 +20,8 @@ public class UserAchievementRepositoryImpl extends BaseRepositoryImpl<UserAchiev
       return session.createQuery("FROM UserAchievement WHERE user.id = :userId", UserAchievement.class)
           .setParameter("userId", userId)
           .getResultList();
-     }
+     } catch (Exception e) {
+      throw new EntityFetchException(UserAchievement.class.getSimpleName(), e);
+    }
   }
 }

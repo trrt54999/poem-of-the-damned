@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.SaveFlag;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.SaveFlagRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -20,6 +21,8 @@ public class SaveFlagRepositoryImpl extends BaseRepositoryImpl<SaveFlag> impleme
       return session.createQuery("FROM SaveFlag WHERE saveSlot.id = :saveSlotId", SaveFlag.class)
           .setParameter("saveSlotId", saveSlotId)
           .getResultList();
+    } catch (Exception e){
+      throw new EntityFetchException(SaveFlag.class.getSimpleName(), e);
     }
   }
 
@@ -32,6 +35,8 @@ public class SaveFlagRepositoryImpl extends BaseRepositoryImpl<SaveFlag> impleme
               .setParameter("saveSlotId", saveSlotId)
               .setParameter("flagId", flagId)
               .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(SaveFlag.class.getSimpleName(), e);
     }
   }
 }

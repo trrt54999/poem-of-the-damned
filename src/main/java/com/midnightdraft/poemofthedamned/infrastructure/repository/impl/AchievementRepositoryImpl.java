@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Achievement;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.AchievementRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -21,6 +22,8 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
       return session.createQuery("FROM Achievement WHERE title = :title", Achievement.class)
           .setParameter("title", title)
           .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(Achievement.class.getSimpleName(), e);
     }
   }
 
@@ -30,6 +33,8 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
       return session.createQuery("FROM Achievement WHERE isHidden = :isHidden", Achievement.class)
           .setParameter("isHidden", isHidden)
           .getResultList();
+    }catch (Exception e){
+      throw new EntityFetchException(Achievement.class.getSimpleName(), e);
     }
   }
 }

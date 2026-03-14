@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.CharacterSprite;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.CharacterSpriteRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -22,6 +23,8 @@ public class CharacterSpriteRepositoryImpl extends BaseRepositoryImpl<CharacterS
           .setParameter("characterId", characterId)
           .setParameter("emotion", emotion)
           .uniqueResultOptional();
+    }  catch (Exception e){
+      throw new EntityFetchException(CharacterSprite.class.getSimpleName(), e);
     }
   }
 
@@ -32,6 +35,8 @@ public class CharacterSpriteRepositoryImpl extends BaseRepositoryImpl<CharacterS
           CharacterSprite.class)
           .setParameter("characterId", characterId)
           .getResultList();
+    } catch (Exception e){
+      throw new EntityFetchException(CharacterSprite.class.getSimpleName(), e);
     }
   }
 }

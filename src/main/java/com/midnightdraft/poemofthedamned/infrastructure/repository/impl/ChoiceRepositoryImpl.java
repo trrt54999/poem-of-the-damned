@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Choice;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.ChoiceRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -19,6 +20,8 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
               + "ORDER BY orderIndex ASC", Choice.class)
           .setParameter("sceneId", sceneId)
           .getResultList();
+    } catch (Exception e){
+      throw new EntityFetchException(Choice.class.getSimpleName(), e);
     }
   }
 }

@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Flag;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.FlagRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class FlagRepositoryImpl extends BaseRepositoryImpl<Flag> implements Flag
       return session.createQuery("FROM Flag WHERE name = :name", Flag.class)
           .setParameter("name", name)
           .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(Flag.class.getSimpleName(), e);
     }
   }
 }

@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Character;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.CharacterRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.Optional;
@@ -19,6 +20,8 @@ public class CharacterRepositoryImpl extends BaseRepositoryImpl<Character> imple
       return session.createQuery("FROM Character WHERE name = :name", Character.class)
           .setParameter("name", name)
           .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(Character.class.getSimpleName(), e);
     }
   }
 }

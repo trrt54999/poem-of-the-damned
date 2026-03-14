@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.GameSceneRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> imple
       return session.createQuery("FROM GameScene WHERE title = :title", GameScene.class)
           .setParameter("title", title)
           .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(GameScene.class.getSimpleName(), e);
     }
   }
 }

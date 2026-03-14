@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Dialogue;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.DialogueRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
@@ -22,6 +23,8 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
           .setParameter("sceneId", sceneId)
           .setMaxResults(1)
           .uniqueResultOptional();
+    }  catch (Exception e){
+      throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }
   }
 
@@ -32,6 +35,8 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
               + "ORDER BY orderIndex ASC", Dialogue.class)
           .setParameter("sceneId", sceneId)
           .getResultList();
+    } catch (Exception e){
+      throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }
   }
 }

@@ -1,15 +1,18 @@
 package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityDeleteException;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntitySaveException;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityUpdateException;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.BaseRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-// todo або до винятків норм коменти, або кастомні винятки
 @AllArgsConstructor
 public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRepository<T> {
 
@@ -24,7 +27,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       tx.commit();
     }catch (Exception e) {
       if (tx != null) tx.rollback();
-      throw new RuntimeException(entityClass.getSimpleName(), e);
+      throw new EntitySaveException(entityClass.getSimpleName(), e);
     }
   }
 
@@ -37,7 +40,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       tx.commit();
     } catch (Exception e) {
       if (tx != null) tx.rollback();
-      throw new RuntimeException(entityClass.getSimpleName(), e);
+      throw new EntityUpdateException(entityClass.getSimpleName(), e);
     }
   }
 
@@ -50,7 +53,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       tx.commit();
     } catch (Exception e) {
       if (tx != null) tx.rollback();
-      throw new RuntimeException(entityClass.getSimpleName(), e);
+      throw new EntityDeleteException(entityClass.getSimpleName(), e);
     }
   }
 
@@ -59,6 +62,8 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
       T entity = session.find(entityClass, id);
       return Optional.ofNullable(entity);
+    } catch (Exception e) {
+      throw new EntityFetchException(entityClass.getSimpleName(), e);
     }
   }
 
@@ -67,6 +72,8 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
       return session.createQuery("FROM " + entityClass.getSimpleName(), entityClass)
           .getResultList();
+    } catch (Exception e){
+      throw new EntityFetchException(entityClass.getSimpleName(), e);
     }
   }
 }
