@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "save_flags")
+@Table(name = "save_flags", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"save_slot_id", "flag_id"})
+})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaveFlag extends BaseEntity {

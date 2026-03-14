@@ -3,7 +3,7 @@ package com.midnightdraft.poemofthedamned.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface BasicRepository<T> {
+public interface BaseRepository<T> {
 
   void save(T entity);
   void update(T entity);

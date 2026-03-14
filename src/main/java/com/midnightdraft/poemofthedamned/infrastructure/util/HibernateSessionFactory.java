@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
+// TODO: implement class holder singleton
 @UtilityClass
 public class HibernateSessionFactory {
 

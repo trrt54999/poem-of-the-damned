@@ -1,7 +1,7 @@
-package com.midnightdraft.poemofthedamned.infrastructure.impl;
+package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
-import com.midnightdraft.poemofthedamned.infrastructure.repository.BasicRepository;
+import com.midnightdraft.poemofthedamned.infrastructure.repository.BaseRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +9,9 @@ import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+// todo або до винятків норм коменти, або кастомні винятки
 @AllArgsConstructor
-public abstract class BasicRepositoryImpl<T extends BaseEntity> implements BasicRepository<T> {
+public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRepository<T> {
 
   private final Class<T> entityClass;
 
