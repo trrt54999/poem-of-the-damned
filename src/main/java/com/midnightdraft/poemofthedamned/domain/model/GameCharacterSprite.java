@@ -26,7 +26,7 @@ import lombok.Setter;
 )
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterSprite extends BaseEntity {
+public class GameCharacterSprite extends BaseEntity {
 
   @NotBlank(message = "Emotion cannot be empty!")
   @Column(name = "emotion", nullable = false)
@@ -39,5 +39,5 @@ public class CharacterSprite extends BaseEntity {
   @NotNull(message = "Character id cannot be empty!")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "character_id", nullable = false)
-  private Character character;
+  private GameCharacter gameCharacter;
 }

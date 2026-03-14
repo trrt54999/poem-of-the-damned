@@ -1,26 +1,32 @@
 package com.midnightdraft.poemofthedamned.infrastructure.util;
 
-import lombok.Getter;
-import lombok.experimental.UtilityClass;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
-@UtilityClass
-public class HibernateSessionFactory {
+public final class HibernateSessionFactory {
 
-  @Getter
-  private final SessionFactory sessionFactory = buildSessionFactory();
+  private HibernateSessionFactory(){}
 
-  public SessionFactory buildSessionFactory(){
-    try {
-      return new Configuration().configure().buildSessionFactory();
-    } catch (Throwable e) {
-      throw new ExceptionInInitializerError(e);
+  private static final class SessionFactoryHolder{
+
+    private static final SessionFactory HOLDER_INSTANCE = buildSessionFactory();
+
+    private static SessionFactory buildSessionFactory() {
+      try {
+        return new Configuration().configure().buildSessionFactory();
+      } catch (Throwable e) {
+        throw new ExceptionInInitializerError(e);
+      }
     }
   }
 
-  public void shutdown() {
-    if (sessionFactory != null) {
+  public static SessionFactory getSessionFactory(){
+    return SessionFactoryHolder.HOLDER_INSTANCE;
+  }
+
+  public static void shutdown() {
+    SessionFactory sessionFactory = SessionFactoryHolder.HOLDER_INSTANCE;
+    if (sessionFactory != null && !sessionFactory.isClosed()) {
       sessionFactory.close();
     }
   }

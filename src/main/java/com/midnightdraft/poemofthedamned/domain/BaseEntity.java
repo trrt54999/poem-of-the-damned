@@ -16,7 +16,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @MappedSuperclass
 @NoArgsConstructor
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Identifiable<Long>{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

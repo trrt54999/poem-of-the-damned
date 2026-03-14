@@ -38,9 +38,9 @@ public class Dialogue extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "character_id")
-  private Character character;
+  private GameCharacter gameCharacter;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "character_sprite_id")
-  private CharacterSprite characterSprite;
+  private GameCharacterSprite gameCharacterSprite;
 }
