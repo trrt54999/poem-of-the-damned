@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table(name = "characters")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Character extends BaseEntity {
+public class GameCharacter extends BaseEntity {
 
   @NotBlank(message = "Character name cannot be empty!")
   @Size(min = 2, max = 15, message = "Name must be between 2 and 15 characters!")
