@@ -38,10 +38,10 @@
       <!-- logo -->
     </StackPane>
     <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="90">
-      <Button text="New Game" styleClass="main-menu-btn"></Button>
-      <Button text="Load Game" styleClass="main-menu-btn"></Button>
-      <Button text="Settings" styleClass="main-menu-btn"></Button>
-      <Button text="Exit" styleClass="main-menu-btn"></Button>
+      <Button text="New Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="Load Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="Settings" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="Exit" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
     </VBox>
   </AnchorPane>
 </StackPane>

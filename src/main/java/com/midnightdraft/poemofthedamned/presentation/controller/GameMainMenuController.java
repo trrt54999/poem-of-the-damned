@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.presentation.util.SoundManager;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -7,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
@@ -22,6 +24,9 @@ public class GameMainMenuController {
   private Canvas backgroundCanvas;
 
   private Image patternImage;
+
+  private AudioClip hoverSound;
+  private AudioClip selectSound;
 
   private static final double SPEED_X = -50.0;
   private static final double SPEED_Y = -30.0;
@@ -51,13 +56,29 @@ public class GameMainMenuController {
     startAnimation();
   }
 
+  @FXML
+  public void playHoverSound() {
+    if (hoverSound != null) {
+      hoverSound.play();
+    }
+  }
+
+  @FXML
+  public void playSelectSound() {
+    if (selectSound != null) {
+      selectSound.play();
+    }
+  }
+
   private void loadResources() {
     String css = this.getClass().getResource("/css/main-menu.css").toExternalForm();
-
     rootPane.getStylesheets().add(css);
 
     Font.loadFont(getClass().getResourceAsStream("/assets/fonts/RifficFree-Bold.ttf"), 36);
     patternImage = new Image(getClass().getResourceAsStream("/assets/ui/Circles.png"));
+
+    hoverSound = SoundManager.loadSound("/assets/audio/sfx/hover.wav", 0.5);
+    selectSound = SoundManager.loadSound("/assets/audio/sfx/select.wav", 0.8);
   }
 
   private void startAnimation() {

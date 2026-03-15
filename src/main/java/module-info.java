@@ -9,6 +9,7 @@ module com.midnightdraft.poemofthedamned {
   requires java.naming;
   requires java.sql;
   requires jakarta.el;
+  requires javafx.media;
 
   opens com.midnightdraft.poemofthedamned to javafx.fxml;
   exports com.midnightdraft.poemofthedamned;
