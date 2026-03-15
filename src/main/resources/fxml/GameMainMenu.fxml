@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.canvas.Canvas?>
+<StackPane styleClass="main-menu-root" fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameMainMenuController">
+  <Canvas fx:id="backgroundCanvas" />
+  <AnchorPane>
+  <ImageView fx:id="aya" preserveRatio="true">
+    <image>
+<!--      <Image url="@../assets/characters/aya/aya_happy.png"/>-->
+    </image>
+  </ImageView>
+  <ImageView fx:id="haruka" preserveRatio="true">
+    <image>
+<!--      <Image url="@../assets/characters/haruka/haruka_laugh.png"/>-->
+    </image>
+  </ImageView>
+  <ImageView fx:id="mio" preserveRatio="true">
+    <image>
+<!--      <Image url="@../assets/characters/mio/mio_catsmile.png"/>-->
+    </image>
+  </ImageView>
+  </AnchorPane>
+  <AnchorPane>
+    <Pane fx:id="leftPanel" styleClass="left-panel-bg"
+      AnchorPane.topAnchor="0"
+      AnchorPane.bottomAnchor="0"
+      AnchorPane.leftAnchor="0"/>
+    <Pane fx:id="dividerLine" styleClass="divider-line"
+      AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
+    <StackPane>
+      <!-- logo -->
+    </StackPane>
+    <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="90">
+      <Button text="New Game" styleClass="main-menu-btn"></Button>
+      <Button text="Load Game" styleClass="main-menu-btn"></Button>
+      <Button text="Settings" styleClass="main-menu-btn"></Button>
+      <Button text="Exit" styleClass="main-menu-btn"></Button>
+    </VBox>
+  </AnchorPane>
+</StackPane>
