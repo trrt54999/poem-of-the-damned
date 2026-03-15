@@ -1,14 +1,16 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
-import com.midnightdraft.poemofthedamned.presentation.util.SoundManager;
+import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
@@ -19,9 +21,23 @@ public class GameMainMenuController {
   @FXML
   private Pane leftPanel;
   @FXML
+  private StackPane logoContainer;
+  @FXML
+  private Circle logoClip;
+  @FXML
+  private Circle logoBorder;
+  @FXML
   private Pane dividerLine;
   @FXML
   private Canvas backgroundCanvas;
+  @FXML
+  private ImageView logoImage;
+  @FXML
+  private ImageView aya;
+  @FXML
+  private ImageView haruka;
+  @FXML
+  private ImageView mio;
 
   private Image patternImage;
 
@@ -43,6 +59,24 @@ public class GameMainMenuController {
     dividerLine.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.03));
     dividerLine.translateXProperty().bind(leftPanel.prefWidthProperty());
 
+    logoImage.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.24));
+
+    logoClip.radiusProperty().bind(logoImage.fitWidthProperty().divide(2));
+    logoBorder.radiusProperty().bind(logoImage.fitWidthProperty().divide(2));
+
+    logoClip.centerXProperty().bind(logoImage.fitWidthProperty().divide(2));
+    logoClip.centerYProperty().bind(logoImage.fitWidthProperty().divide(2));
+
+    logoContainer.translateXProperty().bind(
+        leftPanel.widthProperty().subtract(logoImage.fitWidthProperty().divide(2))
+    );
+    aya.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.8));
+    haruka.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.8));
+    mio.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.8));
+
+    haruka.translateXProperty().bind(rootPane.heightProperty().multiply(-0.26));
+    aya.translateXProperty().bind(rootPane.heightProperty().multiply(-0.60));
+    
     Rectangle clip = new Rectangle();
     clip.xProperty().bind(leftPanel.widthProperty().add(dividerLine.widthProperty()));
     clip.widthProperty().bind(
@@ -77,8 +111,8 @@ public class GameMainMenuController {
     Font.loadFont(getClass().getResourceAsStream("/assets/fonts/RifficFree-Bold.ttf"), 36);
     patternImage = new Image(getClass().getResourceAsStream("/assets/ui/Circles.png"));
 
-    hoverSound = SoundManager.loadSound("/assets/audio/sfx/hover.wav", 0.5);
-    selectSound = SoundManager.loadSound("/assets/audio/sfx/select.wav", 0.8);
+    hoverSound = SoundHelper.loadSoundEffect("/assets/audio/sfx/hover.wav", 0.5);
+    selectSound = SoundHelper.loadSoundEffect("/assets/audio/sfx/select.wav", 0.8);
   }
 
   private void startAnimation() {

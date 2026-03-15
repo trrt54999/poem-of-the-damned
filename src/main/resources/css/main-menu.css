@@ -35,3 +35,9 @@
 .divider-line {
   -fx-background-color: rgba(251, 62, 62, 0.6);
 }
+.logo-circle {
+  -fx-fill: transparent;
+  -fx-stroke: rgba(251, 62, 62, 0.6);
+  -fx-effect: dropshadow(three-pass-box, rgba(251, 62, 62, 0.4), 15, 0, 0, 0);
+  -fx-stroke-width: 10px;
+}

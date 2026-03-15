@@ -10,22 +10,22 @@
 <?import javafx.scene.canvas.Canvas?>
 <StackPane styleClass="main-menu-root" fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameMainMenuController">
   <Canvas fx:id="backgroundCanvas" />
-  <AnchorPane>
-  <ImageView fx:id="aya" preserveRatio="true">
-    <image>
-<!--      <Image url="@../assets/characters/aya/aya_happy.png"/>-->
-    </image>
-  </ImageView>
-  <ImageView fx:id="haruka" preserveRatio="true">
-    <image>
-<!--      <Image url="@../assets/characters/haruka/haruka_laugh.png"/>-->
-    </image>
-  </ImageView>
-  <ImageView fx:id="mio" preserveRatio="true">
-    <image>
-<!--      <Image url="@../assets/characters/mio/mio_catsmile.png"/>-->
-    </image>
-  </ImageView>
+  <AnchorPane mouseTransparent="true">
+    <ImageView fx:id="mio" preserveRatio="true" smooth="true"
+      AnchorPane.bottomAnchor="0.0"
+      AnchorPane.rightAnchor="0.0">
+      <image><Image url="@../assets/characters/mio/mio_catsmile.png"/></image>
+    </ImageView>
+    <ImageView fx:id="haruka" preserveRatio="true" smooth="true"
+      AnchorPane.bottomAnchor="0.0"
+      AnchorPane.rightAnchor="0.0">
+      <image><Image url="@../assets/characters/haruka/haruka_laugh.png"/></image>
+    </ImageView>
+    <ImageView fx:id="aya" preserveRatio="true" smooth="true"
+      AnchorPane.bottomAnchor="0.0"
+      AnchorPane.rightAnchor="0.0">
+      <image><Image url="@../assets/characters/aya/aya_happy.png"/></image>
+    </ImageView>
   </AnchorPane>
   <AnchorPane>
     <Pane fx:id="leftPanel" styleClass="left-panel-bg"
@@ -34,8 +34,16 @@
       AnchorPane.leftAnchor="0"/>
     <Pane fx:id="dividerLine" styleClass="divider-line"
       AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>
-    <StackPane>
-      <!-- logo -->
+    <StackPane fx:id="logoContainer" AnchorPane.topAnchor="15">
+      <ImageView fx:id="logoImage" opacity="0.95" smooth="true" preserveRatio="true">
+        <image>
+          <Image url="@../assets/ui/logo.jpg" preserveRatio="true"/>
+        </image>
+        <clip>
+          <Circle fx:id="logoClip"/>
+        </clip>
+      </ImageView>
+      <Circle fx:id="logoBorder" styleClass="logo-circle" mouseTransparent="true"/>
     </StackPane>
     <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="90">
       <Button text="New Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>

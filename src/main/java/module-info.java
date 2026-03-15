@@ -10,6 +10,7 @@ module com.midnightdraft.poemofthedamned {
   requires java.sql;
   requires jakarta.el;
   requires javafx.media;
+  requires org.slf4j;
 
   opens com.midnightdraft.poemofthedamned to javafx.fxml;
   exports com.midnightdraft.poemofthedamned;
