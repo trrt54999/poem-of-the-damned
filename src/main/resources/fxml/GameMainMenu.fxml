@@ -10,45 +10,40 @@
 <StackPane styleClass="main-menu-root" fx:id="rootPane" prefHeight="400.0" prefWidth="600.0"
   xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameMainMenuController">
-
   <Canvas fx:id="backgroundCanvas" />
-
   <AnchorPane mouseTransparent="true">
-    <ImageView fx:id="mio" preserveRatio="true" smooth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <image><Image url="@../assets/characters/mio/mio_catsmile.png"/></image>
+    <ImageView fx:id="mio" preserveRatio="true" AnchorPane.bottomAnchor="0.0"
+      AnchorPane.rightAnchor="0.0">
+      <Image url="@../assets/characters/mio/mio_catsmile.png"/>
     </ImageView>
-    <ImageView fx:id="haruka" preserveRatio="true" smooth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <image><Image url="@../assets/characters/haruka/haruka_laugh.png"/></image>
+    <ImageView fx:id="haruka" preserveRatio="true" AnchorPane.bottomAnchor="0.0"
+      AnchorPane.rightAnchor="0.0">
+      <Image url="@../assets/characters/haruka/haruka_laugh.png"/>
     </ImageView>
-    <ImageView fx:id="aya" preserveRatio="true" smooth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <image><Image url="@../assets/characters/aya/aya_happy.png"/></image>
+    <ImageView fx:id="aya" preserveRatio="true" AnchorPane.bottomAnchor="-5.0"
+      AnchorPane.rightAnchor="0.0">
+      <Image url="@../assets/characters/aya/aya_happy.png"/>
     </ImageView>
   </AnchorPane>
-
   <GridPane pickOnBounds="false">
     <columnConstraints>
       <ColumnConstraints percentWidth="25.0" /> <ColumnConstraints percentWidth="3.0" />  <ColumnConstraints percentWidth="72.0" /> </columnConstraints>
     <rowConstraints>
       <RowConstraints percentHeight="100.0" />
     </rowConstraints>
-
     <Pane fx:id="leftPanel" styleClass="left-panel-bg" GridPane.columnIndex="0" />
     <Pane fx:id="dividerLine" styleClass="divider-line" GridPane.columnIndex="1" />
   </GridPane>
-
   <AnchorPane pickOnBounds="false">
     <StackPane fx:id="logoContainer" AnchorPane.topAnchor="15">
-      <ImageView fx:id="logoImage" opacity="0.95" smooth="true" preserveRatio="true">
-        <image>
-          <Image url="@../assets/ui/logo.jpg" preserveRatio="true"/>
-        </image>
+      <ImageView fx:id="logoImage" opacity="0.95" preserveRatio="true">
         <clip>
           <Circle fx:id="logoClip"/>
         </clip>
+        <Image url="@../assets/ui/logo.jpg" preserveRatio="true"/>
       </ImageView>
       <Circle fx:id="logoBorder" styleClass="logo-circle" mouseTransparent="true"/>
     </StackPane>
-
     <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="90">
       <Button text="New Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
       <Button text="Load Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
