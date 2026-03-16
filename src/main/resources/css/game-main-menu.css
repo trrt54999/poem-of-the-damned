@@ -1,6 +1,3 @@
-@font-face {
-  src: url('../fonts/RifficFree-Bold.ttf');
-}
 .main-menu-root {
   -fx-background-color: #FBF5F5;
   -fx-background-radius: 15;
