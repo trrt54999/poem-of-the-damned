@@ -2,7 +2,7 @@ package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Dialogue;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
-import com.midnightdraft.poemofthedamned.infrastructure.repository.DialogueRepository;
+import com.midnightdraft.poemofthedamned.domain.repository.DialogueRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;

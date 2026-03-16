@@ -22,17 +22,28 @@ import javafx.scene.text.Font;
 
 public class GameMainMenuController {
 
-  @FXML private StackPane rootPane;
-  @FXML private Pane leftPanel;
-  @FXML private StackPane logoContainer;
-  @FXML private Circle logoClip;
-  @FXML private Circle logoBorder;
-  @FXML private Pane dividerLine;
-  @FXML private Canvas backgroundCanvas;
-  @FXML private ImageView logoImage;
-  @FXML private ImageView aya;
-  @FXML private ImageView haruka;
-  @FXML private ImageView mio;
+  @FXML
+  private StackPane rootPane;
+  @FXML
+  private Pane leftPanel;
+  @FXML
+  private StackPane logoContainer;
+  @FXML
+  private Circle logoClip;
+  @FXML
+  private Circle logoBorder;
+  @FXML
+  private Pane dividerLine;
+  @FXML
+  private Canvas backgroundCanvas;
+  @FXML
+  private ImageView logoImage;
+  @FXML
+  private ImageView aya;
+  @FXML
+  private ImageView haruka;
+  @FXML
+  private ImageView mio;
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 

@@ -1,4 +1,4 @@
-package com.midnightdraft.poemofthedamned.infrastructure.repository;
+package com.midnightdraft.poemofthedamned.domain.repository;
 
 import com.midnightdraft.poemofthedamned.domain.model.SaveSlot;
 import java.util.List;

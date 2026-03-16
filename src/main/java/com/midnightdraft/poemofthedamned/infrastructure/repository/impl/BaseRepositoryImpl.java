@@ -4,7 +4,7 @@ import com.midnightdraft.poemofthedamned.domain.BaseEntity;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityDeleteException;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntitySaveException;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityUpdateException;
-import com.midnightdraft.poemofthedamned.infrastructure.repository.BaseRepository;
+import com.midnightdraft.poemofthedamned.domain.repository.BaseRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import java.util.List;

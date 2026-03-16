@@ -1,4 +1,4 @@
-package com.midnightdraft.poemofthedamned.infrastructure.repository;
+package com.midnightdraft.poemofthedamned.domain.repository;
 
 import java.util.List;
 import java.util.Optional;

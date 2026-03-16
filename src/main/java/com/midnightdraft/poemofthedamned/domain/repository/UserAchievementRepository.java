@@ -1,4 +1,4 @@
-package com.midnightdraft.poemofthedamned.infrastructure.repository;
+package com.midnightdraft.poemofthedamned.domain.repository;
 
 import com.midnightdraft.poemofthedamned.domain.model.UserAchievement;
 import java.util.List;

@@ -19,4 +19,5 @@ module com.midnightdraft.poemofthedamned {
   opens com.midnightdraft.poemofthedamned.domain.model to org.hibernate.orm.core, org.hibernate.validator;
   opens com.midnightdraft.poemofthedamned.presentation.controller to javafx.fxml;
   opens com.midnightdraft.poemofthedamned.infrastructure.repository to org.hibernate.orm.core;
+  opens com.midnightdraft.poemofthedamned.domain.repository to org.hibernate.orm.core;
 }
