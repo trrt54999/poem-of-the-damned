@@ -1,5 +1,11 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
+import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -38,6 +44,8 @@ public class GameMainMenuController {
   private ImageView haruka;
   @FXML
   private ImageView mio;
+
+  private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   private Image patternImage;
 
@@ -105,14 +113,17 @@ public class GameMainMenuController {
   }
 
   private void loadResources() {
-    String css = this.getClass().getResource("/css/game-main-menu.css").toExternalForm();
+    String css = resourceProvider.getUrl(Css.GAME_MAIN_MENU).toExternalForm();
     rootPane.getStylesheets().add(css);
 
-    Font.loadFont(getClass().getResourceAsStream("/assets/fonts/RifficFree-Bold.ttf"), 36);
-    patternImage = new Image(getClass().getResourceAsStream("/assets/ui/Circles.png"));
+    Font.loadFont(
+        resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(),
+        36
+    );
+    patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
 
-    hoverSound = SoundHelper.loadSoundEffect("/assets/audio/sfx/hover.wav", 0.5);
-    selectSound = SoundHelper.loadSoundEffect("/assets/audio/sfx/select.wav", 0.8);
+    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
+    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
   }
 
   private void startAnimation() {
