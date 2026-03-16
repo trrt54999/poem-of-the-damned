@@ -9,14 +9,16 @@ import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFac
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import java.util.List;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-@AllArgsConstructor
 public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRepository<T> {
 
   private final Class<T> entityClass;
+
+  protected BaseRepositoryImpl(Class<T> entityClass) {
+    this.entityClass = entityClass;
+  }
 
   @Override
   public void save(T entity){
