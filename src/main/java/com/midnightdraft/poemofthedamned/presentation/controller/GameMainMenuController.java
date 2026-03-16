@@ -105,7 +105,7 @@ public class GameMainMenuController {
   }
 
   private void loadResources() {
-    String css = this.getClass().getResource("/css/main-menu.css").toExternalForm();
+    String css = this.getClass().getResource("/css/game-main-menu.css").toExternalForm();
     rootPane.getStylesheets().add(css);
 
     Font.loadFont(getClass().getResourceAsStream("/assets/fonts/RifficFree-Bold.ttf"), 36);
