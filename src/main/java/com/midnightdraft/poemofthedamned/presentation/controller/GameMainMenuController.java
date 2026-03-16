@@ -22,33 +22,21 @@ import javafx.scene.text.Font;
 
 public class GameMainMenuController {
 
-  @FXML
-  private StackPane rootPane;
-  @FXML
-  private Pane leftPanel;
-  @FXML
-  private StackPane logoContainer;
-  @FXML
-  private Circle logoClip;
-  @FXML
-  private Circle logoBorder;
-  @FXML
-  private Pane dividerLine;
-  @FXML
-  private Canvas backgroundCanvas;
-  @FXML
-  private ImageView logoImage;
-  @FXML
-  private ImageView aya;
-  @FXML
-  private ImageView haruka;
-  @FXML
-  private ImageView mio;
+  @FXML private StackPane rootPane;
+  @FXML private Pane leftPanel;
+  @FXML private StackPane logoContainer;
+  @FXML private Circle logoClip;
+  @FXML private Circle logoBorder;
+  @FXML private Pane dividerLine;
+  @FXML private Canvas backgroundCanvas;
+  @FXML private ImageView logoImage;
+  @FXML private ImageView aya;
+  @FXML private ImageView haruka;
+  @FXML private ImageView mio;
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   private Image patternImage;
-
   private AudioClip hoverSound;
   private AudioClip selectSound;
 
@@ -59,14 +47,40 @@ public class GameMainMenuController {
   @FXML
   public void initialize() {
     loadResources();
+    setupCanvasBindings();
+    setupLogoBindings();
+    setupCharacterBindings();
+    setupBackgroundClip();
+    startAnimation();
+  }
 
+  @FXML
+  public void playHoverSound() {
+    if (hoverSound != null) hoverSound.play();
+  }
+
+  @FXML
+  public void playSelectSound() {
+    if (selectSound != null) selectSound.play();
+  }
+
+  private void loadResources() {
+    String css = resourceProvider.getUrl(Css.GAME_MAIN_MENU).toExternalForm();
+    rootPane.getStylesheets().add(css);
+
+    Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
+    patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
+
+    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
+    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
+  }
+
+  private void setupCanvasBindings() {
     backgroundCanvas.widthProperty().bind(rootPane.widthProperty());
     backgroundCanvas.heightProperty().bind(rootPane.heightProperty());
+  }
 
-    leftPanel.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.25));
-    dividerLine.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.03));
-    dividerLine.translateXProperty().bind(leftPanel.prefWidthProperty());
-
+  private void setupLogoBindings() {
     logoImage.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.24));
 
     logoClip.radiusProperty().bind(logoImage.fitWidthProperty().divide(2));
@@ -78,13 +92,18 @@ public class GameMainMenuController {
     logoContainer.translateXProperty().bind(
         leftPanel.widthProperty().subtract(logoImage.fitWidthProperty().divide(2))
     );
+  }
+
+  private void setupCharacterBindings() {
     aya.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.8));
     haruka.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.8));
     mio.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.8));
 
     haruka.translateXProperty().bind(rootPane.heightProperty().multiply(-0.26));
     aya.translateXProperty().bind(rootPane.heightProperty().multiply(-0.60));
-    
+  }
+
+  private void setupBackgroundClip() {
     Rectangle clip = new Rectangle();
     clip.xProperty().bind(leftPanel.widthProperty().add(dividerLine.widthProperty()));
     clip.widthProperty().bind(
@@ -94,41 +113,10 @@ public class GameMainMenuController {
     );
     clip.heightProperty().bind(rootPane.heightProperty());
     backgroundCanvas.setClip(clip);
-
-    startAnimation();
-  }
-
-  @FXML
-  public void playHoverSound() {
-    if (hoverSound != null) {
-      hoverSound.play();
-    }
-  }
-
-  @FXML
-  public void playSelectSound() {
-    if (selectSound != null) {
-      selectSound.play();
-    }
-  }
-
-  private void loadResources() {
-    String css = resourceProvider.getUrl(Css.GAME_MAIN_MENU).toExternalForm();
-    rootPane.getStylesheets().add(css);
-
-    Font.loadFont(
-        resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(),
-        36
-    );
-    patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
-
-    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
-    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
   }
 
   private void startAnimation() {
-    if (patternImage == null)
-      return;
+    if (patternImage == null) return;
 
     GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
 
@@ -151,7 +139,6 @@ public class GameMainMenuController {
 
         double imgW = patternImage.getWidth();
         double imgH = patternImage.getHeight();
-
         double stepX = imgW + GAP;
         double stepY = imgH + GAP;
 
@@ -166,13 +153,11 @@ public class GameMainMenuController {
         for (int i = 0; i < rowCount; i++) {
           long currentRow = startRow + i;
           double drawY = worldY + (currentRow * stepY);
-
           double staggerX = ((currentRow & 1) == 0) ? 0 : stepX / 2.0;
 
           for (int j = 0; j < colCount; j++) {
             long currentCol = startCol + j;
             double drawX = worldX + (currentCol * stepX) + staggerX;
-
             gc.drawImage(patternImage, drawX, drawY, imgW, imgH);
           }
         }

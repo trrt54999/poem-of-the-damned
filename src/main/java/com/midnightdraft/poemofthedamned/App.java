@@ -1,6 +1,5 @@
 package com.midnightdraft.poemofthedamned;
 
-import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;

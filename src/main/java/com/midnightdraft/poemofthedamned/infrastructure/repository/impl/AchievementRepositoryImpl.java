@@ -15,7 +15,6 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
     super(Achievement.class);
   }
 
-
   @Override
   public Optional<Achievement> findByTitle(String title) {
     try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
