@@ -136,14 +136,22 @@ public class GameMainMenuController {
       private double worldX = 0;
       private double worldY = 0;
 
+      private static final double MAX_ELAPSED_TIME = 0.05;
+      private static final double DEFAULT_FRAME_TIME = 0.016;
+
       @Override
       public void handle(long now) {
         if (lastUpdate == 0) {
           lastUpdate = now;
           return;
         }
+
         double elapsedSeconds = (now - lastUpdate) / 1_000_000_000.0;
         lastUpdate = now;
+
+        if (elapsedSeconds > MAX_ELAPSED_TIME) {
+          elapsedSeconds = DEFAULT_FRAME_TIME;
+        }
 
         worldX += SPEED_X * elapsedSeconds;
         worldY += SPEED_Y * elapsedSeconds;
