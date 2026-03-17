@@ -17,11 +17,11 @@ public class FileSystemResourceProvider  implements ResourceProvider {
     return switch (key){
 
       case Css css -> switch (css){
-        case GAME_MAIN_MENU -> "/css/game-main-menu.css";
+        case GAME_MAIN_MENU -> "/css/game_main_menu.css";
       };
 
       case Fxml fxml -> switch (fxml){
-        case GAME_MAIN_MENU -> "/fxml/GameMainMenu.fxml";
+        case GAME_MAIN_MENU -> "/fxml/game_main_menu.fxml";
       };
 
       case AudioSfx audioSfx -> switch (audioSfx){
@@ -36,12 +36,13 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       };
 
       case Fonts fonts -> switch (fonts) {
-        case RIFFIC_FREE_BOLD -> "/assets/fonts/RifficFree-Bold.ttf";
+        case RIFFIC_FREE_BOLD -> "/assets/fonts/riffic_free_bold.ttf";
       };
 
       case Ui ui -> switch (ui){
-        case CIRCLES -> "/assets/ui/Circles.png";
+        case CIRCLES -> "/assets/ui/circles.png";
         case LOGO -> "/assets/ui/logo.jpg";
+        case GITHUB_LOGO -> "/assets/ui/github_logo.png";
       };
 
       default -> throw new IllegalArgumentException("Unknown asset group: " + key.getClass());

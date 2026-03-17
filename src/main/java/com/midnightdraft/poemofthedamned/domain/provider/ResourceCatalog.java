@@ -34,7 +34,8 @@ public interface ResourceCatalog {
 
   enum Ui implements ResourceKey{
     CIRCLES,
-    LOGO
+    LOGO,
+    GITHUB_LOGO
   }
 
 }
