@@ -3,31 +3,23 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.canvas.Canvas?>
 
+<?import javafx.scene.control.Label?>
 <StackPane styleClass="main-menu-root" fx:id="rootPane" prefHeight="400.0" prefWidth="600.0"
   xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameMainMenuController">
   <Canvas fx:id="backgroundCanvas" />
   <AnchorPane mouseTransparent="true">
-    <ImageView fx:id="mio" preserveRatio="true" AnchorPane.bottomAnchor="0.0"
-      AnchorPane.rightAnchor="0.0">
-      <Image url="@../assets/characters/mio/mio_catsmile.png"/>
-    </ImageView>
-    <ImageView fx:id="haruka" preserveRatio="true" AnchorPane.bottomAnchor="0.0"
-      AnchorPane.rightAnchor="0.0">
-      <Image url="@../assets/characters/haruka/haruka_laugh.png"/>
-    </ImageView>
-    <ImageView fx:id="aya" preserveRatio="true" AnchorPane.bottomAnchor="-5.0"
-      AnchorPane.rightAnchor="0.0">
-      <Image url="@../assets/characters/aya/aya_happy.png"/>
-    </ImageView>
+    <ImageView fx:id="mio" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+    <ImageView fx:id="haruka" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+    <ImageView fx:id="aya" preserveRatio="true" AnchorPane.bottomAnchor="-5.0" AnchorPane.rightAnchor="0.0" />
   </AnchorPane>
   <GridPane pickOnBounds="false">
     <columnConstraints>
-      <ColumnConstraints percentWidth="25.0" /> <ColumnConstraints percentWidth="3.0" />  <ColumnConstraints percentWidth="72.0" /> </columnConstraints>
+      <ColumnConstraints percentWidth="25.0" /> <ColumnConstraints percentWidth="3.0" />
+      <ColumnConstraints percentWidth="72.0" /> </columnConstraints>
     <rowConstraints>
       <RowConstraints percentHeight="100.0" />
     </rowConstraints>
@@ -35,16 +27,18 @@
     <Pane fx:id="dividerLine" styleClass="divider-line" GridPane.columnIndex="1" />
   </GridPane>
   <AnchorPane pickOnBounds="false">
+    <ImageView fx:id="githubLogo" styleClass="github-logo" preserveRatio="true" AnchorPane.leftAnchor="15" AnchorPane.topAnchor="15" onMousePressed="#openGithub"/>
     <StackPane fx:id="logoContainer" AnchorPane.topAnchor="15">
       <ImageView fx:id="logoImage" opacity="0.95" preserveRatio="true">
         <clip>
           <Circle fx:id="logoClip"/>
         </clip>
-        <Image url="@../assets/ui/logo.jpg" preserveRatio="true"/>
       </ImageView>
       <Circle fx:id="logoBorder" styleClass="logo-circle" mouseTransparent="true"/>
     </StackPane>
-    <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="90">
+    <Label text="Poem of the" fx:id="titleTop" rotate="7" styleClass="game-name-text" AnchorPane.leftAnchor="50"/>
+    <Label text="Damned" fx:id="titleBottom" rotate="-9" styleClass="game-name-text" AnchorPane.leftAnchor="50"/>
+    <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="50">
       <Button text="New Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
       <Button text="Load Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
       <Button text="Settings" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>

@@ -32,7 +32,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case GameCharacters characters -> switch (characters){
         case HARUKA_LAUGH -> "/assets/characters/haruka/haruka_laugh.png";
         case AYA_HAPPY -> "/assets/characters/aya/aya_happy.png";
-        case MIO_CAT_SMILE -> "/assets/characters/mio/mio_catsmile.png";
+        case MIO_CAT_SMILE -> "/assets/characters/mio/mio_cat_smile.png";
       };
 
       case Fonts fonts -> switch (fonts) {

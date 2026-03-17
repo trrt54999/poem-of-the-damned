@@ -5,7 +5,7 @@
 
 .main-menu-btn {
   -fx-font-family: 'Riffic Free Bold';
-  -fx-font-size: 36;
+  -fx-font-size: 2.5em;
   -fx-text-fill: #FFFFFF;
   -fx-background-color: transparent;
   -fx-border-color: transparent;
@@ -15,7 +15,7 @@
 .main-menu-btn .text {
   -fx-fill: #FFFFFF;
   -fx-stroke: #C02E2E;
-  -fx-stroke-width: 5px;
+  -fx-stroke-width: 0.14em;
   -fx-stroke-type: outside;
   -fx-stroke-line-join: round;
 }
@@ -37,4 +37,20 @@
   -fx-stroke: rgba(251, 62, 62, 0.6);
   -fx-effect: dropshadow(three-pass-box, rgba(251, 62, 62, 0.4), 15, 0, 0, 0);
   -fx-stroke-width: 10px;
+}
+.github-logo:hover {
+  -fx-effect: dropshadow(three-pass-box, white, 10, 0, 0, 0);
+  -fx-cursor: hand;
+}
+.game-name-text {
+  -fx-font-family: 'Riffic Free Bold';
+  -fx-font-size: 5em;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 10, 0, 0, 4);
+}
+.game-name-text .text {
+  -fx-fill: #C02E2E;
+  -fx-stroke: #FFFFFF;
+  -fx-stroke-width: 0.07em;
+  -fx-stroke-type: outside;
+  -fx-stroke-line-join: round;
 }

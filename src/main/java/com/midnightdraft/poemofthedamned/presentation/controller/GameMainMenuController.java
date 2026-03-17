@@ -3,14 +3,19 @@ package com.midnightdraft.poemofthedamned.presentation.controller;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.GameCharacters;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
+import java.awt.Desktop;
+import java.net.URI;
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -19,7 +24,9 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class GameMainMenuController {
 
   @FXML
@@ -39,11 +46,19 @@ public class GameMainMenuController {
   @FXML
   private ImageView logoImage;
   @FXML
+  private ImageView githubLogo;
+  @FXML
   private ImageView aya;
   @FXML
   private ImageView haruka;
   @FXML
   private ImageView mio;
+  @FXML
+  private Label titleTop;
+  @FXML
+  private Label titleBottom;
+
+  private static final String GITHUB_URL = "https://github.com/trrt54999";
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
@@ -60,6 +75,7 @@ public class GameMainMenuController {
     loadResources();
     setupCanvasBindings();
     setupLogoBindings();
+    setupTextBindings();
     setupCharacterBindings();
     setupBackgroundClip();
     startAnimation();
@@ -75,9 +91,26 @@ public class GameMainMenuController {
     if (selectSound != null) selectSound.play();
   }
 
+  @FXML
+  public void openGithub(){
+    try {
+      Desktop.getDesktop().browse(new URI(GITHUB_URL));
+    } catch (UnsupportedOperationException e) {
+      log.warn("Desktop API not supported on this platform", e);
+    } catch (Exception e) {
+      log.error("Failed to open GitHub link", e);
+    }
+  }
+
   private void loadResources() {
     String css = resourceProvider.getUrl(Css.GAME_MAIN_MENU).toExternalForm();
     rootPane.getStylesheets().add(css);
+
+    logoImage.setImage(new Image(resourceProvider.getUrl(Ui.LOGO).toExternalForm()));
+    githubLogo.setImage(new Image(resourceProvider.getUrl(Ui.GITHUB_LOGO).toExternalForm()));
+    haruka.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
+    aya.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
+    mio.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
 
     Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
     patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
@@ -103,6 +136,17 @@ public class GameMainMenuController {
     logoContainer.translateXProperty().bind(
         leftPanel.widthProperty().subtract(logoImage.fitWidthProperty().divide(2))
     );
+
+    githubLogo.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.12));
+  }
+
+  private void setupTextBindings(){
+    titleTop.translateYProperty().bind(rootPane.heightProperty().multiply(0.16));
+    titleBottom.translateYProperty().bind(rootPane.heightProperty().multiply(0.30));
+
+    rootPane.styleProperty().bind(
+        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(0.02), "px;")
+    );
   }
 
   private void setupCharacterBindings() {
@@ -126,6 +170,7 @@ public class GameMainMenuController {
     backgroundCanvas.setClip(clip);
   }
 
+  // todo: це не дуже відноситься до контроллеру, потім винесу
   private void startAnimation() {
     if (patternImage == null) return;
 
