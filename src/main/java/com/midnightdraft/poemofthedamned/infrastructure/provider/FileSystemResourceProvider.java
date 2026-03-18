@@ -18,10 +18,12 @@ public class FileSystemResourceProvider  implements ResourceProvider {
 
       case Css css -> switch (css){
         case GAME_MAIN_MENU -> "/css/game_main_menu.css";
+        case GAME_SCENE -> "/css/game_scene.css";
       };
 
       case Fxml fxml -> switch (fxml){
         case GAME_MAIN_MENU -> "/fxml/game_main_menu.fxml";
+        case GAME_SCENE -> "/fxml/game_scene.fxml";
       };
 
       case AudioSfx audioSfx -> switch (audioSfx){

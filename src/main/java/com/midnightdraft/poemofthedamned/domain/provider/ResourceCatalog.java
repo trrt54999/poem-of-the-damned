@@ -2,11 +2,13 @@ package com.midnightdraft.poemofthedamned.domain.provider;
 
 public interface ResourceCatalog {
   enum Css implements ResourceKey{
-    GAME_MAIN_MENU
+    GAME_MAIN_MENU,
+    GAME_SCENE
   }
 
   enum Fxml implements ResourceKey{
-    GAME_MAIN_MENU
+    GAME_MAIN_MENU,
+    GAME_SCENE
   }
 
   enum AudioSfx implements ResourceKey{
