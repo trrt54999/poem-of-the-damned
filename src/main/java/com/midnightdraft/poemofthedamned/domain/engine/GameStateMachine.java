@@ -7,14 +7,21 @@ import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.model.SaveFlag;
 import java.util.List;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.Getter;
 
+@Getter(AccessLevel.NONE)
 public class GameStateMachine {
 
+  @Getter
   private GameState currentState;
+  @Getter
   private GameScene currentScene;
+  @Getter
+  private String currentMusicPath;
+
   private List<Dialogue> dialogues;
   private List<SaveFlag> activeFlags;
-  private String currentMusicPath;
   private int index = 0;
 
   private GameStateMachine(){}
