@@ -21,7 +21,8 @@ public interface ResourceCatalog {
   }
 
   enum Backgrounds implements ResourceKey{
-
+    CLASS_DAY,
+    ROOFTOP_DAY
   }
 
   enum GameCharacters implements ResourceKey{
@@ -37,7 +38,7 @@ public interface ResourceCatalog {
   enum Ui implements ResourceKey{
     CIRCLES,
     LOGO,
-    GITHUB_LOGO
+    GITHUB_LOGO,
+    DIALOGUE_RECTANGLE
   }
-
 }

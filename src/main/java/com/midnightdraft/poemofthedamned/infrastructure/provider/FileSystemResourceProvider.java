@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.infrastructure.provider;
 
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Backgrounds;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
@@ -41,10 +42,16 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case RIFFIC_FREE_BOLD -> "/assets/fonts/riffic_free_bold.ttf";
       };
 
+      case Backgrounds backgrounds -> switch (backgrounds){
+        case CLASS_DAY -> "/assets/backgrounds/class/class_day.jpg";
+        case ROOFTOP_DAY -> "/assets/backgrounds/rooftop/rooftop_day.jpg";
+      };
+
       case Ui ui -> switch (ui){
         case CIRCLES -> "/assets/ui/circles.png";
         case LOGO -> "/assets/ui/logo.jpg";
         case GITHUB_LOGO -> "/assets/ui/github_logo.png";
+        case DIALOGUE_RECTANGLE -> "/assets/ui/dialogue_rectangle.png";
       };
 
       default -> throw new IllegalArgumentException("Unknown asset group: " + key.getClass());

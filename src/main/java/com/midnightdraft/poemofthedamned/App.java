@@ -21,7 +21,7 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    StackPane root = FXMLLoader.load(resourceProvider.getUrl(Fxml.GAME_MAIN_MENU));
+    StackPane root = FXMLLoader.load(resourceProvider.getUrl(Fxml.GAME_SCENE));
     Scene scene = new Scene(root, 1280, 720);
 
     primaryStage.setTitle("Hello!");

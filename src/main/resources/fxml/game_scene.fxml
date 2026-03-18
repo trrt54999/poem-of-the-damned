@@ -11,13 +11,13 @@
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameSceneController"
   prefHeight="400.0" prefWidth="600.0">
-<ImageView fx:id="backgroundImage" preserveRatio="true"/>
+<ImageView fx:id="backgroundImage"/>
   <AnchorPane fx:id="spritePosition" mouseTransparent="true">
-    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.bottomAnchor="-5.0"/>
-    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.bottomAnchor="-5.0"/>
+    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="-5.0"/>
+    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="-5.0"/>
     <ImageView fx:id="centralSpritePosition" preserveRatio="true" AnchorPane.bottomAnchor="-5.0"/>
   </AnchorPane>
-  <AnchorPane fx:id="dialoguePanel">
+  <AnchorPane fx:id="dialoguePanel" styleClass="dialoguePanel" StackPane.alignment="BOTTOM_CENTER">
     <Label fx:id="characterNameLabel" styleClass="character-name-text"/>
     <Label fx:id="dialogueTextLabel" styleClass="dialogue-text" wrapText="true"/>
     <HBox fx:id="dialogueButtons">
@@ -28,7 +28,7 @@
       <Button fx:id="loadButton" styleClass="dialogue-btn" text="Load"/>
       <Button fx:id="settingsButton" styleClass="dialogue-btn" text="Settings"/>
     </HBox>
-<!--    трикутник не забути та кнопкам дію призначити, також styleClass-->
+    <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="5"/>
   </AnchorPane>
   <VBox fx:id="choiceContainer" alignment="CENTER" spacing="20" visible="false"/>
 </StackPane>
