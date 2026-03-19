@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Backgrounds;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
@@ -7,6 +8,7 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.GameCha
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 
 public class GameSceneController {
@@ -58,27 +61,51 @@ public class GameSceneController {
   @FXML
   private VBox choiceContainer;
 
+  private AudioClip hoverSound;
+  private AudioClip selectSound;
+
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
+
+  private static final double BASE_WIDTH = 1280.0;
+  private static final double BASE_HEIGHT = 720.0;
 
   @FXML
   public void initialize() {
     loadResources();
   }
 
-  // TODO ПРИБРАТИ ХАРДКОД 1280Х720
+  @FXML
+  public void playHoverSound() {
+    if (hoverSound != null) hoverSound.play();
+  }
+
+  @FXML
+  public void playSelectSound() {
+    if (selectSound != null) selectSound.play();
+  }
+
   private void loadResources() {
     String css = resourceProvider.getUrl(Css.GAME_SCENE).toExternalForm();
     rootPane.getStylesheets().add(css);
 
-    leftSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
-    rightSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
-    centralSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
+//    leftSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
+//    rightSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
+//    centralSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
+
+
 
     spritePosition.translateYProperty().bind(
-        rootPane.heightProperty().multiply(12.0 / 720.0)
+        rootPane.heightProperty().multiply(12.0 / BASE_HEIGHT)
     );
 
-    backgroundImage.setImage(new Image(resourceProvider.getUrl(Backgrounds.CLASS_DAY).toExternalForm()));
+    dialogueTextLabel.setText("Lorem ipsum dolor sit amet consectetur adipiscing elit."
+        + " Quisque faucibus ex sapien ewq vitae pellentesque sem placerat."
+        + " In id cursus mi pretium tellus duis convallis."
+        + " Tempus leo eu aenean sed diam urna tempor. ");
+
+    characterNameLabel.setText("Haruka");
+
+  //  backgroundImage.setImage(new Image(resourceProvider.getUrl(Backgrounds.CLASS_DAY).toExternalForm()));
     backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
     backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
 
@@ -92,11 +119,7 @@ public class GameSceneController {
     dialoguePanel.maxHeightProperty().bind(rootPane.heightProperty().multiply(0.28));
 
     dialoguePanel.translateYProperty().bind(
-        rootPane.heightProperty().multiply(-40.0 / 720.0)
-    );
-
-    dialogueButtons.translateYProperty().bind(
-        rootPane.heightProperty().multiply(-5.0 / 720.0)
+        rootPane.heightProperty().multiply(-40.0 / BASE_HEIGHT)
     );
 
     nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.03));
@@ -112,13 +135,17 @@ public class GameSceneController {
 
     Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
     Font.loadFont(resourceProvider.getUrl(Fonts.ALLER_BOLD).toExternalForm(), 42);
+    Font.loadFont(resourceProvider.getUrl(Fonts.ALLER_REGULAR).toExternalForm(), 24);
 
     dialoguePanel.styleProperty().bind(
-        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(16.0 / 720.0), "px;")
+        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(16.0 / BASE_HEIGHT), "px;")
     );
 
     dialogueButtons.spacingProperty().bind(
-        rootPane.widthProperty().multiply(64.0 / 1280.0)
+        rootPane.widthProperty().multiply(64.0 / BASE_WIDTH)
     );
+
+    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
+    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
   }
 }

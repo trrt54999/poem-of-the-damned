@@ -21,16 +21,19 @@
     <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
   </AnchorPane>
   <AnchorPane fx:id="dialoguePanel" styleClass="dialoguePanel" StackPane.alignment="BOTTOM_CENTER">
-    <Label fx:id="characterNameLabel" styleClass="character-name-text"/>
-    <Label fx:id="dialogueTextLabel" styleClass="dialogue-text" wrapText="true"/>
+    <StackPane styleClass="nameplate-panel" AnchorPane.topAnchor="-53.0" AnchorPane.leftAnchor="30.0">
+      <Label fx:id="characterNameLabel" styleClass="character-name-text"/>
+    </StackPane>    <Label fx:id="dialogueTextLabel" styleClass="dialogue-text" wrapText="true"
+      AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="25.0"
+      AnchorPane.rightAnchor="25.0"/>
     <HBox fx:id="dialogueButtons" alignment="CENTER"
       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <Button fx:id="historyButton" styleClass="dialogue-btn" text="History"/>
-      <Button fx:id="skipButton" styleClass="dialogue-btn" text="Skip"/>
-      <Button fx:id="autoButton" styleClass="dialogue-btn" text="Auto"/>
-      <Button fx:id="saveButton" styleClass="dialogue-btn" text="Save"/>
-      <Button fx:id="loadButton" styleClass="dialogue-btn" text="Load"/>
-      <Button fx:id="settingsButton" styleClass="dialogue-btn" text="Settings"/>
+      <Button fx:id="historyButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="History"/>
+      <Button fx:id="skipButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Skip"/>
+      <Button fx:id="autoButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Auto"/>
+      <Button fx:id="saveButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Save"/>
+      <Button fx:id="loadButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Load"/>
+      <Button fx:id="settingsButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Settings"/>
     </HBox>
     <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="5"/>
   </AnchorPane>
