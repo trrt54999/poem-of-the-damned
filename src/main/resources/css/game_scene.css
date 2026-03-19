@@ -1,6 +1,16 @@
 .dialogue-btn {
 
+  -fx-font-family: 'Aller Bold';
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-text-fill: rgba(71, 52, 52, 0.9);
+  -fx-font-size: 1em;
 }
 .dialoguePanel {
-  -fx-background-color: rgba(255, 0, 0, 0.5);
+  -fx-background-color: rgba(255, 203, 203, 0.6);
+  -fx-border-color: rgba(251, 62, 62, 0.6);
+  -fx-background-radius: 15;
+  -fx-border-radius: 15;
+  -fx-border-width: 4;
+  -fx-border-style: solid inside;
 }

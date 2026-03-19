@@ -40,6 +40,8 @@ public class FileSystemResourceProvider  implements ResourceProvider {
 
       case Fonts fonts -> switch (fonts) {
         case RIFFIC_FREE_BOLD -> "/assets/fonts/riffic_free_bold.ttf";
+        case ALLER_BOLD -> "/assets/fonts/aller_bold.ttf";
+        case ALLER_REGULAR -> "/assets/fonts/aller_regular.ttf";
       };
 
       case Backgrounds backgrounds -> switch (backgrounds){

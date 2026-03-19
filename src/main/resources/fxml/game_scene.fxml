@@ -7,20 +7,24 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 <StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameSceneController"
   prefHeight="400.0" prefWidth="600.0">
 <ImageView fx:id="backgroundImage"/>
   <AnchorPane fx:id="spritePosition" mouseTransparent="true">
-    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="-5.0"/>
-    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="-5.0"/>
-    <ImageView fx:id="centralSpritePosition" preserveRatio="true" AnchorPane.bottomAnchor="-5.0"/>
+    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+    <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+      <ImageView fx:id="centralSpritePosition" preserveRatio="true"/>
+    </StackPane>
+    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
   </AnchorPane>
   <AnchorPane fx:id="dialoguePanel" styleClass="dialoguePanel" StackPane.alignment="BOTTOM_CENTER">
     <Label fx:id="characterNameLabel" styleClass="character-name-text"/>
     <Label fx:id="dialogueTextLabel" styleClass="dialogue-text" wrapText="true"/>
-    <HBox fx:id="dialogueButtons">
+    <HBox fx:id="dialogueButtons" alignment="CENTER"
+      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <Button fx:id="historyButton" styleClass="dialogue-btn" text="History"/>
       <Button fx:id="skipButton" styleClass="dialogue-btn" text="Skip"/>
       <Button fx:id="autoButton" styleClass="dialogue-btn" text="Auto"/>

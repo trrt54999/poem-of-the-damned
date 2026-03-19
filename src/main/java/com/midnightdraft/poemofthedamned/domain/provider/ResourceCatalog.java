@@ -32,7 +32,9 @@ public interface ResourceCatalog {
   }
 
   enum Fonts implements ResourceKey{
-    RIFFIC_FREE_BOLD
+    RIFFIC_FREE_BOLD,
+    ALLER_BOLD,
+    ALLER_REGULAR
   }
 
   enum Ui implements ResourceKey{
