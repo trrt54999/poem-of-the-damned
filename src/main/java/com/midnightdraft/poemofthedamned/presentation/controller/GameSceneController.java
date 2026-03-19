@@ -27,6 +27,8 @@ public class GameSceneController {
   @FXML
   private StackPane rootPane;
   @FXML
+  private StackPane nameplatePanel;
+  @FXML
   private ImageView backgroundImage;
   @FXML
   private ImageView leftSpritePosition;
@@ -88,14 +90,20 @@ public class GameSceneController {
     String css = resourceProvider.getUrl(Css.GAME_SCENE).toExternalForm();
     rootPane.getStylesheets().add(css);
 
-//    leftSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
-//    rightSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
-//    centralSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
-
-
+    leftSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
+    rightSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
+    centralSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
 
     spritePosition.translateYProperty().bind(
         rootPane.heightProperty().multiply(12.0 / BASE_HEIGHT)
+    );
+
+    dialogueTextLabel.styleProperty().bind(
+        Bindings.concat(
+            "-fx-effect: dropshadow(two-pass-box, #473434, ",
+            rootPane.heightProperty().multiply(3.0 / BASE_HEIGHT),
+            ", 1.0, 0, 0);"
+        )
     );
 
     dialogueTextLabel.setText("Lorem ipsum dolor sit amet consectetur adipiscing elit."
@@ -105,7 +113,7 @@ public class GameSceneController {
 
     characterNameLabel.setText("Haruka");
 
-  //  backgroundImage.setImage(new Image(resourceProvider.getUrl(Backgrounds.CLASS_DAY).toExternalForm()));
+    backgroundImage.setImage(new Image(resourceProvider.getUrl(Backgrounds.CLASS_DAY).toExternalForm()));
     backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
     backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
 

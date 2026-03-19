@@ -21,9 +21,10 @@
     <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
   </AnchorPane>
   <AnchorPane fx:id="dialoguePanel" styleClass="dialoguePanel" StackPane.alignment="BOTTOM_CENTER">
-    <StackPane styleClass="nameplate-panel" AnchorPane.topAnchor="-53.0" AnchorPane.leftAnchor="30.0">
+    <StackPane fx:id="nameplatePanel" styleClass="nameplate-panel">
       <Label fx:id="characterNameLabel" styleClass="character-name-text"/>
-    </StackPane>    <Label fx:id="dialogueTextLabel" styleClass="dialogue-text" wrapText="true"
+    </StackPane>
+    <Label fx:id="dialogueTextLabel" styleClass="dialogue-text" wrapText="true"
       AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="25.0"
       AnchorPane.rightAnchor="25.0"/>
     <HBox fx:id="dialogueButtons" alignment="CENTER"

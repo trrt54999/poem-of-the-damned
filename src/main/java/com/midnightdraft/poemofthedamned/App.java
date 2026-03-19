@@ -18,7 +18,6 @@ public class App extends Application {
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
-
   @Override
   public void start(Stage primaryStage) throws IOException {
     StackPane root = FXMLLoader.load(resourceProvider.getUrl(Fxml.GAME_SCENE));
