@@ -1,18 +1,26 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.domain.engine.DialogueStep;
+import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioBgm;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Backgrounds;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.GameCharacters;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceKey;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
+import java.util.Optional;
+import javafx.animation.Animation.Status;
+import javafx.animation.Transition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -20,8 +28,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class GameSceneController {
 
   @FXML
@@ -45,7 +60,7 @@ public class GameSceneController {
   @FXML
   private Label characterNameLabel;
   @FXML
-  private Label dialogueTextLabel;
+  private TextFlow dialogueTextFlow;
   @FXML
   private HBox dialogueButtons;
   @FXML
@@ -65,6 +80,12 @@ public class GameSceneController {
 
   private AudioClip hoverSound;
   private AudioClip selectSound;
+  private MediaPlayer currentMusic;
+  private Transition typewriterTransition;
+  private Text typedText = new Text();
+  private Text untypedText = new Text();
+  private String currentFullText = "";
+
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
@@ -73,7 +94,15 @@ public class GameSceneController {
 
   @FXML
   public void initialize() {
-    loadResources();
+    setupStylesAndFonts();
+    setupBackground();
+    setupDialoguePanel();
+    setupSpritesBindings();
+    setupAudio();
+
+    // Тимчасовий метод для відображення хардкоду.
+    // Згодом заміню його на renderDialogueStep(DialogueStep step)
+    renderMockState();
   }
 
   @FXML
@@ -86,60 +115,20 @@ public class GameSceneController {
     if (selectSound != null) selectSound.play();
   }
 
-  private void loadResources() {
+  @FXML
+  public void handleScreenClick() {
+    if (typewriterTransition != null && typewriterTransition.getStatus() == Status.RUNNING) {
+      typewriterTransition.stop();
+      typedText.setText(currentFullText);
+      untypedText.setText("");
+      return;
+    }
+    // todo game state
+  }
+
+  private void setupStylesAndFonts() {
     String css = resourceProvider.getUrl(Css.GAME_SCENE).toExternalForm();
     rootPane.getStylesheets().add(css);
-
-    leftSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
-    rightSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
-    centralSpritePosition.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
-
-    spritePosition.translateYProperty().bind(
-        rootPane.heightProperty().multiply(12.0 / BASE_HEIGHT)
-    );
-
-    dialogueTextLabel.styleProperty().bind(
-        Bindings.concat(
-            "-fx-effect: dropshadow(two-pass-box, #473434, ",
-            rootPane.heightProperty().multiply(3.0 / BASE_HEIGHT),
-            ", 1.0, 0, 0);"
-        )
-    );
-
-    dialogueTextLabel.setText("Lorem ipsum dolor sit amet consectetur adipiscing elit."
-        + " Quisque faucibus ex sapien ewq vitae pellentesque sem placerat."
-        + " In id cursus mi pretium tellus duis convallis."
-        + " Tempus leo eu aenean sed diam urna tempor. ");
-
-    characterNameLabel.setText("Haruka");
-
-    backgroundImage.setImage(new Image(resourceProvider.getUrl(Backgrounds.CLASS_DAY).toExternalForm()));
-    backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
-    backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
-
-    nextIndicator.setImage(new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
-
-    leftSpritePosition.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.85));
-    rightSpritePosition.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.85));
-    centralSpritePosition.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.85));
-
-    dialoguePanel.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.80));
-    dialoguePanel.maxHeightProperty().bind(rootPane.heightProperty().multiply(0.28));
-
-    dialoguePanel.translateYProperty().bind(
-        rootPane.heightProperty().multiply(-40.0 / BASE_HEIGHT)
-    );
-
-    nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.03));
-    // fonts and etc
-
-    leftSpritePosition.translateXProperty().bind(
-        rootPane.widthProperty().multiply(0.10)
-    );
-
-    rightSpritePosition.translateXProperty().bind(
-        rootPane.widthProperty().multiply(-0.14)
-    );
 
     Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
     Font.loadFont(resourceProvider.getUrl(Fonts.ALLER_BOLD).toExternalForm(), 42);
@@ -148,12 +137,160 @@ public class GameSceneController {
     dialoguePanel.styleProperty().bind(
         Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(16.0 / BASE_HEIGHT), "px;")
     );
+  }
+
+  private void setupBackground() {
+    backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
+    backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
+  }
+
+  private void setupDialoguePanel() {
+    dialoguePanel.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.80));
+    dialoguePanel.maxHeightProperty().bind(rootPane.heightProperty().multiply(0.28));
+    dialoguePanel.translateYProperty().bind(
+        rootPane.heightProperty().multiply(-40.0 / BASE_HEIGHT)
+    );
 
     dialogueButtons.spacingProperty().bind(
         rootPane.widthProperty().multiply(64.0 / BASE_WIDTH)
     );
 
+    dialogueTextFlow.getChildren().addAll(typedText, untypedText);
+
+    typedText.setFill(Color.WHITE);
+    untypedText.setFill(Color.TRANSPARENT);
+
+    dialogueTextFlow.effectProperty().bind(
+        Bindings.createObjectBinding(() -> {
+          DropShadow shadow = new DropShadow();
+          shadow.setColor(Color.web("#473434"));
+          shadow.setRadius(rootPane.getHeight() * (2.0 / BASE_HEIGHT));
+          shadow.setSpread(1);
+          return shadow;
+        }, rootPane.heightProperty())
+    );
+
+    nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.03));
+    nextIndicator.setImage(new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
+  }
+
+  private void setupSpritesBindings() {
+    spritePosition.translateYProperty().bind(
+        rootPane.heightProperty().multiply(12.0 / BASE_HEIGHT)
+    );
+
+    leftSpritePosition.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.85));
+    rightSpritePosition.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.85));
+    centralSpritePosition.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.85));
+
+    leftSpritePosition.translateXProperty().bind(
+        rootPane.widthProperty().multiply(0.10)
+    );
+    rightSpritePosition.translateXProperty().bind(
+        rootPane.widthProperty().multiply(-0.14)
+    );
+  }
+
+  private void setupAudio() {
     hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
     selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
+  }
+
+  private void renderMockState() {
+    DialogueStep testStep = new DialogueStep(
+        Optional.of("Haruka"),
+        Optional.of("HARUKA_LAUGH"),
+        Optional.of("RAINDROP_AND_PUDDLES"),
+        Optional.of(SpritePosition.LEFT),
+        "Lorem ipsum dolor sit amet consectetur adipiscing elit. "
+            + "Quisque faucibus ex sapien vitae pellentesque sem placerat. "
+            + "In id cursus mi pretium tellus duis convallis. "
+            + "Tempus leo eu aenean sed diam urna tempor.",
+        "CLASS_DAY"
+    );
+    renderDialogueStep(testStep);
+  }
+
+  private void renderDialogueStep(DialogueStep step){
+    if(step == null || step.text().isBlank() || step.backgroundPath().isBlank()) {
+      log.warn("Received empty or null DialogueStep");
+      return;
+    }
+
+    updateBackground(step.backgroundPath());
+    updateSprites(step);
+
+    nameplatePanel.setVisible(step.characterName().isPresent());
+    step.characterName().ifPresent(characterNameLabel::setText);
+
+    playTypewriter(step.text());
+    step.musicPath().ifPresent(this::switchMusic);
+  }
+
+  private void switchMusic(String newMusicKey) {
+    ResourceKey musicKey = AudioBgm.valueOf(newMusicKey);
+    String fullPath = resourceProvider.getUrl(musicKey).toExternalForm();
+
+    if (currentMusic != null && currentMusic.getMedia().getSource().equals(fullPath)) return;
+    if (currentMusic != null) currentMusic.stop();
+
+    currentMusic = SoundHelper.createBackgroundMusic(fullPath, 0.5);
+    if (currentMusic == null) return;
+
+    currentMusic.setCycleCount(MediaPlayer.INDEFINITE);
+    currentMusic.play();
+  }
+
+  private void updateBackground(String backgroundName) {
+    ResourceKey bgKey = Backgrounds.valueOf(backgroundName);
+    String fullPath = resourceProvider.getUrl(bgKey).toExternalForm();
+
+    Image current = backgroundImage.getImage();
+    if (current == null || !current.getUrl().equals(fullPath)) {
+      backgroundImage.setImage(new Image(fullPath));
+    }
+  }
+
+  private void updateSprites(DialogueStep step) {
+    if (step.characterSpritePath().isEmpty() || step.spritePosition().isEmpty()) return;
+
+    String spriteName = step.characterSpritePath().orElseThrow();
+    SpritePosition position = step.spritePosition().orElseThrow();
+
+    ResourceKey spriteKey = GameCharacters.valueOf(spriteName);
+    String fullPath = resourceProvider.getUrl(spriteKey).toExternalForm();
+    Image newSprite = new Image(fullPath);
+
+    switch (position) {
+      case LEFT -> leftSpritePosition.setImage(newSprite);
+      case RIGHT -> rightSpritePosition.setImage(newSprite);
+      case CENTRAL -> centralSpritePosition.setImage(newSprite);
+    }
+  }
+
+  private void playTypewriter(String text) {
+    if (typewriterTransition != null) {
+      typewriterTransition.stop();
+    }
+
+    this.currentFullText = text;
+
+    typedText.setText("");
+    untypedText.setText(text);
+
+    typewriterTransition = new Transition() {
+      {
+        setCycleDuration(Duration.millis(text.length() * 30.0));
+      }
+
+      @Override
+      protected void interpolate(double frac) {
+        int length = (int) Math.round(text.length() * frac);
+
+        typedText.setText(text.substring(0, length));
+        untypedText.setText(text.substring(length));
+      }
+    };
+    typewriterTransition.play();
   }
 }

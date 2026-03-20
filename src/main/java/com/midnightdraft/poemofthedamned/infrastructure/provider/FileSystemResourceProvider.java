@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.infrastructure.provider;
 
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioBgm;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Backgrounds;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
@@ -25,6 +26,11 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case Fxml fxml -> switch (fxml){
         case GAME_MAIN_MENU -> "/fxml/game_main_menu.fxml";
         case GAME_SCENE -> "/fxml/game_scene.fxml";
+      };
+
+      case AudioBgm audioBgm -> switch (audioBgm){
+        case OST -> "/assets/audio/bgm/ost.mp3";
+        case RAINDROP_AND_PUDDLES -> "/assets/audio/bgm/raindrop_and_puddles.mp3";
       };
 
       case AudioSfx audioSfx -> switch (audioSfx){

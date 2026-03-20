@@ -1,9 +1,9 @@
 .dialoguePanel {
-  -fx-background-color: rgba(255, 203, 203, 0.6);
-  -fx-border-color: rgba(251, 62, 62, 0.6);
+  -fx-background-color: rgba(255, 203, 203, 0.7);
+  -fx-border-color: rgba(251, 62, 62, 0.7);
   -fx-background-radius: 15;
   -fx-border-radius: 15;
-  -fx-border-width: 4;
+  -fx-border-width: 0.2em;
   -fx-border-style: solid inside;
   -fx-background-insets: 2;
 }
@@ -31,7 +31,6 @@
   -fx-alignment: center;
   -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 4, 0, 0, 4);
 }
-
 .character-name-text {
   -fx-font-family: 'Riffic Free Bold';
   -fx-font-size: 2em;
@@ -48,4 +47,5 @@
   -fx-font-family: 'Aller Regular';
   -fx-text-fill: #FFFFFF;
   -fx-font-size: 1.5em;
+  -fx-padding: 0.6em 1em 0em 1em;
 }
