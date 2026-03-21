@@ -1,7 +1,13 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.application.usecase.AdvanceDialogueUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.GetAvailableChoicesUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.StartSceneUseCase;
 import com.midnightdraft.poemofthedamned.domain.engine.DialogueStep;
+import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
+import com.midnightdraft.poemofthedamned.domain.model.Choice;
+import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioBgm;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Backgrounds;
@@ -11,8 +17,11 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.GameCha
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceKey;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
+import com.midnightdraft.poemofthedamned.domain.repository.ChoiceRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.ChoiceRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
+import java.util.List;
 import java.util.Optional;
 import javafx.animation.Animation.Status;
 import javafx.animation.Transition;
@@ -86,11 +95,16 @@ public class GameSceneController {
   private Text untypedText = new Text();
   private String currentFullText = "";
 
-
+  private final AdvanceDialogueUseCase advanceDialogueUseCase = new AdvanceDialogueUseCase(
+      GameStateMachine.getInstance());
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   private static final double BASE_WIDTH = 1280.0;
   private static final double BASE_HEIGHT = 720.0;
+
+  // fixme costyl
+  private final ChoiceRepository choiceRepository = new ChoiceRepositoryImpl();
+  private final GetAvailableChoicesUseCase getAvailableChoicesUseCase = new GetAvailableChoicesUseCase(choiceRepository);
 
   @FXML
   public void initialize() {
@@ -102,7 +116,9 @@ public class GameSceneController {
 
     // Тимчасовий метод для відображення хардкоду.
     // Згодом заміню його на renderDialogueStep(DialogueStep step)
-    renderMockState();
+   // renderMockState();
+    showChoices();
+    // renderMockState();
   }
 
   @FXML
@@ -123,7 +139,10 @@ public class GameSceneController {
       untypedText.setText("");
       return;
     }
-    // todo game state
+    advanceDialogueUseCase.execute().ifPresentOrElse(
+        this::renderDialogueStep,
+        this::showChoices
+    );
   }
 
   private void setupStylesAndFonts() {
@@ -196,6 +215,12 @@ public class GameSceneController {
     selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
   }
 
+  private void setupChoicesUi(){
+    choiceContainer.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.5));
+    choiceContainer.setMinHeight(VBox.USE_PREF_SIZE);
+
+  }
+
   private void renderMockState() {
     DialogueStep testStep = new DialogueStep(
         Optional.of("Haruka"),
@@ -225,6 +250,41 @@ public class GameSceneController {
 
     playTypewriter(step.text());
     step.musicPath().ifPresent(this::switchMusic);
+  }
+
+  private void showChoices() {
+    List<Choice> choices = getAvailableChoicesUseCase.execute();
+
+    choiceContainer.getChildren().clear();
+
+    choiceContainer.spacingProperty().bind(rootPane.heightProperty().multiply(0.05));
+
+    choiceContainer.styleProperty().bind(
+        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(32.0 / BASE_HEIGHT), "px;")
+    );
+
+    dialoguePanel.setVisible(false);
+    choiceContainer.setVisible(true);
+
+    for (Choice choice : choices) {
+      Button btn = new Button(choice.getChoiceText());
+      btn.getStyleClass().add("choice-plaque");
+      btn.setWrapText(true);
+      btn.setAlignment(javafx.geometry.Pos.CENTER);
+
+      btn.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.45));
+      btn.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.06));
+
+      btn.setOnMouseEntered(e -> playHoverSound());
+      btn.setOnAction(e -> {
+        playSelectSound();
+        choiceContainer.setVisible(false);
+        dialoguePanel.setVisible(true);
+        // логіка переходу типу тут буде, гілка 101, 102 і тп це гейм стейт машин.
+
+      });
+      choiceContainer.getChildren().add(btn);
+    }
   }
 
   private void switchMusic(String newMusicKey) {

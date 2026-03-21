@@ -49,3 +49,28 @@
   -fx-font-size: 1.5em;
   -fx-padding: 0.6em 1em 0em 1em;
 }
+.choice-container {
+  -fx-background-color: transparent;
+  -fx-padding: 0;
+  -fx-alignment: center;
+}
+.choice-plaque {
+  -fx-background-color: #FBF5F5;
+  -fx-border-color: rgba(251, 62, 62, 0.8);
+  -fx-border-width: 0.15em;
+  -fx-border-style: solid inside;
+  -fx-background-insets: 0;
+  -fx-font-family: 'Aller Regular';
+  -fx-text-fill: #0F0F0F;
+  -fx-padding: 0.1em 0.1em;
+}
+.choice-plaque .text {
+  -fx-font-smoothing-type: lcd;
+  -fx-stroke: #0F0F0F;
+  -fx-stroke-width: 0.001em;
+}
+.choice-plaque:hover {
+  -fx-background-color: #FFEBEB; /* поміняти */
+  -fx-text-fill: #FF7252;
+  -fx-border-color: #FF7252;
+}

@@ -35,5 +35,8 @@
     </HBox>
     <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="5"/>
   </AnchorPane>
-  <VBox fx:id="choiceContainer" alignment="CENTER" spacing="20" visible="false"/>
+  <VBox fx:id="choiceContainer" styleClass="choice-container"
+    alignment="CENTER" spacing="15" visible="false"
+    maxWidth="-Infinity" maxHeight="-Infinity">
+  </VBox>
 </StackPane>

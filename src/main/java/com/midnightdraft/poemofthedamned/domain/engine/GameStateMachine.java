@@ -38,9 +38,13 @@ public class GameStateMachine {
     this.currentScene = gameScene;
     this.dialogues = dialogues;
     this.index = 0;
+    this.currentState = GameState.PLAYING_DIALOGUE;
   }
 
-  public DialogueStep continueScene(){
+  public Optional<DialogueStep> continueScene(){
+    if(currentState.equals(GameState.WAITING_FOR_CHOICE)){
+      return Optional.empty();
+    }
     Dialogue dialogue = dialogues.get(index++);
 
     if(index >= dialogues.size()) {
@@ -51,7 +55,7 @@ public class GameStateMachine {
       this.currentMusicPath = dialogue.getMusicPath();
     }
 
-    return new DialogueStep(
+    return Optional.of(new DialogueStep(
         Optional.ofNullable(dialogue.getGameCharacter())
             .map(GameCharacter::getName),
         Optional.ofNullable(dialogue.getGameCharacterSprite())
@@ -59,6 +63,15 @@ public class GameStateMachine {
         Optional.ofNullable(dialogue.getMusicPath()),
         Optional.ofNullable(dialogue.getSpritePosition()),
         dialogue.getText(),
-        currentScene.getBackgroundPath());
+        currentScene.getBackgroundPath()));
+  }
+
+  public String getFlagValue(String flagName){
+    for(SaveFlag flag: activeFlags){
+      if(flag.getFlag().getName().equals(flagName)){
+        return flag.getValue();
+      }
+    }
+    return "false";
   }
 }
