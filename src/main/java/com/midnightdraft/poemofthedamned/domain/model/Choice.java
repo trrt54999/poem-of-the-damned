@@ -50,6 +50,7 @@ public class Choice extends BaseEntity {
   @JoinColumn(name = "game_scene_id", nullable = false)
   private GameScene gameScene;
 
+  @NotNull(message = "Next game scene cannot be null!")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "next_game_scene_id")
   private GameScene nextGameScene;

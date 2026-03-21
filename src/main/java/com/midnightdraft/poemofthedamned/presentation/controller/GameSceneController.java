@@ -111,7 +111,7 @@ public class GameSceneController {
   private final GetAvailableChoicesUseCase getAvailableChoicesUseCase = new GetAvailableChoicesUseCase(choiceRepository);
   private final DialogueRepository dialogueRepository = new DialogueRepositoryImpl();
   private final StartSceneUseCase startSceneUseCase = new StartSceneUseCase(dialogueRepository, GameStateMachine.getInstance());
-  private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(GameStateMachine.getInstance(), startSceneUseCase);
+  private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(GameStateMachine.getInstance(), choiceRepository, startSceneUseCase);
   private final GameSceneRepository gameSceneRepository = new GameSceneRepositoryImpl();
 
   @FXML
@@ -144,6 +144,7 @@ public class GameSceneController {
       typewriterTransition.stop();
       typedText.setText(currentFullText);
       untypedText.setText("");
+      nextIndicator.setVisible(true);
       return;
     }
     advanceDialogueUseCase.execute().ifPresentOrElse(
@@ -228,6 +229,8 @@ public class GameSceneController {
       return;
     }
 
+    nextIndicator.setVisible(false);
+
     updateBackground(step.backgroundPath());
     updateSprites(step);
 
@@ -235,6 +238,7 @@ public class GameSceneController {
     step.characterName().ifPresent(characterNameLabel::setText);
 
     playTypewriter(step.text());
+    typewriterTransition.setOnFinished(e -> nextIndicator.setVisible(true));
     step.musicPath().ifPresent(this::switchMusic);
   }
 
@@ -266,7 +270,7 @@ public class GameSceneController {
         playSelectSound();
         choiceContainer.setVisible(false);
         dialoguePanel.setVisible(true);
-        selectChoiceUseCase.execute(choice).ifPresent(this::renderDialogueStep);
+        selectChoiceUseCase.execute(choice.getId()).ifPresent(this::renderDialogueStep);
       });
       choiceContainer.getChildren().add(btn);
     }
