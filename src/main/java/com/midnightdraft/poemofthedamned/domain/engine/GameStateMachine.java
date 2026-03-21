@@ -5,6 +5,7 @@ import com.midnightdraft.poemofthedamned.domain.model.Dialogue;
 import com.midnightdraft.poemofthedamned.domain.model.GameCharacter;
 import com.midnightdraft.poemofthedamned.domain.model.GameCharacterSprite;
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +22,10 @@ public class GameStateMachine {
   private GameScene currentScene;
   @Getter
   private String currentMusicPath;
-
   private List<Dialogue> dialogues;
-  private Map<String, String> activeFlags = new HashMap<>();
   private int index = 0;
+
+  private final Map<String, String> activeFlags = new HashMap<>();
 
   private GameStateMachine(){}
 
@@ -74,5 +75,9 @@ public class GameStateMachine {
 
   public void applyEffect(ChoiceEffect effect) {
     activeFlags.put(effect.getFlag().getName(), effect.getNewValue());
+  }
+
+  public Map<String, String> getActiveFlags() {
+    return Collections.unmodifiableMap(activeFlags);
   }
 }

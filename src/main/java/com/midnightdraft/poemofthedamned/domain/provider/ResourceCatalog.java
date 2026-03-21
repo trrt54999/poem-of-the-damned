@@ -28,6 +28,7 @@ public interface ResourceCatalog {
 
   enum GameCharacters implements ResourceKey{
     HARUKA_LAUGH,
+    HARUKA_DIRTY,
     AYA_HAPPY,
     MIO_CAT_SMILE
   }

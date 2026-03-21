@@ -21,8 +21,8 @@ public class GetAvailableChoicesUseCase {
        if(choice.getRequiredFlag() == null){
          return true;
        }
-       String currentValue = GameStateMachine.getInstance().getFlagValue(choice.getRequiredFlag().getName());
-       return currentValue.equals(choice.getRequiredFlagValue());
+      String currentValue = GameStateMachine.getInstance().getFlagValue(choice.getRequiredFlag().getName());
+      return currentValue != null && currentValue.equals(choice.getRequiredFlagValue());
     }).toList();
   }
 }

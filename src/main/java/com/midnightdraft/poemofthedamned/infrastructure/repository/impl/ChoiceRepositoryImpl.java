@@ -20,6 +20,7 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
               "SELECT c FROM Choice c "
                   + "LEFT JOIN FETCH c.choiceEffects "
                   + "LEFT JOIN FETCH c.nextGameScene "
+                  + "LEFT JOIN FETCH c.requiredFlag "
                   + "WHERE c.gameScene.id = :sceneId ORDER BY c.orderIndex ASC",
               Choice.class)
           .setParameter("sceneId", sceneId)
