@@ -1,11 +1,16 @@
 package com.midnightdraft.poemofthedamned.domain.model;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +35,7 @@ public class GameScene extends BaseEntity {
 
   @Column(name = "soundtrack_path")
   private String soundtrackPath;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameScene", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Choice> choices = new ArrayList<>();
 }

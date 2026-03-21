@@ -17,7 +17,12 @@ public class GetAvailableChoicesUseCase {
   public List<Choice> execute(){
     GameScene currentScene = GameStateMachine.getInstance().getCurrentScene();
     List<Choice> choices = choiceRepository.findBySceneId(currentScene.getId());
-    GameStateMachine.getInstance().getCurrentScene().get
-    return choices;
+    return choices.stream().filter(choice -> {
+       if(choice.getRequiredFlag() == null){
+         return true;
+       }
+       String currentValue = GameStateMachine.getInstance().getFlagValue(choice.getRequiredFlag().getName());
+       return currentValue.equals(choice.getRequiredFlagValue());
+    }).toList();
   }
 }

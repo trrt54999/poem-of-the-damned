@@ -31,8 +31,13 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
   @Override
   public List<Dialogue> findBySceneIdOrderByOrderIndex(Long sceneId) {
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
-      return session.createQuery("FROM Dialogue WHERE gameScene.id = :sceneId "
-              + "ORDER BY orderIndex ASC", Dialogue.class)
+      return session.createQuery(
+              "SELECT d FROM Dialogue d "
+                  + "LEFT JOIN FETCH d.gameCharacter "
+                  + "LEFT JOIN FETCH d.gameCharacterSprite "
+                  + "WHERE d.gameScene.id = :sceneId "
+                  + "ORDER BY d.orderIndex ASC",
+              Dialogue.class)
           .setParameter("sceneId", sceneId)
           .getResultList();
     } catch (Exception e){

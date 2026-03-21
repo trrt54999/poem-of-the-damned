@@ -1,11 +1,13 @@
 package com.midnightdraft.poemofthedamned.domain.engine;
 
+import com.midnightdraft.poemofthedamned.domain.model.ChoiceEffect;
 import com.midnightdraft.poemofthedamned.domain.model.Dialogue;
 import com.midnightdraft.poemofthedamned.domain.model.GameCharacter;
 import com.midnightdraft.poemofthedamned.domain.model.GameCharacterSprite;
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
-import com.midnightdraft.poemofthedamned.domain.model.SaveFlag;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +23,7 @@ public class GameStateMachine {
   private String currentMusicPath;
 
   private List<Dialogue> dialogues;
-  private List<SaveFlag> activeFlags;
+  private Map<String, String> activeFlags = new HashMap<>();
   private int index = 0;
 
   private GameStateMachine(){}
@@ -66,12 +68,11 @@ public class GameStateMachine {
         currentScene.getBackgroundPath()));
   }
 
-  public String getFlagValue(String flagName){
-    for(SaveFlag flag: activeFlags){
-      if(flag.getFlag().getName().equals(flagName)){
-        return flag.getValue();
-      }
-    }
-    return "false";
+  public String getFlagValue(String flagName) {
+    return activeFlags.get(flagName);
+  }
+
+  public void applyEffect(ChoiceEffect effect) {
+    activeFlags.put(effect.getFlag().getName(), effect.getNewValue());
   }
 }
