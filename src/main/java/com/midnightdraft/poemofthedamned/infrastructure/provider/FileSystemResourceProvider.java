@@ -42,7 +42,9 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case HARUKA_LAUGH -> "/assets/characters/haruka/haruka_laugh.png";
         case HARUKA_DIRTY -> "/assets/characters/haruka/haruka_dirty.png";
         case AYA_HAPPY -> "/assets/characters/aya/aya_happy.png";
+        case AYA_NORMAL -> "/assets/characters/aya/aya_normal.png";
         case MIO_CAT_SMILE -> "/assets/characters/mio/mio_cat_smile.png";
+        case MIO_NORMAL -> "/assets/characters/mio/mio_normal.png";
       };
 
       case Fonts fonts -> switch (fonts) {
@@ -52,6 +54,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       };
 
       case Backgrounds backgrounds -> switch (backgrounds){
+        case STREET_DAY -> "/assets/backgrounds/street/street_day.jpg";
         case CLASS_DAY -> "/assets/backgrounds/class/class_day.jpg";
         case ROOFTOP_DAY -> "/assets/backgrounds/rooftop/rooftop_day.jpg";
       };

@@ -49,17 +49,25 @@ public class GameStateMachine {
     if(currentState.equals(GameState.WAITING_FOR_CHOICE)){
       return Optional.empty();
     }
-    Dialogue dialogue = dialogues.get(index++);
 
     if(index >= dialogues.size()) {
-      currentState = GameState.WAITING_FOR_CHOICE;
+      GameScene nextScene = currentScene.getNextScene();
+
+      if (nextScene == null) {
+        currentState = GameState.WAITING_FOR_CHOICE;
+        return Optional.empty();
+      } else {
+        currentState = GameState.TRANSITION;
+      }
+      return Optional.empty();
     }
+
+    Dialogue dialogue = dialogues.get(index++);
 
     String musicToPlay = dialogue.getMusicPath();
     if(index == 1 && musicToPlay == null){
       musicToPlay = currentScene.getSoundtrackPath();
     }
-
     if(musicToPlay != null){
       this.currentMusicPath = musicToPlay;
     }

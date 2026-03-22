@@ -26,6 +26,7 @@ import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.ChoiceRe
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.DialogueRepositoryImpl;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.GameSceneRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,23 +104,21 @@ public class GameSceneController {
   private Transition typewriterTransition;
   private String currentFullText = "";
 
-  private final AdvanceDialogueUseCase advanceDialogueUseCase = new AdvanceDialogueUseCase(
-      GameStateMachine.getInstance());
-  private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
-  private final Map<SpritePosition, ImageView> spriteSlots = new HashMap<>();
-
-  private static final double BASE_WIDTH = 1280.0;
-  private static final double BASE_HEIGHT = 720.0;
-
   // fixme: final impl its costyl, maybe later fix, but its hard to fix..
   private final Text typedText = new Text();
   private final Text untypedText = new Text();
+  private final Map<SpritePosition, String> currentSprites = new EnumMap<>(SpritePosition.class);
   private final ChoiceRepository choiceRepository = new ChoiceRepositoryImpl();
   private final GetAvailableChoicesUseCase getAvailableChoicesUseCase = new GetAvailableChoicesUseCase(choiceRepository);
   private final DialogueRepository dialogueRepository = new DialogueRepositoryImpl();
-  private final StartSceneUseCase startSceneUseCase = new StartSceneUseCase(dialogueRepository, GameStateMachine.getInstance());
-  private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(GameStateMachine.getInstance(), choiceRepository, startSceneUseCase);
   private final GameSceneRepository gameSceneRepository = new GameSceneRepositoryImpl();
+  private final StartSceneUseCase startSceneUseCase = new StartSceneUseCase(dialogueRepository, GameStateMachine.getInstance());
+  private final AdvanceDialogueUseCase advanceDialogueUseCase = new AdvanceDialogueUseCase(
+      GameStateMachine.getInstance(), startSceneUseCase, gameSceneRepository);
+  private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
+  private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(GameStateMachine.getInstance(), choiceRepository, startSceneUseCase);
+  private static final double BASE_WIDTH = 1280.0;
+  private static final double BASE_HEIGHT = 720.0;
 
   @FXML
   public void initialize() {
@@ -129,6 +128,7 @@ public class GameSceneController {
     setupSpritesBindings();
     setupAudio();
 
+    // costyl?
     GameScene firstScene = gameSceneRepository.findById(1L).orElseThrow();
 
     startSceneUseCase.execute(firstScene);
@@ -331,24 +331,22 @@ public class GameSceneController {
   }
 
   private void updateSprites(DialogueStep step) {
-    // costyl
-    leftSpritePosition.setImage(null);
-    rightSpritePosition.setImage(null);
-    centralSpritePosition.setImage(null);
-
     if (step.characterSpritePath().isEmpty() || step.spritePosition().isEmpty()) return;
 
     String spriteName = step.characterSpritePath().orElseThrow();
     SpritePosition position = step.spritePosition().orElseThrow();
 
-    ResourceKey spriteKey = GameCharacters.valueOf(spriteName);
-    String fullPath = resourceProvider.getUrl(spriteKey).toExternalForm();
-    Image newSprite = new Image(fullPath);
+    if (!spriteName.equals(currentSprites.get(position))) {
+      currentSprites.put(position, spriteName);
+      ResourceKey spriteKey = GameCharacters.valueOf(spriteName);
+      String fullPath = resourceProvider.getUrl(spriteKey).toExternalForm();
+      Image newSprite = new Image(fullPath);
 
-    switch (position) {
-      case LEFT -> leftSpritePosition.setImage(newSprite);
-      case RIGHT -> rightSpritePosition.setImage(newSprite);
-      case CENTRAL -> centralSpritePosition.setImage(newSprite);
+      switch (position) {
+        case LEFT -> leftSpritePosition.setImage(newSprite);
+        case RIGHT -> rightSpritePosition.setImage(newSprite);
+        case CENTRAL -> centralSpritePosition.setImage(newSprite);
+      }
     }
   }
 

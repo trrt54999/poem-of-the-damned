@@ -22,6 +22,7 @@ public interface ResourceCatalog {
   }
 
   enum Backgrounds implements ResourceKey{
+    STREET_DAY,
     CLASS_DAY,
     ROOFTOP_DAY
   }
@@ -30,7 +31,9 @@ public interface ResourceCatalog {
     HARUKA_LAUGH,
     HARUKA_DIRTY,
     AYA_HAPPY,
-    MIO_CAT_SMILE
+    AYA_NORMAL,
+    MIO_CAT_SMILE,
+    MIO_NORMAL
   }
 
   enum Fonts implements ResourceKey{
