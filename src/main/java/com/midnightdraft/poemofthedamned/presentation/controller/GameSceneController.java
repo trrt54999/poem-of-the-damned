@@ -26,7 +26,9 @@ import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.ChoiceRe
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.DialogueRepositoryImpl;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.GameSceneRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
@@ -104,12 +106,12 @@ public class GameSceneController {
   private final AdvanceDialogueUseCase advanceDialogueUseCase = new AdvanceDialogueUseCase(
       GameStateMachine.getInstance());
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
+  private final Map<SpritePosition, ImageView> spriteSlots = new HashMap<>();
 
   private static final double BASE_WIDTH = 1280.0;
   private static final double BASE_HEIGHT = 720.0;
 
   // fixme: final impl its costyl, maybe later fix, but its hard to fix..
-  private final GaussianBlur backgroundBlur = new GaussianBlur(4.0);
   private final Text typedText = new Text();
   private final Text untypedText = new Text();
   private final ChoiceRepository choiceRepository = new ChoiceRepositoryImpl();
@@ -175,7 +177,7 @@ public class GameSceneController {
     backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
     backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
 
-    backgroundImage.setEffect(backgroundBlur);
+    backgroundImage.setEffect(new GaussianBlur(4.0));
   }
 
   private void setupDialoguePanel() {
@@ -190,7 +192,6 @@ public class GameSceneController {
     );
 
     dialogueTextFlow.getChildren().addAll(typedText, untypedText);
-
     typedText.setFill(Color.WHITE);
     untypedText.setFill(Color.TRANSPARENT);
 
@@ -204,6 +205,10 @@ public class GameSceneController {
         }, rootPane.heightProperty())
     );
 
+    setupNextIndicator();
+  }
+
+  private void setupNextIndicator() {
     nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.02));
     nextIndicator.setImage(new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
 
@@ -326,6 +331,11 @@ public class GameSceneController {
   }
 
   private void updateSprites(DialogueStep step) {
+    // costyl
+    leftSpritePosition.setImage(null);
+    rightSpritePosition.setImage(null);
+    centralSpritePosition.setImage(null);
+
     if (step.characterSpritePath().isEmpty() || step.spritePosition().isEmpty()) return;
 
     String spriteName = step.characterSpritePath().orElseThrow();

@@ -13,8 +13,8 @@ INSERT INTO game_scenes (id, title, background_path, soundtrack_path, created_at
 INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (1, 1, 'CENTRAL', 'Привіт! Як справи, що, знайшов вже друзів?', 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (2, 2, 'CENTRAL', 'Я розумію, може бути важко... Стільки нових людей..', 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (3, 3, 'CENTRAL', 'Щож... А давай пройдемося!', 1, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (4, 4, 'CENTRAL', 'Яка краса!', 1, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (5, 5, 'CENTRAL', '*Бігає зі сторони в сторону* хі-хі, як же весело!', 1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (4, 4, 'LEFT', 'Яка краса!', 1, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dialogues (id, order_index, sprite_position, text, character_id, character_sprite_id, game_scene_id, created_at, updated_at) VALUES (5, 5, 'RIGHT', '*Бігає зі сторони в сторону* хі-хі, як же весело!', 1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- 5. Флаги
 INSERT INTO flags (id, name, created_at, updated_at) VALUES (1, 'acceptedWalking', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
