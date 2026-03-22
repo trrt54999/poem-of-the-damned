@@ -38,6 +38,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -94,7 +95,6 @@ public class GameSceneController {
   private Button settingsButton;
   @FXML
   private VBox choiceContainer;
-
   private AudioClip hoverSound;
   private AudioClip selectSound;
   private MediaPlayer currentMusic;
@@ -109,6 +109,7 @@ public class GameSceneController {
   private static final double BASE_HEIGHT = 720.0;
 
   // fixme: final impl its costyl, maybe later fix, but its hard to fix..
+  private final GaussianBlur backgroundBlur = new GaussianBlur(4.0);
   private final Text typedText = new Text();
   private final Text untypedText = new Text();
   private final ChoiceRepository choiceRepository = new ChoiceRepositoryImpl();
@@ -173,6 +174,8 @@ public class GameSceneController {
   private void setupBackground() {
     backgroundImage.fitWidthProperty().bind(rootPane.widthProperty());
     backgroundImage.fitHeightProperty().bind(rootPane.heightProperty());
+
+    backgroundImage.setEffect(backgroundBlur);
   }
 
   private void setupDialoguePanel() {
