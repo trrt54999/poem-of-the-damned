@@ -27,8 +27,12 @@ import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.Dialogue
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.GameSceneRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
 import java.util.List;
+import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -197,8 +201,26 @@ public class GameSceneController {
         }, rootPane.heightProperty())
     );
 
-    nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.03));
+    nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.02));
     nextIndicator.setImage(new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
+
+    rootPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+      double dynamicOffset = newVal.doubleValue() * (7.0 / BASE_HEIGHT);
+      AnchorPane.setRightAnchor(nextIndicator, dynamicOffset);
+      AnchorPane.setBottomAnchor(nextIndicator, dynamicOffset);
+    });
+
+    TranslateTransition translate = new TranslateTransition(Duration.millis(650), nextIndicator);
+    translate.setByX(-10.0);
+
+    FadeTransition fade = new FadeTransition(Duration.millis(650), nextIndicator);
+    fade.setFromValue(1.0);
+    fade.setToValue(0.4);
+
+    ParallelTransition beatingAnimation = new ParallelTransition(translate, fade);
+    beatingAnimation.setCycleCount(Animation.INDEFINITE);
+    beatingAnimation.setAutoReverse(true);
+    beatingAnimation.play();
   }
 
   private void setupSpritesBindings() {

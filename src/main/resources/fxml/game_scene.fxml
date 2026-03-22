@@ -33,7 +33,7 @@
       <Button fx:id="loadButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Load"/>
       <Button fx:id="settingsButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Settings"/>
     </HBox>
-    <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="5"/>
+    <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true"/>
   </AnchorPane>
   <VBox fx:id="choiceContainer" styleClass="choice-container"
     alignment="CENTER" spacing="15" visible="false"
