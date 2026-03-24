@@ -1,30 +1,42 @@
 package com.midnightdraft.poemofthedamned.application.usecase;
 
 import com.midnightdraft.poemofthedamned.domain.engine.DialogueStep;
+import com.midnightdraft.poemofthedamned.domain.engine.EngineResponse;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
+import com.midnightdraft.poemofthedamned.domain.engine.TransitionResult;
 import com.midnightdraft.poemofthedamned.domain.model.Choice;
+import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.repository.ChoiceRepository;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class SelectChoiceUseCase {
 
   private final GameStateMachine gameStateMachine;
   private final ChoiceRepository choiceRepository;
   private final StartSceneUseCase startSceneUseCase;
+  private final AdvanceDialogueUseCase advanceDialogueUseCase;
 
-  public SelectChoiceUseCase(GameStateMachine gameStateMachine, ChoiceRepository choiceRepository, StartSceneUseCase startSceneUseCase){
-    this.gameStateMachine = gameStateMachine;
-    this.choiceRepository = choiceRepository;
-    this.startSceneUseCase = startSceneUseCase;
-  }
+  public EngineResponse execute(Long choiceId) {
+    Optional<Choice> choiceOpt = choiceRepository.findById(choiceId);
 
-  public Optional<DialogueStep> execute(Long choiceId) {
-    Optional<Choice> choice = choiceRepository.findById(choiceId);
-    if (choice.isPresent()) {
-      choice.get().getChoiceEffects().forEach(gameStateMachine::applyEffect);
-      startSceneUseCase.execute(choice.get().getNextGameScene());
-      return gameStateMachine.continueScene();
+    if(choiceOpt.isEmpty()) {
+     return advanceDialogueUseCase.execute();
     }
-    return Optional.empty();
+
+    Choice choice = choiceOpt.get();
+
+    choice.getChoiceEffects().forEach(gameStateMachine::applyEffect);
+
+    GameScene nextScene = choice.getNextGameScene();
+
+    if(nextScene != null){
+      gameStateMachine.queueSceneTransition(nextScene);
+      return new TransitionResult();
+    }
+
+    gameStateMachine.resumeFromChoice();
+    return advanceDialogueUseCase.execute();
   }
 }

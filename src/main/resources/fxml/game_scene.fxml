@@ -39,4 +39,8 @@
     alignment="CENTER" spacing="15" visible="false"
     maxWidth="-Infinity" maxHeight="-Infinity">
   </VBox>
+  <StackPane fx:id="fadeOverlay" styleClass="fade-overlay"
+    mouseTransparent="true"
+    opacity="0"
+    maxWidth="Infinity" maxHeight="Infinity"/>
 </StackPane>

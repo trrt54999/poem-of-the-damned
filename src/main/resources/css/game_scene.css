@@ -74,3 +74,6 @@
   -fx-text-fill: #FF7252;
   -fx-border-color: #FF7252;
 }
+.fade-overlay {
+  -fx-background-color: #000000;
+}

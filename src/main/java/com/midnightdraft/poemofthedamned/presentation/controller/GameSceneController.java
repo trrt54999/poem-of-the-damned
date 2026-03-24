@@ -1,12 +1,17 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
 import com.midnightdraft.poemofthedamned.application.usecase.AdvanceDialogueUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.CompleteSceneTransitionUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.GetAvailableChoicesUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.SelectChoiceUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.StartSceneUseCase;
+import com.midnightdraft.poemofthedamned.domain.engine.ChoiceResult;
+import com.midnightdraft.poemofthedamned.domain.engine.DialogueResult;
 import com.midnightdraft.poemofthedamned.domain.engine.DialogueStep;
+import com.midnightdraft.poemofthedamned.domain.engine.EngineResponse;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
+import com.midnightdraft.poemofthedamned.domain.engine.TransitionResult;
 import com.midnightdraft.poemofthedamned.domain.model.Choice;
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioBgm;
@@ -27,7 +32,6 @@ import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.Dialogue
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.GameSceneRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.animation.Animation;
@@ -62,6 +66,8 @@ public class GameSceneController {
 
   @FXML
   private StackPane rootPane;
+  @FXML
+  private StackPane fadeOverlay;
   @FXML
   private StackPane nameplatePanel;
   @FXML
@@ -98,6 +104,7 @@ public class GameSceneController {
   private Button settingsButton;
   @FXML
   private VBox choiceContainer;
+
   private AudioClip hoverSound;
   private AudioClip selectSound;
   private MediaPlayer currentMusic;
@@ -105,18 +112,27 @@ public class GameSceneController {
   private String currentFullText = "";
 
   // fixme: final impl its costyl, maybe later fix, but its hard to fix..
+  private boolean isInputLocked = false;
   private final Text typedText = new Text();
   private final Text untypedText = new Text();
   private final Map<SpritePosition, String> currentSprites = new EnumMap<>(SpritePosition.class);
   private final ChoiceRepository choiceRepository = new ChoiceRepositoryImpl();
-  private final GetAvailableChoicesUseCase getAvailableChoicesUseCase = new GetAvailableChoicesUseCase(choiceRepository);
+  private final GetAvailableChoicesUseCase getAvailableChoicesUseCase =
+      new GetAvailableChoicesUseCase(choiceRepository);
   private final DialogueRepository dialogueRepository = new DialogueRepositoryImpl();
   private final GameSceneRepository gameSceneRepository = new GameSceneRepositoryImpl();
-  private final StartSceneUseCase startSceneUseCase = new StartSceneUseCase(dialogueRepository, GameStateMachine.getInstance());
+  private final StartSceneUseCase startSceneUseCase = new StartSceneUseCase(dialogueRepository,
+      GameStateMachine.getInstance());
   private final AdvanceDialogueUseCase advanceDialogueUseCase = new AdvanceDialogueUseCase(
-      GameStateMachine.getInstance(), startSceneUseCase, gameSceneRepository);
+      GameStateMachine.getInstance());
+  private final CompleteSceneTransitionUseCase completeSceneTransitionUseCase =
+      new CompleteSceneTransitionUseCase(GameStateMachine.getInstance(), gameSceneRepository,
+          startSceneUseCase, advanceDialogueUseCase);
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
-  private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(GameStateMachine.getInstance(), choiceRepository, startSceneUseCase);
+  private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(
+      GameStateMachine.getInstance(),
+      choiceRepository, startSceneUseCase, advanceDialogueUseCase);
+
   private static final double BASE_WIDTH = 1280.0;
   private static final double BASE_HEIGHT = 720.0;
 
@@ -132,7 +148,11 @@ public class GameSceneController {
     GameScene firstScene = gameSceneRepository.findById(1L).orElseThrow();
 
     startSceneUseCase.execute(firstScene);
-    advanceDialogueUseCase.execute().ifPresent(this::renderDialogueStep);
+    switch (advanceDialogueUseCase.execute()) {
+      case ChoiceResult _ -> showChoices();
+      case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
+      case TransitionResult _ -> startFadeOut();
+    }
   }
 
   @FXML
@@ -147,6 +167,10 @@ public class GameSceneController {
 
   @FXML
   public void handleScreenClick() {
+    if(isInputLocked) {
+      return;
+    }
+
     if (typewriterTransition != null && typewriterTransition.getStatus() == Status.RUNNING) {
       typewriterTransition.stop();
       typedText.setText(currentFullText);
@@ -154,10 +178,11 @@ public class GameSceneController {
       nextIndicator.setVisible(true);
       return;
     }
-    advanceDialogueUseCase.execute().ifPresentOrElse(
-        this::renderDialogueStep,
-        this::showChoices
-    );
+    switch (advanceDialogueUseCase.execute()) {
+      case ChoiceResult _ -> showChoices();
+      case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
+      case TransitionResult _ -> startFadeOut();
+    }
   }
 
   private void setupStylesAndFonts() {
@@ -212,7 +237,7 @@ public class GameSceneController {
     nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.02));
     nextIndicator.setImage(new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
 
-    rootPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+    rootPane.heightProperty().addListener((_, _, newVal) -> {
       double dynamicOffset = newVal.doubleValue() * (7.0 / BASE_HEIGHT);
       AnchorPane.setRightAnchor(nextIndicator, dynamicOffset);
       AnchorPane.setBottomAnchor(nextIndicator, dynamicOffset);
@@ -248,6 +273,34 @@ public class GameSceneController {
     );
   }
 
+  // погратися з налаштуваннями мілісекунд
+  private void startFadeOut(){
+    fadeOverlay.setVisible(true);
+    isInputLocked = true;
+    FadeTransition eclipseBeginningTransition = new FadeTransition(Duration.millis(1000), fadeOverlay);
+    eclipseBeginningTransition.setFromValue(0.0);
+    eclipseBeginningTransition.setToValue(1.0);
+    eclipseBeginningTransition.play();
+
+    eclipseBeginningTransition.setOnFinished(_ -> {
+      EngineResponse response = completeSceneTransitionUseCase.execute();
+
+      if(response instanceof DialogueResult(DialogueStep step)){
+        renderDialogueStep(step);
+      }
+
+    FadeTransition eclipseEndingTransition = new FadeTransition(Duration.millis(1000), fadeOverlay);
+      eclipseEndingTransition.setFromValue(1.0);
+      eclipseEndingTransition.setToValue(0.0);
+      eclipseEndingTransition.play();
+      eclipseEndingTransition.setOnFinished(_ -> {
+
+        fadeOverlay.setVisible(false);
+        isInputLocked = false;
+      });
+    });
+  }
+
   private void setupAudio() {
     hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
     selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
@@ -268,7 +321,7 @@ public class GameSceneController {
     step.characterName().ifPresent(characterNameLabel::setText);
 
     playTypewriter(step.text());
-    typewriterTransition.setOnFinished(e -> nextIndicator.setVisible(true));
+    typewriterTransition.setOnFinished(_ -> nextIndicator.setVisible(true));
     step.musicPath().ifPresent(this::switchMusic);
   }
 
@@ -280,7 +333,8 @@ public class GameSceneController {
     choiceContainer.spacingProperty().bind(rootPane.heightProperty().multiply(0.05));
 
     choiceContainer.styleProperty().bind(
-        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(32.0 / BASE_HEIGHT), "px;")
+        Bindings.concat("-fx-font-size: ",
+            rootPane.heightProperty().multiply(32.0 / BASE_HEIGHT), "px;")
     );
 
     dialoguePanel.setVisible(false);
@@ -295,13 +349,20 @@ public class GameSceneController {
       btn.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.45));
       btn.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.06));
 
-      btn.setOnMouseEntered(e -> playHoverSound());
-      btn.setOnAction(e -> {
+      btn.setOnMouseEntered(_ -> playHoverSound());
+      btn.setOnAction(_ -> {
         playSelectSound();
         choiceContainer.setVisible(false);
         dialoguePanel.setVisible(true);
-        selectChoiceUseCase.execute(choice.getId()).ifPresent(this::renderDialogueStep);
+
+        EngineResponse response = selectChoiceUseCase.execute(choice.getId());
+        switch (response) {
+          case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
+          case TransitionResult _ -> startFadeOut();
+          case ChoiceResult _ -> showChoices();
+        }
       });
+
       choiceContainer.getChildren().add(btn);
     }
   }

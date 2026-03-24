@@ -25,6 +25,8 @@ public class GameStateMachine {
   private List<Dialogue> dialogues;
   private int index = 0;
 
+  private GameScene queuedTransitionScene;
+
   private final Map<String, String> activeFlags = new HashMap<>();
 
   private GameStateMachine(){}
@@ -81,6 +83,20 @@ public class GameStateMachine {
         Optional.ofNullable(dialogue.getSpritePosition()),
         dialogue.getText(),
         currentScene.getBackgroundPath()));
+  }
+
+  public void queueSceneTransition(GameScene targetScene){
+     this.queuedTransitionScene = targetScene;
+  }
+
+  public Optional<GameScene> consumeQueuedScene(){
+    GameScene scene = this.queuedTransitionScene;
+    this.queuedTransitionScene = null;
+    return Optional.ofNullable(scene);
+  }
+
+  public void resumeFromChoice(){
+    this.currentState = GameState.PLAYING_DIALOGUE;
   }
 
   public String getFlagValue(String flagName) {
