@@ -32,6 +32,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case AudioBgm audioBgm -> switch (audioBgm){
         case OST -> "/assets/audio/bgm/ost.mp3";
         case RAINDROP_AND_PUDDLES -> "/assets/audio/bgm/raindrop_and_puddles.mp3";
+        case SILENCE -> null;
       };
 
       case AudioSfx audioSfx -> switch (audioSfx){

@@ -21,7 +21,6 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.GameCharacters;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
-import com.midnightdraft.poemofthedamned.domain.provider.ResourceKey;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.domain.repository.ChoiceRepository;
 import com.midnightdraft.poemofthedamned.domain.repository.DialogueRepository;
@@ -373,7 +372,13 @@ public class GameSceneController {
   }
 
   private void switchMusic(String newMusicKey) {
-    ResourceKey musicKey = AudioBgm.valueOf(newMusicKey);
+    AudioBgm musicKey = AudioBgm.valueOf(newMusicKey);
+
+    if (musicKey == AudioBgm.SILENCE) {
+      if (currentMusic != null) currentMusic.stop();
+      currentMusic = null;
+      return;
+    }
     String fullPath = resourceProvider.getUrl(musicKey).toExternalForm();
 
     if (currentMusic != null && currentMusic.getMedia().getSource().equals(fullPath)) return;
@@ -387,7 +392,7 @@ public class GameSceneController {
   }
 
   private void updateBackground(String backgroundName) {
-    ResourceKey bgKey = Backgrounds.valueOf(backgroundName);
+    Backgrounds bgKey = Backgrounds.valueOf(backgroundName);
     String fullPath = resourceProvider.getUrl(bgKey).toExternalForm();
 
     Image current = backgroundImage.getImage();
@@ -404,7 +409,7 @@ public class GameSceneController {
 
     if (!spriteName.equals(currentSprites.get(position))) {
       currentSprites.put(position, spriteName);
-      ResourceKey spriteKey = GameCharacters.valueOf(spriteName);
+      GameCharacters spriteKey = GameCharacters.valueOf(spriteName);
       String fullPath = resourceProvider.getUrl(spriteKey).toExternalForm();
       Image newSprite = new Image(fullPath);
 

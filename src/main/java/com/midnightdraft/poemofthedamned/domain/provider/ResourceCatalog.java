@@ -24,7 +24,8 @@ public interface ResourceCatalog {
 
   enum AudioBgm implements AudioKey {
     OST,
-    RAINDROP_AND_PUDDLES
+    RAINDROP_AND_PUDDLES,
+    SILENCE
   }
 
   enum Backgrounds implements VisualKey {
