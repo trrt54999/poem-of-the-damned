@@ -2,7 +2,7 @@ package com.midnightdraft.poemofthedamned.infrastructure.repository.impl;
 
 import com.midnightdraft.poemofthedamned.domain.model.Dialogue;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
-import com.midnightdraft.poemofthedamned.infrastructure.repository.DialogueRepository;
+import com.midnightdraft.poemofthedamned.domain.repository.DialogueRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;
@@ -17,13 +17,17 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
 
   @Override
   public Optional<Dialogue> findBySceneId(Long sceneId) {
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
-      return session.createQuery("FROM Dialogue WHERE gameScene.id = :sceneId"
-              + " ORDER BY orderIndex ASC", Dialogue.class)
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+      return session.createQuery(
+              "FROM Dialogue d " +
+                  "LEFT JOIN FETCH d.gameCharacter " +
+                  "LEFT JOIN FETCH d.gameCharacterSprite " +
+                  "WHERE d.gameScene.id = :sceneId " +
+                  "ORDER BY d.orderIndex ASC", Dialogue.class)
           .setParameter("sceneId", sceneId)
           .setMaxResults(1)
           .uniqueResultOptional();
-    }  catch (Exception e){
+    } catch (Exception e) {
       throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }
   }
@@ -31,8 +35,13 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
   @Override
   public List<Dialogue> findBySceneIdOrderByOrderIndex(Long sceneId) {
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
-      return session.createQuery("FROM Dialogue WHERE gameScene.id = :sceneId "
-              + "ORDER BY orderIndex ASC", Dialogue.class)
+      return session.createQuery(
+              "SELECT d FROM Dialogue d "
+                  + "LEFT JOIN FETCH d.gameCharacter "
+                  + "LEFT JOIN FETCH d.gameCharacterSprite "
+                  + "WHERE d.gameScene.id = :sceneId "
+                  + "ORDER BY d.orderIndex ASC",
+              Dialogue.class)
           .setParameter("sceneId", sceneId)
           .getResultList();
     } catch (Exception e){

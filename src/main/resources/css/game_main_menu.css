@@ -1,0 +1,56 @@
+.main-menu-root {
+  -fx-background-color: #FBF5F5;
+  -fx-background-radius: 15;
+}
+
+.main-menu-btn {
+  -fx-font-family: 'Riffic Free Bold';
+  -fx-font-size: 2.5em;
+  -fx-text-fill: #FFFFFF;
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-padding: 10px 20px;
+  /*-fx-background-radius: 15;*/
+}
+.main-menu-btn .text {
+  -fx-fill: #FFFFFF;
+  -fx-stroke: #C02E2E;
+  -fx-stroke-width: 0.14em;
+  -fx-stroke-type: outside;
+  -fx-stroke-line-join: round;
+}
+.main-menu-btn:hover .text {
+  -fx-stroke: #EF6C6C;
+}
+.main-menu-btn:pressed .text {
+  -fx-stroke: #C02E2E;
+}
+.left-panel-bg {
+  -fx-background-color: rgba(255, 189, 189, 0.6);
+  /*-fx-background-radius: 15 0 0 15;*/
+}
+.divider-line {
+  -fx-background-color: rgba(251, 62, 62, 0.6);
+}
+.logo-circle {
+  -fx-fill: transparent;
+  -fx-stroke: rgba(251, 62, 62, 0.6);
+  -fx-effect: dropshadow(three-pass-box, rgba(251, 62, 62, 0.4), 15, 0, 0, 0);
+  -fx-stroke-width: 10px;
+}
+.github-logo:hover {
+  -fx-effect: dropshadow(three-pass-box, white, 10, 0, 0, 0);
+  -fx-cursor: hand;
+}
+.game-name-text {
+  -fx-font-family: 'Riffic Free Bold';
+  -fx-font-size: 5em;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 10, 0, 0, 4);
+}
+.game-name-text .text {
+  -fx-fill: #C02E2E;
+  -fx-stroke: #FFFFFF;
+  -fx-stroke-width: 0.07em;
+  -fx-stroke-type: outside;
+  -fx-stroke-line-join: round;
+}

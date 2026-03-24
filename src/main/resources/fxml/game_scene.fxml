@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.TextFlow?>
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameSceneController"
+  prefHeight="400.0" prefWidth="600.0" onMouseClicked="#handleScreenClick">
+<ImageView fx:id="backgroundImage"/>
+  <AnchorPane fx:id="spritePosition" mouseTransparent="true">
+    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+    <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+      <ImageView fx:id="centralSpritePosition" preserveRatio="true"/>
+    </StackPane>
+    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+  </AnchorPane>
+  <AnchorPane fx:id="dialoguePanel" styleClass="dialoguePanel" StackPane.alignment="BOTTOM_CENTER">
+    <StackPane fx:id="nameplatePanel" styleClass="nameplate-panel">
+      <Label fx:id="characterNameLabel" styleClass="character-name-text"/>
+    </StackPane>
+    <TextFlow fx:id="dialogueTextFlow" styleClass="dialogue-text"
+      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0"/>
+    <HBox fx:id="dialogueButtons" alignment="CENTER"
+      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Button fx:id="historyButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="History"/>
+      <Button fx:id="skipButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Skip"/>
+      <Button fx:id="autoButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Auto"/>
+      <Button fx:id="saveButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Save"/>
+      <Button fx:id="loadButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Load"/>
+      <Button fx:id="settingsButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="Settings"/>
+    </HBox>
+    <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true"/>
+  </AnchorPane>
+  <VBox fx:id="choiceContainer" styleClass="choice-container"
+    alignment="CENTER" spacing="15" visible="false"
+    maxWidth="-Infinity" maxHeight="-Infinity">
+  </VBox>
+  <StackPane fx:id="fadeOverlay" styleClass="fade-overlay"
+    mouseTransparent="true"
+    opacity="0"
+    maxWidth="Infinity" maxHeight="Infinity"/>
+</StackPane>

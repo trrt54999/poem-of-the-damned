@@ -4,19 +4,21 @@ import com.midnightdraft.poemofthedamned.domain.BaseEntity;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityDeleteException;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntitySaveException;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityUpdateException;
-import com.midnightdraft.poemofthedamned.infrastructure.repository.BaseRepository;
+import com.midnightdraft.poemofthedamned.domain.repository.BaseRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import java.util.List;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-@AllArgsConstructor
 public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRepository<T> {
 
   private final Class<T> entityClass;
+
+  protected BaseRepositoryImpl(Class<T> entityClass) {
+    this.entityClass = entityClass;
+  }
 
   @Override
   public void save(T entity){
