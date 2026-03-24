@@ -14,6 +14,19 @@ public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> imple
   }
 
   @Override
+  public Optional<GameScene> findById(Long id) {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+      return session.createQuery(
+              "SELECT s FROM GameScene s LEFT JOIN FETCH s.nextScene WHERE s.id = :id",
+              GameScene.class)
+          .setParameter("id", id)
+          .uniqueResultOptional();
+    } catch (Exception e){
+      throw new EntityFetchException(GameScene.class.getSimpleName(), e);
+    }
+  }
+
+  @Override
   public Optional<GameScene> findByTitle(String title) {
     try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       return session.createQuery("FROM GameScene WHERE title = :title", GameScene.class)

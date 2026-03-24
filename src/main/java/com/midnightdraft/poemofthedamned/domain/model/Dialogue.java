@@ -1,8 +1,11 @@
 package com.midnightdraft.poemofthedamned.domain.model;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
+import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -33,6 +36,10 @@ public class Dialogue extends BaseEntity {
   @Min(value = 1, message = "Order index must be between 1!")
   @Column(name = "order_index", nullable = false)
   private Integer orderIndex;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "sprite_position")
+  private SpritePosition spritePosition;
 
   @NotNull(message = "Game scene cannot be empty!")
   @ManyToOne(fetch = FetchType.LAZY)

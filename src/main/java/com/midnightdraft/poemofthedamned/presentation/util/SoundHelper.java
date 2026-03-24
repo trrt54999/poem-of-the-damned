@@ -22,15 +22,15 @@ public class SoundHelper {
     return clip;
   }
 
-  public MediaPlayer createBackgroundMusic(String path, double volume) {
-    URL url = SoundHelper.class.getResource(path);
-    if (url == null) {
-      log.warn("Background music not found: {}", path);
+  public MediaPlayer createBackgroundMusic(String fullUrl, double volume) {
+    try {
+      Media media = new Media(fullUrl);
+      MediaPlayer player = new MediaPlayer(media);
+      player.setVolume(volume);
+      return player;
+    } catch (Exception e) {
+      log.warn("Background music not found: {}", fullUrl);
       return null;
     }
-    Media media = new Media(url.toExternalForm());
-    MediaPlayer player = new MediaPlayer(media);
-    player.setVolume(volume);
-    return player;
   }
 }

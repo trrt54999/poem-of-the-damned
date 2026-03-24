@@ -1,0 +1,79 @@
+.dialoguePanel {
+  -fx-background-color: rgba(255, 203, 203, 0.7);
+  -fx-border-color: rgba(251, 62, 62, 0.7);
+  -fx-background-radius: 15;
+  -fx-border-radius: 15;
+  -fx-border-width: 0.2em;
+  -fx-border-style: solid inside;
+  -fx-background-insets: 2;
+}
+.dialogue-btn {
+  -fx-font-family: 'Aller Bold';
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-text-fill: rgba(71, 52, 52, 0.9);
+  -fx-font-size: 1em;
+}
+.dialogue-btn:hover {
+  -fx-text-fill: rgba(71, 52, 52, 0.6);
+}
+.dialogue-btn:pressed {
+  -fx-text-fill: rgba(71, 52, 52, 0.9);
+}
+.nameplate-panel {
+  -fx-background-color: rgba(255, 224, 229, 0.9);
+  -fx-background-radius: 15 15 0 0;
+  -fx-padding: 0;
+  -fx-pref-width: 12.5em;
+  -fx-pref-height: 3em;
+  -fx-translate-x: 1.875em;
+  -fx-translate-y: -3.01em;
+  -fx-alignment: center;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 4, 0, 0, 4);
+}
+.character-name-text {
+  -fx-font-family: 'Riffic Free Bold';
+  -fx-font-size: 2em;
+  -fx-text-fill: #FFFFFF;
+}
+.character-name-text .text {
+  -fx-fill: #FFFFFF;
+  -fx-stroke: #C02E2E;
+  -fx-stroke-width: 0.1em;
+  -fx-stroke-type: outside;
+  -fx-stroke-line-join: round;
+}
+.dialogue-text {
+  -fx-font-family: 'Aller Regular';
+  -fx-text-fill: #FFFFFF;
+  -fx-font-size: 1.5em;
+  -fx-padding: 0.6em 1em 0em 1em;
+}
+.choice-container {
+  -fx-background-color: transparent;
+  -fx-padding: 0;
+  -fx-alignment: center;
+}
+.choice-plaque {
+  -fx-background-color: #FBF5F5;
+  -fx-border-color: rgba(251, 62, 62, 0.8);
+  -fx-border-width: 0.15em;
+  -fx-border-style: solid inside;
+  -fx-background-insets: 0;
+  -fx-font-family: 'Aller Regular';
+  -fx-text-fill: #0F0F0F;
+  -fx-padding: 0.1em 0.1em;
+}
+.choice-plaque .text {
+  -fx-font-smoothing-type: lcd;
+  -fx-stroke: #0F0F0F;
+  -fx-stroke-width: 0.001em;
+}
+.choice-plaque:hover {
+  -fx-background-color: #FFEBEB; /* поміняти */
+  -fx-text-fill: #FF7252;
+  -fx-border-color: #FF7252;
+}
+.fade-overlay {
+  -fx-background-color: #000000;
+}

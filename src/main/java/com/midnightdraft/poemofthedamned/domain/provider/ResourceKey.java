@@ -1,5 +1,8 @@
 package com.midnightdraft.poemofthedamned.domain.provider;
 
-public interface ResourceKey {
+public sealed interface ResourceKey permits AudioKey, VisualKey, ConfigKey
+{
   String name();
 }
+
+
