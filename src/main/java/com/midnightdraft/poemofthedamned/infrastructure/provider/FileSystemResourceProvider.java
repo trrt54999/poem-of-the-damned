@@ -10,6 +10,7 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.GameCha
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceKey;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
+import com.midnightdraft.poemofthedamned.infrastructure.exception.ResourceNotFoundException;
 import java.net.URL;
 
 public class FileSystemResourceProvider  implements ResourceProvider {
@@ -65,8 +66,6 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case GITHUB_LOGO -> "/assets/ui/github_logo.png";
         case DIALOGUE_RECTANGLE -> "/assets/ui/dialogue_rectangle.png";
       };
-
-      default -> throw new IllegalArgumentException("Unknown asset group: " + key.getClass());
     };
   }
 
@@ -77,7 +76,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
     URL url = getClass().getResource(path);
 
     if (url == null) {
-      throw new RuntimeException(
+      throw new ResourceNotFoundException(
           String.format("File not found! Key: [%s], Path: [%s]", key, path)
       );
     }

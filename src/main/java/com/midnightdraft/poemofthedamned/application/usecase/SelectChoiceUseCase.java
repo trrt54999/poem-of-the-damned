@@ -9,7 +9,9 @@ import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.repository.ChoiceRepository;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @AllArgsConstructor
 public class SelectChoiceUseCase {
 
@@ -37,6 +39,7 @@ public class SelectChoiceUseCase {
     }
 
     gameStateMachine.resumeFromChoice();
+    log.error("Unknown choice id!");
     return advanceDialogueUseCase.execute();
   }
 }

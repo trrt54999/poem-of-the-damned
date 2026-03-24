@@ -34,7 +34,7 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
   public List<Choice> findBySceneId(Long sceneId){
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
       return session.createQuery(
-              "SELECT c FROM Choice c "
+              "SELECT DISTINCT c FROM Choice c "
                   + "LEFT JOIN FETCH c.choiceEffects "
                   + "LEFT JOIN FETCH c.nextGameScene "
                   + "LEFT JOIN FETCH c.requiredFlag "

@@ -118,7 +118,7 @@ public class GameSceneController {
   private final Map<SpritePosition, String> currentSprites = new EnumMap<>(SpritePosition.class);
   private final ChoiceRepository choiceRepository = new ChoiceRepositoryImpl();
   private final GetAvailableChoicesUseCase getAvailableChoicesUseCase =
-      new GetAvailableChoicesUseCase(choiceRepository);
+      new GetAvailableChoicesUseCase(GameStateMachine.getInstance(), choiceRepository);
   private final DialogueRepository dialogueRepository = new DialogueRepositoryImpl();
   private final GameSceneRepository gameSceneRepository = new GameSceneRepositoryImpl();
   private final StartSceneUseCase startSceneUseCase = new StartSceneUseCase(dialogueRepository,
@@ -142,6 +142,7 @@ public class GameSceneController {
     setupBackground();
     setupDialoguePanel();
     setupSpritesBindings();
+    setupChoiceContainerBindings();
     setupAudio();
 
     // costyl?
@@ -256,6 +257,14 @@ public class GameSceneController {
     beatingAnimation.play();
   }
 
+  private void setupChoiceContainerBindings() {
+    choiceContainer.spacingProperty().bind(rootPane.heightProperty().multiply(0.05));
+    choiceContainer.styleProperty().bind(
+        Bindings.concat("-fx-font-size: ",
+            rootPane.heightProperty().multiply(32.0 / BASE_HEIGHT), "px;")
+    );
+  }
+
   private void setupSpritesBindings() {
     spritePosition.translateYProperty().bind(
         rootPane.heightProperty().multiply(12.0 / BASE_HEIGHT)
@@ -283,10 +292,13 @@ public class GameSceneController {
     eclipseBeginningTransition.play();
 
     eclipseBeginningTransition.setOnFinished(_ -> {
+      clearSprites();
       EngineResponse response = completeSceneTransitionUseCase.execute();
 
-      if(response instanceof DialogueResult(DialogueStep step)){
-        renderDialogueStep(step);
+      switch (response) {
+        case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
+        case TransitionResult _ -> startFadeOut();
+        case ChoiceResult _ -> showChoices();
       }
 
     FadeTransition eclipseEndingTransition = new FadeTransition(Duration.millis(1000), fadeOverlay);
@@ -329,13 +341,6 @@ public class GameSceneController {
     List<Choice> choices = getAvailableChoicesUseCase.execute();
 
     choiceContainer.getChildren().clear();
-
-    choiceContainer.spacingProperty().bind(rootPane.heightProperty().multiply(0.05));
-
-    choiceContainer.styleProperty().bind(
-        Bindings.concat("-fx-font-size: ",
-            rootPane.heightProperty().multiply(32.0 / BASE_HEIGHT), "px;")
-    );
 
     dialoguePanel.setVisible(false);
     choiceContainer.setVisible(true);
@@ -409,6 +414,13 @@ public class GameSceneController {
         case CENTRAL -> centralSpritePosition.setImage(newSprite);
       }
     }
+  }
+
+  private void clearSprites() {
+    leftSpritePosition.setImage(null);
+    rightSpritePosition.setImage(null);
+    centralSpritePosition.setImage(null);
+    currentSprites.clear();
   }
 
   private void playTypewriter(String text) {

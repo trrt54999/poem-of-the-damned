@@ -170,7 +170,7 @@ public class GameMainMenuController {
     backgroundCanvas.setClip(clip);
   }
 
-  // todo: це не дуже відноситься до контроллеру, потім винесу
+  // todo: це не дуже відноситься до контроллеру, потім винесу, також не забути анімацію офати коли зміна!
   private void startAnimation() {
     if (patternImage == null) return;
 

@@ -3,6 +3,7 @@ package com.midnightdraft.poemofthedamned;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,5 +27,7 @@ public class App extends Application {
     primaryStage.setTitle("Hello!");
     primaryStage.setScene(scene);
     primaryStage.show();
+
+    primaryStage.setOnCloseRequest(_ -> HibernateSessionFactory.shutdown());
   }
 }

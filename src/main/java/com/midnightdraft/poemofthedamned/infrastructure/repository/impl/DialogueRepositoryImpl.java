@@ -17,13 +17,17 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
 
   @Override
   public Optional<Dialogue> findBySceneId(Long sceneId) {
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
-      return session.createQuery("FROM Dialogue WHERE gameScene.id = :sceneId"
-              + " ORDER BY orderIndex ASC", Dialogue.class)
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+      return session.createQuery(
+              "FROM Dialogue d " +
+                  "LEFT JOIN FETCH d.gameCharacter " +
+                  "LEFT JOIN FETCH d.gameCharacterSprite " +
+                  "WHERE d.gameScene.id = :sceneId " +
+                  "ORDER BY d.orderIndex ASC", Dialogue.class)
           .setParameter("sceneId", sceneId)
           .setMaxResults(1)
           .uniqueResultOptional();
-    }  catch (Exception e){
+    } catch (Exception e) {
       throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }
   }

@@ -8,20 +8,22 @@ import java.util.List;
 
 public class GetAvailableChoicesUseCase {
 
+  private final GameStateMachine gameStateMachine;
   private final ChoiceRepository choiceRepository;
 
-  public GetAvailableChoicesUseCase(ChoiceRepository choiceRepository){
+  public GetAvailableChoicesUseCase(GameStateMachine gameStateMachine,ChoiceRepository choiceRepository){
     this.choiceRepository = choiceRepository;
+    this.gameStateMachine = gameStateMachine;
   }
 
   public List<Choice> execute(){
-    GameScene currentScene = GameStateMachine.getInstance().getCurrentScene();
+    GameScene currentScene = gameStateMachine.getCurrentScene();
     List<Choice> choices = choiceRepository.findBySceneId(currentScene.getId());
     return choices.stream().filter(choice -> {
        if(choice.getRequiredFlag() == null){
          return true;
        }
-      String currentValue = GameStateMachine.getInstance().getFlagValue(choice.getRequiredFlag().getName());
+      String currentValue = gameStateMachine.getFlagValue(choice.getRequiredFlag().getName());
       return currentValue != null && currentValue.equals(choice.getRequiredFlagValue());
     }).toList();
   }

@@ -64,12 +64,16 @@ public class GameStateMachine {
       return Optional.empty();
     }
 
+    boolean isFirstDialogue = (index == 0);
+
     Dialogue dialogue = dialogues.get(index++);
 
     String musicToPlay = dialogue.getMusicPath();
-    if(index == 1 && musicToPlay == null){
+
+    if(isFirstDialogue && musicToPlay == null){
       musicToPlay = currentScene.getSoundtrackPath();
     }
+
     if(musicToPlay != null){
       this.currentMusicPath = musicToPlay;
     }

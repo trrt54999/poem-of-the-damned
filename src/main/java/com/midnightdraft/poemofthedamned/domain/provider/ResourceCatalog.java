@@ -1,33 +1,39 @@
 package com.midnightdraft.poemofthedamned.domain.provider;
 
 public interface ResourceCatalog {
-  enum Css implements ResourceKey{
+  enum Css implements ConfigKey {
     GAME_MAIN_MENU,
     GAME_SCENE
   }
 
-  enum Fxml implements ResourceKey{
+  enum Fxml implements ConfigKey {
     GAME_MAIN_MENU,
     GAME_SCENE
   }
 
-  enum AudioSfx implements ResourceKey{
+  enum Fonts implements ConfigKey {
+    RIFFIC_FREE_BOLD,
+    ALLER_BOLD,
+    ALLER_REGULAR
+  }
+
+  enum AudioSfx implements AudioKey {
     HOVER,
     SELECT
   }
 
-  enum AudioBgm implements ResourceKey{
+  enum AudioBgm implements AudioKey {
     OST,
     RAINDROP_AND_PUDDLES
   }
 
-  enum Backgrounds implements ResourceKey{
+  enum Backgrounds implements VisualKey {
     STREET_DAY,
     CLASS_DAY,
     ROOFTOP_DAY
   }
 
-  enum GameCharacters implements ResourceKey{
+  enum GameCharacters implements VisualKey {
     HARUKA_LAUGH,
     HARUKA_DIRTY,
     AYA_HAPPY,
@@ -36,13 +42,7 @@ public interface ResourceCatalog {
     MIO_NORMAL
   }
 
-  enum Fonts implements ResourceKey{
-    RIFFIC_FREE_BOLD,
-    ALLER_BOLD,
-    ALLER_REGULAR
-  }
-
-  enum Ui implements ResourceKey{
+  enum Ui implements VisualKey {
     CIRCLES,
     LOGO,
     GITHUB_LOGO,
