@@ -33,6 +33,9 @@ public class Dialogue extends BaseEntity {
   @Column(name = "music_path")
   private String musicPath;
 
+  @Column(name = "ambient_path")
+  private String ambientPath;
+
   @Min(value = 1, message = "Order index must be between 1!")
   @Column(name = "order_index", nullable = false)
   private Integer orderIndex;

@@ -27,18 +27,32 @@ public interface ResourceCatalog {
     RAINDROP_AND_PUDDLES,
     SILENCE
   }
+  
+  enum AudioAmbient implements AudioKey {
+    RAIN_WINDOW,
+    FOOTSTEPS_WOOD,
+    SCHOOL_BELL,
+    SCHOOL_HALLWAY,
+    SILENCE
+  }
 
   enum Backgrounds implements VisualKey {
-    STREET_DAY,
     CLASS_DAY,
-    ROOFTOP_DAY
+    CLASS_EVE,
+    ROOFTOP_DAY,
+    STREET_DAY,
+    STREET_EVE,
+    ROOM_NIGHT
   }
 
   enum GameCharacters implements VisualKey {
     HARUKA_LAUGH,
     HARUKA_DIRTY,
+    HARUKA_SMILE,
+    HARUKA_ANNOYED,
     AYA_HAPPY,
     AYA_NORMAL,
+    AYA_CURIOUS,
     MIO_CAT_SMILE,
     MIO_NORMAL
   }

@@ -22,6 +22,8 @@ public class GameStateMachine {
   private GameScene currentScene;
   @Getter
   private String currentMusicPath;
+  @Getter
+  private String currentAmbientPath;
   private List<Dialogue> dialogues;
   private int index = 0;
 
@@ -45,6 +47,7 @@ public class GameStateMachine {
     this.index = 0;
     this.currentState = GameState.PLAYING_DIALOGUE;
     this.currentMusicPath = gameScene.getSoundtrackPath();
+    this.currentAmbientPath = gameScene.getAmbientPath();
   }
 
   public Optional<DialogueStep> continueScene(){
@@ -69,13 +72,22 @@ public class GameStateMachine {
     Dialogue dialogue = dialogues.get(index++);
 
     String musicToPlay = dialogue.getMusicPath();
+    String ambientToPlay = dialogue.getAmbientPath();
 
-    if(isFirstDialogue && musicToPlay == null){
+    if(isFirstDialogue && musicToPlay == null) {
       musicToPlay = currentScene.getSoundtrackPath();
     }
 
-    if(musicToPlay != null){
+    if(isFirstDialogue && ambientToPlay == null) {
+      ambientToPlay = currentScene.getAmbientPath();
+    }
+
+    if(musicToPlay != null) {
       this.currentMusicPath = musicToPlay;
+    }
+
+    if(ambientToPlay != null) {
+      this.currentAmbientPath = ambientToPlay;
     }
 
     return Optional.of(new DialogueStep(
@@ -84,6 +96,7 @@ public class GameStateMachine {
         Optional.ofNullable(dialogue.getGameCharacterSprite())
             .map(GameCharacterSprite::getSpritePath),
         Optional.ofNullable(musicToPlay),
+        Optional.ofNullable(ambientToPlay),
         Optional.ofNullable(dialogue.getSpritePosition()),
         dialogue.getText(),
         currentScene.getBackgroundPath()));

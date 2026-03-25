@@ -38,6 +38,9 @@ public class GameScene extends BaseEntity {
   @Column(name = "soundtrack_path")
   private String soundtrackPath;
 
+  @Column(name = "ambient_path")
+  private String ambientPath;
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameScene", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Choice> choices = new ArrayList<>();
 

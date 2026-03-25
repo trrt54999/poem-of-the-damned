@@ -14,6 +14,8 @@ import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
 import com.midnightdraft.poemofthedamned.domain.engine.TransitionResult;
 import com.midnightdraft.poemofthedamned.domain.model.Choice;
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
+import com.midnightdraft.poemofthedamned.domain.provider.AudioKey;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioAmbient;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioBgm;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Backgrounds;
@@ -107,6 +109,7 @@ public class GameSceneController {
   private AudioClip hoverSound;
   private AudioClip selectSound;
   private MediaPlayer currentMusic;
+  private MediaPlayer currentAmbient;
   private Transition typewriterTransition;
   private String currentFullText = "";
 
@@ -334,6 +337,7 @@ public class GameSceneController {
     playTypewriter(step.text());
     typewriterTransition.setOnFinished(_ -> nextIndicator.setVisible(true));
     step.musicPath().ifPresent(this::switchMusic);
+    step.ambientPath().ifPresent(this::switchAmbient);
   }
 
   private void showChoices() {
@@ -371,24 +375,35 @@ public class GameSceneController {
     }
   }
 
-  private void switchMusic(String newMusicKey) {
-    AudioBgm musicKey = AudioBgm.valueOf(newMusicKey);
+  private MediaPlayer switchTrack(MediaPlayer current, AudioKey key) {
+    String fullPath = resourceProvider.getUrl(key).toExternalForm();
+    if (current != null && current.getMedia().getSource().equals(fullPath)) return current;
+    if (current != null) current.stop();
+    MediaPlayer player = SoundHelper.createBackgroundMusic(fullPath, 0.5);
+    if (player == null) return null;
+    player.setCycleCount(MediaPlayer.INDEFINITE);
+    player.play();
+    return player;
+  }
 
-    if (musicKey == AudioBgm.SILENCE) {
+  private void switchMusic(String newMusicKey) {
+    AudioBgm key = AudioBgm.valueOf(newMusicKey);
+    if (key == AudioBgm.SILENCE) {
       if (currentMusic != null) currentMusic.stop();
       currentMusic = null;
       return;
     }
-    String fullPath = resourceProvider.getUrl(musicKey).toExternalForm();
+    currentMusic = switchTrack(currentMusic, key);
+  }
 
-    if (currentMusic != null && currentMusic.getMedia().getSource().equals(fullPath)) return;
-    if (currentMusic != null) currentMusic.stop();
-
-    currentMusic = SoundHelper.createBackgroundMusic(fullPath, 0.5);
-    if (currentMusic == null) return;
-
-    currentMusic.setCycleCount(MediaPlayer.INDEFINITE);
-    currentMusic.play();
+  private void switchAmbient(String newAmbientKey) {
+    AudioAmbient key = AudioAmbient.valueOf(newAmbientKey);
+    if (key == AudioAmbient.SILENCE) {
+      if (currentAmbient != null) currentAmbient.stop();
+      currentAmbient = null;
+      return;
+    }
+    currentAmbient = switchTrack(currentAmbient, key);
   }
 
   private void updateBackground(String backgroundName) {
