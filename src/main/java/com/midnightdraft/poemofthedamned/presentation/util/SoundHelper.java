@@ -28,7 +28,7 @@ public class SoundHelper {
       MediaPlayer player = new MediaPlayer(media);
       player.setVolume(volume);
       return player;
-    } catch (Exception e) {
+    } catch (Exception _) {
       log.warn("Background music not found: {}", fullUrl);
       return null;
     }

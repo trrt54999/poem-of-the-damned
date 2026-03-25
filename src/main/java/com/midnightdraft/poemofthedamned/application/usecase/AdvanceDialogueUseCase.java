@@ -28,6 +28,6 @@ public class AdvanceDialogueUseCase {
       return new ChoiceResult();
     }
 
-    return new TransitionResult();
+    return new TransitionResult(gameStateMachine.getCurrentScene().getTransitionType());
   }
 }

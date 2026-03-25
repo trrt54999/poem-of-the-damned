@@ -1,9 +1,12 @@
 package com.midnightdraft.poemofthedamned.domain.model;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
+import com.midnightdraft.poemofthedamned.domain.engine.TransitionType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -41,10 +44,18 @@ public class GameScene extends BaseEntity {
   @Column(name = "ambient_path")
   private String ambientPath;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "transition_type")
+  private TransitionType transitionType;
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "gameScene", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Choice> choices = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "next_scene_id")
   private GameScene nextScene;
+
+  public TransitionType getTransitionType() {
+    return transitionType != null ? transitionType : TransitionType.FADE_BLACK;
+  }
 }

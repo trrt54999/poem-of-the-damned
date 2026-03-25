@@ -18,7 +18,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
 
   @Override
   public String getPath(ResourceKey key) {
-    return switch (key){
+    return switch (key) {
 
       case Css css -> switch (css) {
         case GAME_MAIN_MENU -> "/css/game_main_menu.css";

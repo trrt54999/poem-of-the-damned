@@ -35,7 +35,7 @@ public class SelectChoiceUseCase {
 
     if(nextScene != null){
       gameStateMachine.queueSceneTransition(nextScene);
-      return new TransitionResult();
+      return new TransitionResult(gameStateMachine.getCurrentScene().getTransitionType());
     }
 
     gameStateMachine.resumeFromChoice();

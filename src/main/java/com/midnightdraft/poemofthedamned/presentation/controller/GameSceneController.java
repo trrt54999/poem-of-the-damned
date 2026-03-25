@@ -12,6 +12,7 @@ import com.midnightdraft.poemofthedamned.domain.engine.EngineResponse;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
 import com.midnightdraft.poemofthedamned.domain.engine.TransitionResult;
+import com.midnightdraft.poemofthedamned.domain.engine.TransitionType;
 import com.midnightdraft.poemofthedamned.domain.model.Choice;
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.provider.AudioKey;
@@ -151,11 +152,7 @@ public class GameSceneController {
     GameScene firstScene = gameSceneRepository.findById(1L).orElseThrow();
 
     startSceneUseCase.execute(firstScene);
-    switch (advanceDialogueUseCase.execute()) {
-      case ChoiceResult _ -> showChoices();
-      case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
-      case TransitionResult _ -> startFadeOut();
-    }
+    handleResponse(advanceDialogueUseCase.execute());
   }
 
   @FXML
@@ -181,11 +178,7 @@ public class GameSceneController {
       nextIndicator.setVisible(true);
       return;
     }
-    switch (advanceDialogueUseCase.execute()) {
-      case ChoiceResult _ -> showChoices();
-      case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
-      case TransitionResult _ -> startFadeOut();
-    }
+    handleResponse(advanceDialogueUseCase.execute());
   }
 
   private void setupStylesAndFonts() {
@@ -284,6 +277,24 @@ public class GameSceneController {
     );
   }
 
+  private void playTransition(TransitionType transitionType) {
+    switch (transitionType){
+      case TransitionType.FADE_BLACK -> startFadeOut();
+      case TransitionType.NONE -> {
+        clearSprites();
+        handleResponse(completeSceneTransitionUseCase.execute());
+      }
+    }
+  }
+
+  private void handleResponse(EngineResponse response) {
+    switch (response) {
+      case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
+      case TransitionResult(TransitionType transitionType) -> playTransition(transitionType);
+      case ChoiceResult _ -> showChoices();
+    }
+  }
+
   // погратися з налаштуваннями мілісекунд
   private void startFadeOut(){
     fadeOverlay.setVisible(true);
@@ -295,13 +306,7 @@ public class GameSceneController {
 
     eclipseBeginningTransition.setOnFinished(_ -> {
       clearSprites();
-      EngineResponse response = completeSceneTransitionUseCase.execute();
-
-      switch (response) {
-        case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
-        case TransitionResult _ -> startFadeOut();
-        case ChoiceResult _ -> showChoices();
-      }
+      handleResponse(completeSceneTransitionUseCase.execute());
 
     FadeTransition eclipseEndingTransition = new FadeTransition(Duration.millis(1000), fadeOverlay);
       eclipseEndingTransition.setFromValue(1.0);
@@ -363,14 +368,8 @@ public class GameSceneController {
         choiceContainer.setVisible(false);
         dialoguePanel.setVisible(true);
 
-        EngineResponse response = selectChoiceUseCase.execute(choice.getId());
-        switch (response) {
-          case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
-          case TransitionResult _ -> startFadeOut();
-          case ChoiceResult _ -> showChoices();
-        }
+        handleResponse(selectChoiceUseCase.execute(choice.getId()));
       });
-
       choiceContainer.getChildren().add(btn);
     }
   }
