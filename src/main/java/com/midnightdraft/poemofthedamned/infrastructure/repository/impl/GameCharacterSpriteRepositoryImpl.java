@@ -6,8 +6,10 @@ import com.midnightdraft.poemofthedamned.domain.repository.GameCharacterSpriteRe
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class GameCharacterSpriteRepositoryImpl extends BaseRepositoryImpl<GameCharacterSprite> implements
     GameCharacterSpriteRepository {
 
@@ -24,6 +26,7 @@ public class GameCharacterSpriteRepositoryImpl extends BaseRepositoryImpl<GameCh
           .setParameter("emotion", emotion)
           .uniqueResultOptional();
     }  catch (Exception e){
+      log.error("Failed to fetch GameCharacterSprite by characterId: {} and emotion: {}", characterId, emotion, e);
       throw new EntityFetchException(GameCharacterSprite.class.getSimpleName(), e);
     }
   }
@@ -36,6 +39,7 @@ public class GameCharacterSpriteRepositoryImpl extends BaseRepositoryImpl<GameCh
           .setParameter("characterId", characterId)
           .getResultList();
     } catch (Exception e){
+      log.error("Failed to fetch GameCharacterSprites by characterId: {}", characterId, e);
       throw new EntityFetchException(GameCharacterSprite.class.getSimpleName(), e);
     }
   }

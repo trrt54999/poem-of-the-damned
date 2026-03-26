@@ -5,8 +5,10 @@ import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryExce
 import com.midnightdraft.poemofthedamned.domain.repository.UserAchievementRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class UserAchievementRepositoryImpl extends BaseRepositoryImpl<UserAchievement> implements
     UserAchievementRepository {
 
@@ -21,6 +23,7 @@ public class UserAchievementRepositoryImpl extends BaseRepositoryImpl<UserAchiev
           .setParameter("userId", userId)
           .getResultList();
      } catch (Exception e) {
+      log.error("Failed to fetch UserAchievements by userId: {}", userId, e);
       throw new EntityFetchException(UserAchievement.class.getSimpleName(), e);
     }
   }

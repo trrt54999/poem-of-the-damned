@@ -5,8 +5,10 @@ import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryExce
 import com.midnightdraft.poemofthedamned.domain.repository.ChoiceEffectRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class ChoiceEffectRepositoryImpl extends BaseRepositoryImpl<ChoiceEffect> implements
     ChoiceEffectRepository {
 
@@ -21,6 +23,7 @@ public class ChoiceEffectRepositoryImpl extends BaseRepositoryImpl<ChoiceEffect>
           .setParameter("choiceId", choiceId)
           .getResultList();
     } catch (Exception e){
+      log.error("Failed to fetch ChoiceEffects by choiceId: {}", choiceId, e);
       throw new EntityFetchException(ChoiceEffect.class.getSimpleName(), e);
     }
   }

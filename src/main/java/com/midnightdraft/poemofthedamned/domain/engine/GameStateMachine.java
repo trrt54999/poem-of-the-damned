@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter(AccessLevel.NONE)
+@Slf4j
 public class GameStateMachine {
 
   @Getter
@@ -59,9 +61,11 @@ public class GameStateMachine {
       GameScene nextScene = currentScene.getNextScene();
 
       if (nextScene == null) {
+        log.debug("No next scene found, switching to WAITING_FOR_CHOICE");
         currentState = GameState.WAITING_FOR_CHOICE;
         return Optional.empty();
       } else {
+        log.debug("Dialogues exhausted, switching to TRANSITION");
         currentState = GameState.TRANSITION;
       }
       return Optional.empty();
@@ -121,6 +125,7 @@ public class GameStateMachine {
   }
 
   public void applyEffect(ChoiceEffect effect) {
+    log.info("Applying flag effect: '{}' = '{}'", effect.getFlag().getName(), effect.getNewValue());
     activeFlags.put(effect.getFlag().getName(), effect.getNewValue());
   }
 

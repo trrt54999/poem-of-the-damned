@@ -13,7 +13,9 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceKey;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.exception.ResourceNotFoundException;
 import java.net.URL;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FileSystemResourceProvider  implements ResourceProvider {
 
   @Override
@@ -92,6 +94,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
     URL url = getClass().getResource(path);
 
     if (url == null) {
+      log.error("File not found! Key: [{}], Path: [{}]", key, path);
       throw new ResourceNotFoundException(
           String.format("File not found! Key: [%s], Path: [%s]", key, path)
       );

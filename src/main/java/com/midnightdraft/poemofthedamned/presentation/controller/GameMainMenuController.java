@@ -72,6 +72,7 @@ public class GameMainMenuController {
 
   @FXML
   public void initialize() {
+    log.info("Initializing Game Main Menu...");
     loadResources();
     setupCanvasBindings();
     setupLogoBindings();
@@ -172,7 +173,10 @@ public class GameMainMenuController {
 
   // todo: це не дуже відноситься до контроллеру, потім винесу, також не забути анімацію офати коли зміна!
   private void startAnimation() {
-    if (patternImage == null) return;
+    if (patternImage == null) {
+      log.warn("Pattern image is null, skipping animation");
+      return;
+    }
 
     GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
 

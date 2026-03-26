@@ -8,7 +8,9 @@ import com.midnightdraft.poemofthedamned.domain.engine.GameState;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.engine.TransitionResult;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AdvanceDialogueUseCase {
 
   private final GameStateMachine gameStateMachine;
@@ -25,9 +27,10 @@ public class AdvanceDialogueUseCase {
     }
 
     if(gameStateMachine.getCurrentState() == GameState.WAITING_FOR_CHOICE){
+      log.debug("Waiting for player choice");
       return new ChoiceResult();
     }
-
+    log.debug("No more dialogues, transitioning scene");
     return new TransitionResult(gameStateMachine.getCurrentScene().getTransitionType());
   }
 }

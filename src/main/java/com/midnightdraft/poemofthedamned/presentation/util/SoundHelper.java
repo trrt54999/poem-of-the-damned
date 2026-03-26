@@ -28,8 +28,8 @@ public class SoundHelper {
       MediaPlayer player = new MediaPlayer(media);
       player.setVolume(volume);
       return player;
-    } catch (Exception _) {
-      log.error("Background music not found: {}", fullUrl);
+    } catch (Exception e) {
+      log.error("Failed to load background music: {}", fullUrl, e);
       return null;
     }
   }

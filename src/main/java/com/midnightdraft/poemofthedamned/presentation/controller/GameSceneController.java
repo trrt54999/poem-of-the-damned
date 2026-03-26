@@ -137,13 +137,14 @@ public class GameSceneController {
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
   private final SelectChoiceUseCase selectChoiceUseCase = new SelectChoiceUseCase(
       GameStateMachine.getInstance(),
-      choiceRepository, startSceneUseCase, advanceDialogueUseCase);
+      choiceRepository, advanceDialogueUseCase);
 
   private static final double BASE_WIDTH = 1280.0;
   private static final double BASE_HEIGHT = 720.0;
 
   @FXML
   public void initialize() {
+    log.info("Initialize game");
     setupStylesAndFonts();
     setupBackground();
     setupDialoguePanel();
@@ -153,7 +154,7 @@ public class GameSceneController {
 
     // costyl?
     GameScene firstScene = gameSceneRepository.findById(1L).orElseThrow();
-
+    log.info("Starting first scene: '{}'", firstScene.getTitle());
     startSceneUseCase.execute(firstScene);
     handleResponse(advanceDialogueUseCase.execute());
   }
@@ -295,6 +296,7 @@ public class GameSceneController {
       case DialogueResult(DialogueStep step) -> renderDialogueStep(step);
       case TransitionResult(TransitionType transitionType) -> playTransition(transitionType);
       case ChoiceResult _ -> showChoices();
+      default -> log.warn("Unhandled EngineResponse type: {}", response.getClass().getSimpleName());
     }
   }
 
@@ -408,6 +410,7 @@ public class GameSceneController {
 
   private void switchMusic(String newMusicKey) {
     AudioBgm key = AudioBgm.valueOf(newMusicKey);
+    log.debug("Switching music to: {}", key);
     if (key == AudioBgm.SILENCE) {
       if (currentMusic != null) currentMusic.stop();
       currentMusic = null;
@@ -423,6 +426,7 @@ public class GameSceneController {
 
   private void switchAmbient(String newAmbientKey) {
     AudioAmbient key = AudioAmbient.valueOf(newAmbientKey);
+    log.debug("Switching ambient to: {}", key);
     if (key == AudioAmbient.SILENCE) {
       if (currentAmbient != null) currentAmbient.stop();
       currentAmbient = null;

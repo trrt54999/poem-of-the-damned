@@ -5,8 +5,10 @@ import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryExce
 import com.midnightdraft.poemofthedamned.domain.repository.GameSceneRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> implements GameSceneRepository {
 
   public GameSceneRepositoryImpl(){
@@ -22,6 +24,7 @@ public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> imple
           .setParameter("id", id)
           .uniqueResultOptional();
     } catch (Exception e){
+      log.error("Failed to fetch GameScene by id: {}", id, e);
       throw new EntityFetchException(GameScene.class.getSimpleName(), e);
     }
   }
@@ -33,6 +36,7 @@ public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> imple
           .setParameter("title", title)
           .uniqueResultOptional();
     } catch (Exception e){
+      log.error("Failed to fetch GameScene by title: {}", title, e);
       throw new EntityFetchException(GameScene.class.getSimpleName(), e);
     }
   }

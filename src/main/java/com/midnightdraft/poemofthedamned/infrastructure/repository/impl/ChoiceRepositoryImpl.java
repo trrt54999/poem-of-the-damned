@@ -6,8 +6,10 @@ import com.midnightdraft.poemofthedamned.domain.repository.ChoiceRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements ChoiceRepository {
 
   public ChoiceRepositoryImpl(){
@@ -26,6 +28,7 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
           .setParameter("id", id)
           .uniqueResultOptional();
     } catch (Exception e){
+      log.error("Failed to fetch Choice by id: {}", id, e);
       throw new EntityFetchException(Choice.class.getSimpleName(), e);
     }
   }
@@ -43,6 +46,7 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
           .setParameter("sceneId", sceneId)
           .getResultList();
     } catch (Exception e){
+      log.error("Failed to fetch Choices by sceneId: {}", sceneId, e);
       throw new EntityFetchException(Choice.class.getSimpleName(), e);
     }
   }

@@ -5,8 +5,10 @@ import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.model.GameScene;
 import com.midnightdraft.poemofthedamned.domain.repository.GameSceneRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
+@Slf4j
 public class CompleteSceneTransitionUseCase {
 
   private final GameStateMachine gameStateMachine;
@@ -20,6 +22,7 @@ public class CompleteSceneTransitionUseCase {
         .orElse(currentScene.getNextScene());
     GameScene fullyLoadedScene = gameSceneRepository.findById(targetScene.getId()).orElseThrow();
 
+    log.info("Transition completed. Fetching target Scene: {}", targetScene.getId());
     startSceneUseCase.execute(fullyLoadedScene);
 
     return advanceDialogueUseCase.execute();
