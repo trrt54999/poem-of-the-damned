@@ -33,8 +33,8 @@
 
 INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, created_at, updated_at) VALUES (1, 2, 'street', 'STREET_DAY', 'RAINDROP_AND_PUDDLES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, created_at, updated_at) VALUES (2, 3, 'class', 'CLASS_DAY', 'OST', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, ambient_path, created_at, updated_at) VALUES (3, 4, 'class_haruka', 'CLASS_DAY', 'OST', 'SILENCE',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, ambient_path,created_at, updated_at) VALUES (4, 5, 'rooftop', 'ROOFTOP_DAY', 'OST', 'SILENCE',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, ambient_path, created_at, updated_at) VALUES (3, 4, 'class_haruka', 'CLASS_DAY', 'OST', 'FADE_OUT',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, ambient_path,created_at, updated_at) VALUES (4, 5, 'rooftop', 'ROOFTOP_DAY', 'OST', 'FADE_OUT',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, created_at, updated_at) VALUES (5, 6, 'class_eve', 'CLASS_EVE', 'OST', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO game_scenes (id, next_scene_id, title, background_path, soundtrack_path, created_at, updated_at) VALUES (6, 7, 'street_eve', 'STREET_EVE', 'RAINDROP_AND_PUDDLES', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO game_scenes (id, title, background_path, created_at, updated_at) VALUES (7, 'room_night', 'ROOM_NIGHT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -102,7 +102,7 @@ INSERT INTO dialogues (id, order_index, text, game_scene_id, created_at, updated
 INSERT INTO dialogues (id, order_index, text, game_scene_id, created_at, updated_at) VALUES (40, 31, 'She takes her seat, leaving me one-on-one with Haruka.', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dialogues (id, order_index, text, game_scene_id, created_at, updated_at) VALUES (41, 32, 'You have... fun friends. This semester definitely won`t be boring.', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dialogues (id, order_index, sprite_position, character_id, character_sprite_id, text, game_scene_id, created_at, updated_at) VALUES (42, 33, 'CENTRAL', 1, 1, 'Yep!', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dialogues (id, order_index, text, game_scene_id, music_path, ambient_path, created_at, updated_at) VALUES (43, 34, 'The bell rang and everyone took their seats, but I couldn`t focus on studying. I was thinking about how I was going to get along with my new classmates...', 3, 'SILENCE','SCHOOL_BELL', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dialogues (id, order_index, text, game_scene_id, music_path, ambient_path, created_at, updated_at) VALUES (43, 34, 'The bell rang and everyone took their seats, but I couldn`t focus on studying. I was thinking about how I was going to get along with my new classmates...', 3, 'FADE_OUT','SCHOOL_BELL', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dialogues (id, order_index, text, game_scene_id, created_at, updated_at) VALUES (44, 35, 'Looks like sitting quietly in the corner won`t work this time...', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dialogues (id, order_index, text, game_scene_id, created_at, updated_at) VALUES (45, 36, 'And so, with my head in the clouds, I sat through the entire lesson...', 3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 

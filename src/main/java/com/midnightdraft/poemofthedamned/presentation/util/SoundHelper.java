@@ -14,7 +14,7 @@ public class SoundHelper {
   public AudioClip loadSoundEffect(String path, double volume) {
     URL url = SoundHelper.class.getResource(path);
     if (url == null) {
-      log.warn("Sound effect not found: {}", path);
+      log.error("Sound effect not found: {}", path);
       return null;
     }
     AudioClip clip = new AudioClip(url.toExternalForm());
@@ -29,7 +29,7 @@ public class SoundHelper {
       player.setVolume(volume);
       return player;
     } catch (Exception _) {
-      log.warn("Background music not found: {}", fullUrl);
+      log.error("Background music not found: {}", fullUrl);
       return null;
     }
   }

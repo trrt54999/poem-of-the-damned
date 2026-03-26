@@ -33,7 +33,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case AudioBgm audioBgm -> switch (audioBgm) {
         case OST -> "/assets/audio/bgm/ost.mp3";
         case RAINDROP_AND_PUDDLES -> "/assets/audio/bgm/raindrop_and_puddles.mp3";
-        case SILENCE -> null;
+        case SILENCE, FADE_OUT -> null;
       };
 
       case AudioSfx audioSfx -> switch (audioSfx) {
@@ -46,7 +46,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case SCHOOL_HALLWAY -> "/assets/audio/ambient/school_hallway.wav";
         case FOOTSTEPS_WOOD -> "/assets/audio/ambient/footsteps_wood.wav";
         case RAIN_WINDOW -> "/assets/audio/ambient/rain_window.wav";
-        case SILENCE -> null;
+        case SILENCE, FADE_OUT -> null;
       };
 
       case GameCharacters characters -> switch (characters) {

@@ -39,7 +39,10 @@ import java.util.Map;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -376,12 +379,30 @@ public class GameSceneController {
 
   private MediaPlayer switchTrack(MediaPlayer current, AudioKey key) {
     String fullPath = resourceProvider.getUrl(key).toExternalForm();
-    if (current != null && current.getMedia().getSource().equals(fullPath)) return current;
-    if (current != null) current.stop();
+
+    if (current != null && current.getMedia().getSource().equals(fullPath))
+      return current;
+
     MediaPlayer player = SoundHelper.createBackgroundMusic(fullPath, 0.5);
-    if (player == null) return null;
+    if (player == null)
+      return null;
+
     player.setCycleCount(MediaPlayer.INDEFINITE);
-    player.play();
+
+    if (current != null) {
+      Timeline timeline = new Timeline(
+          new KeyFrame(Duration.seconds(2.0),
+              new KeyValue(current.volumeProperty(), 0.0)));
+
+      timeline.setOnFinished(_ -> {
+        current.stop();
+        player.play();
+      });
+      timeline.play();
+    } else {
+      player.play();
+    }
+
     return player;
   }
 
@@ -391,6 +412,11 @@ public class GameSceneController {
       if (currentMusic != null) currentMusic.stop();
       currentMusic = null;
       return;
+    }
+    if(key == AudioBgm.FADE_OUT) {
+     fadeOutAndStop(currentMusic);
+     currentMusic = null;
+     return;
     }
     currentMusic = switchTrack(currentMusic, key);
   }
@@ -402,7 +428,25 @@ public class GameSceneController {
       currentAmbient = null;
       return;
     }
+
+    if (key == AudioAmbient.FADE_OUT) {
+      fadeOutAndStop(currentAmbient);
+      currentAmbient = null;
+      return;
+    }
     currentAmbient = switchTrack(currentAmbient, key);
+  }
+
+  private void fadeOutAndStop(MediaPlayer player) {
+    if (player == null) return;
+
+    MediaPlayer oldPlayer = player;
+    Timeline timeline = new Timeline(
+        new KeyFrame(Duration.seconds(2.0),
+            new KeyValue(oldPlayer.volumeProperty(), 0.0)));
+
+    timeline.setOnFinished(_ -> oldPlayer.stop());
+    timeline.play();
   }
 
   private void updateBackground(String backgroundName) {
