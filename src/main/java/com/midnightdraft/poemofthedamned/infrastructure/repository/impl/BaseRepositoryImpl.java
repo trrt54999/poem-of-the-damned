@@ -9,9 +9,11 @@ import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFac
 import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryException.EntityFetchException;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@Slf4j
 public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRepository<T> {
 
   private final Class<T> entityClass;
@@ -28,7 +30,13 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       session.persist(entity);
       tx.commit();
     }catch (Exception e) {
-      if (tx != null) tx.rollback();
+      if (tx != null)
+      {
+        log.error("SQL Transaction failed! Rolling back changes for: {}",
+            entityClass.getSimpleName());
+        tx.rollback();
+      }
+      log.error("Hibernate error: ", e);
       throw new EntitySaveException(entityClass.getSimpleName(), e);
     }
   }
@@ -41,7 +49,13 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       session.merge(entity);
       tx.commit();
     } catch (Exception e) {
-      if (tx != null) tx.rollback();
+      if (tx != null)
+      {
+        log.error("SQL Transaction failed! Rolling back changes for: {}",
+            entityClass.getSimpleName());
+        tx.rollback();
+      }
+      log.error("Hibernate error: ", e);
       throw new EntityUpdateException(entityClass.getSimpleName(), e);
     }
   }
@@ -54,7 +68,13 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       session.remove(session.contains(entity) ? entity : session.merge(entity));
       tx.commit();
     } catch (Exception e) {
-      if (tx != null) tx.rollback();
+      if (tx != null)
+      {
+        log.error("SQL Transaction failed! Rolling back changes for: {}",
+            entityClass.getSimpleName());
+        tx.rollback();
+      }
+      log.error("Hibernate error: ", e);
       throw new EntityDeleteException(entityClass.getSimpleName(), e);
     }
   }
@@ -65,6 +85,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       T entity = session.find(entityClass, id);
       return Optional.ofNullable(entity);
     } catch (Exception e) {
+      log.error("Failed to fetch entity", e);
       throw new EntityFetchException(entityClass.getSimpleName(), e);
     }
   }
@@ -75,6 +96,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
       return session.createQuery("FROM " + entityClass.getSimpleName(), entityClass)
           .getResultList();
     } catch (Exception e){
+      log.error("Failed to fetch entity", e);
       throw new EntityFetchException(entityClass.getSimpleName(), e);
     }
   }

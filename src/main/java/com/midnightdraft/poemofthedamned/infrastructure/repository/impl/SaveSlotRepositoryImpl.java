@@ -5,8 +5,10 @@ import com.midnightdraft.poemofthedamned.infrastructure.exception.RepositoryExce
 import com.midnightdraft.poemofthedamned.domain.repository.SaveSlotRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class SaveSlotRepositoryImpl extends BaseRepositoryImpl<SaveSlot> implements
     SaveSlotRepository {
 
@@ -21,6 +23,7 @@ public class SaveSlotRepositoryImpl extends BaseRepositoryImpl<SaveSlot> impleme
           .setParameter("userId", userId)
           .getResultList();
     } catch (Exception e){
+      log.error("Failed to fetch SaveSlots by userId: {}", userId, e);
       throw new EntityFetchException(SaveSlot.class.getSimpleName(), e);
     }
   }

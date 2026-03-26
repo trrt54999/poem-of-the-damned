@@ -17,29 +17,29 @@ public class SelectChoiceUseCase {
 
   private final GameStateMachine gameStateMachine;
   private final ChoiceRepository choiceRepository;
-  private final StartSceneUseCase startSceneUseCase;
   private final AdvanceDialogueUseCase advanceDialogueUseCase;
 
   public EngineResponse execute(Long choiceId) {
     Optional<Choice> choiceOpt = choiceRepository.findById(choiceId);
 
     if(choiceOpt.isEmpty()) {
+      log.warn("Attempted to select non-existent choice ID: {}", choiceId);
      return advanceDialogueUseCase.execute();
     }
 
     Choice choice = choiceOpt.get();
-
+    log.info("Player selected choice: '{}' (ID: {})", choice.getChoiceText(), choice.getId());
     choice.getChoiceEffects().forEach(gameStateMachine::applyEffect);
 
     GameScene nextScene = choice.getNextGameScene();
 
     if(nextScene != null){
+      log.info("Choice leads to scene: '{}' (ID: {})", nextScene.getTitle(), nextScene.getId());
       gameStateMachine.queueSceneTransition(nextScene);
       return new TransitionResult(gameStateMachine.getCurrentScene().getTransitionType());
     }
 
     gameStateMachine.resumeFromChoice();
-    log.error("Unknown choice id!");
     return advanceDialogueUseCase.execute();
   }
 }

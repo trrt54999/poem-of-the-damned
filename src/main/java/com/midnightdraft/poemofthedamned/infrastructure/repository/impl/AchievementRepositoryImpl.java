@@ -6,8 +6,10 @@ import com.midnightdraft.poemofthedamned.domain.repository.AchievementRepository
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> implements
     AchievementRepository {
 
@@ -22,6 +24,7 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
           .setParameter("title", title)
           .uniqueResultOptional();
     } catch (Exception e){
+      log.error("Failed to fetch Achievement by title: {}", title, e);
       throw new EntityFetchException(Achievement.class.getSimpleName(), e);
     }
   }
@@ -33,6 +36,7 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
           .setParameter("isHidden", isHidden)
           .getResultList();
     }catch (Exception e){
+      log.error("Failed to fetch Achievements by isHidden: {}", isHidden, e);
       throw new EntityFetchException(Achievement.class.getSimpleName(), e);
     }
   }

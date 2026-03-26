@@ -6,8 +6,10 @@ import com.midnightdraft.poemofthedamned.domain.repository.DialogueRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
+@Slf4j
 public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> implements
     DialogueRepository {
 
@@ -28,6 +30,7 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
           .setMaxResults(1)
           .uniqueResultOptional();
     } catch (Exception e) {
+      log.error("Failed to fetch Dialogue by sceneId: {}", sceneId, e);
       throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }
   }
@@ -45,6 +48,7 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
           .setParameter("sceneId", sceneId)
           .getResultList();
     } catch (Exception e){
+      log.error("Failed to fetch Dialogues by sceneId: {}", sceneId, e);
       throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }
   }
