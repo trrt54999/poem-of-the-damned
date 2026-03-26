@@ -11,6 +11,8 @@ module com.midnightdraft.poemofthedamned {
   requires jakarta.el;
   requires javafx.media;
   requires org.slf4j;
+  requires org.apache.logging.log4j;
+  requires org.apache.logging.log4j.core;
 
   opens com.midnightdraft.poemofthedamned to javafx.fxml;
   exports com.midnightdraft.poemofthedamned;

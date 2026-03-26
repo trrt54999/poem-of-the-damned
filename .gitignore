@@ -44,3 +44,7 @@ build/
 *.iml
 *.ipr
 out/
+
+### Game Engine Logs ###
+logs/
+*.log
