@@ -36,7 +36,7 @@ public class User extends BaseEntity {
   private String email;
 
   @NotBlank(message = "Password cannot be empty!")
-  @Column(name="password_hash", nullable = false)
+  @Column(name = "password_hash", nullable = false)
   private String passwordHash;
 
   @ManyToMany

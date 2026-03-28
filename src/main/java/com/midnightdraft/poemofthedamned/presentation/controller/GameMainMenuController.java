@@ -114,6 +114,7 @@ public class GameMainMenuController {
     mio.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
 
     Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
+    Font.loadFont(resourceProvider.getUrl(Fonts.NUNITO_BLACK).toExternalForm(), 36);
     patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
 
     hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);

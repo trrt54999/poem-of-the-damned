@@ -3,7 +3,9 @@ package com.midnightdraft.poemofthedamned.domain.provider;
 public interface ResourceCatalog {
   enum Css implements ConfigKey {
     GAME_MAIN_MENU,
-    GAME_SCENE
+    GAME_SCENE,
+    FONT_EN,
+    FONT_UK
   }
 
   enum Fxml implements ConfigKey {
@@ -14,7 +16,9 @@ public interface ResourceCatalog {
   enum Fonts implements ConfigKey {
     RIFFIC_FREE_BOLD,
     ALLER_BOLD,
-    ALLER_REGULAR
+    ALLER_REGULAR,
+    NUNITO_BLACK,
+    UBUNTU_BOLD
   }
 
   enum AudioSfx implements AudioKey {

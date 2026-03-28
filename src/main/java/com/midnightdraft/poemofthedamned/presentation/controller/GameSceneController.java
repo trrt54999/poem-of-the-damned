@@ -42,6 +42,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
@@ -49,6 +50,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -191,6 +193,7 @@ public class GameSceneController {
 
     Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
     Font.loadFont(resourceProvider.getUrl(Fonts.ALLER_BOLD).toExternalForm(), 42);
+    Font.loadFont(resourceProvider.getUrl(Fonts.UBUNTU_BOLD).toExternalForm(), 42);
     Font.loadFont(resourceProvider.getUrl(Fonts.ALLER_REGULAR).toExternalForm(), 24);
 
     dialoguePanel.styleProperty().bind(
@@ -348,6 +351,7 @@ public class GameSceneController {
     typewriterTransition.setOnFinished(_ -> nextIndicator.setVisible(true));
     step.musicPath().ifPresent(this::switchMusic);
     step.ambientPath().ifPresent(this::switchAmbient);
+    // highlightSpeaker(step.characterName().orElse(null));
   }
 
   private void showChoices() {
@@ -482,6 +486,49 @@ public class GameSceneController {
       }
     }
   }
+
+
+/*  Може знадобитися як зміна емоції у спрайта
+ private void playCharacterJump(ImageView targetSprite) {
+    TranslateTransition transition = new TranslateTransition(Duration.millis(150), targetSprite);
+    transition.setByY(-15);
+    transition.setCycleCount(2);
+    transition.setAutoReverse(true);
+    transition.play();
+  }
+ */
+
+
+  /*  кривий метод пістрибування перса, багато чого не враховує (думки і т.п.), потім допрацювати
+  private void applyHighlight(ImageView sprite, String spriteName, String activeCharacter) {
+    if (sprite.getImage() == null)
+      return;
+
+    boolean isActive = activeCharacter != null && spriteName.toLowerCase().contains(activeCharacter.toLowerCase());
+
+    double targetScale = isActive ? 1.05 : 1.0;
+
+    if (sprite.getScaleX() != targetScale) {
+      ScaleTransition scale = new ScaleTransition(Duration.millis(250), sprite);
+      scale.setToX(targetScale);
+      scale.setToY(targetScale);
+      scale.play();
+    }
+  }
+   */
+
+/*  applyHighlight -> мається на увазі обробка кожного перса по позиції
+  private void highlightSpeaker(String activeCharacter) {
+
+    applyHighlight(leftSpritePosition, currentSprites.get(SpritePosition.LEFT), activeCharacter);
+
+
+    applyHighlight(rightSpritePosition, currentSprites.get(SpritePosition.RIGHT), activeCharacter);
+
+
+    applyHighlight(centralSpritePosition, currentSprites.get(SpritePosition.CENTRAL), activeCharacter);
+  }
+*/
 
   private void clearSprites() {
     leftSpritePosition.setImage(null);
