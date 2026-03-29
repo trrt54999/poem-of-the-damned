@@ -25,6 +25,8 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case Css css -> switch (css) {
         case GAME_MAIN_MENU -> "/css/game_main_menu.css";
         case GAME_SCENE -> "/css/game_scene.css";
+        case FONT_EN -> "/css/font_en.css";
+        case FONT_UK -> "/css/font_uk.css";
       };
 
       case Fxml fxml -> switch (fxml) {
@@ -67,6 +69,8 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case RIFFIC_FREE_BOLD -> "/assets/fonts/riffic_free_bold.ttf";
         case ALLER_BOLD -> "/assets/fonts/aller_bold.ttf";
         case ALLER_REGULAR -> "/assets/fonts/aller_regular.ttf";
+        case NUNITO_BLACK -> "/assets/fonts/nunito_black.ttf";
+        case UBUNTU_BOLD -> "/assets/fonts/ubuntu_bold.ttf";
       };
 
       case Backgrounds backgrounds -> switch (backgrounds) {

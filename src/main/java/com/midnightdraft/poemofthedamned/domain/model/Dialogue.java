@@ -2,17 +2,22 @@ package com.midnightdraft.poemofthedamned.domain.model;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
 import com.midnightdraft.poemofthedamned.domain.engine.SpritePosition;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +31,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Dialogue extends BaseEntity {
 
-  @NotBlank(message = "Text cannot be empty!")
-  @Column(name = "text", nullable = false, columnDefinition = "TEXT")
-  private String text;
+  @NotBlank(message = "Dialogue default text cannot be empty!")
+  @Column(name = "default_text", nullable = false, columnDefinition = "TEXT")
+  private String defaultText;
 
   @Column(name = "music_path")
   private String musicPath;
@@ -43,6 +48,12 @@ public class Dialogue extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "sprite_position")
   private SpritePosition spritePosition;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "dialogue_translations", joinColumns = @JoinColumn(name = "dialogue_id"))
+  @MapKeyColumn(name = "locale")
+  @Column(name = "translated_text", columnDefinition = "TEXT", nullable = false)
+  private Map<String, String> translations = new HashMap<>();
 
   @NotNull(message = "Game scene cannot be empty!")
   @ManyToOne(fetch = FetchType.LAZY)

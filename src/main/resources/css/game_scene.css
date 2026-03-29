@@ -8,7 +8,6 @@
   -fx-background-insets: 2;
 }
 .dialogue-btn {
-  -fx-font-family: 'Aller Bold';
   -fx-background-color: transparent;
   -fx-border-color: transparent;
   -fx-text-fill: rgba(71, 52, 52, 0.9);
@@ -32,7 +31,6 @@
   -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 4, 0, 0, 4);
 }
 .character-name-text {
-  -fx-font-family: 'Riffic Free Bold';
   -fx-font-size: 2em;
   -fx-text-fill: #FFFFFF;
 }

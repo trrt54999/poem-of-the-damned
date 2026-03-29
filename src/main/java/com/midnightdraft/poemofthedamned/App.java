@@ -1,10 +1,13 @@
 package com.midnightdraft.poemofthedamned;
 
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.util.HibernateSessionFactory;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +22,8 @@ public class App extends Application {
     Application.launch();
   }
 
+  public static String currentLang = "en";
+
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   @Override
@@ -28,16 +33,24 @@ public class App extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException{
+  public void start(Stage primaryStage) throws IOException {
     log.info("Starting game app");
     try {
-      StackPane root = FXMLLoader.load(resourceProvider.getUrl(Fxml.GAME_SCENE));
+      FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.GAME_SCENE));
+      loader.setResources(ResourceBundle.getBundle("localization/ui", Locale.of(currentLang)));
+      StackPane root = loader.load();
+
       Scene scene = new Scene(root, 1280, 720);
+
+      switch (currentLang) {
+        case "uk" -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_UK).toExternalForm());
+        default -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_EN).toExternalForm());
+      }
 
       primaryStage.setTitle("Hello!");
       primaryStage.setScene(scene);
       primaryStage.show();
-    } catch (IOException e){
+    } catch (IOException e) {
       log.error("Failed to load main scene", e);
       throw e;
     }

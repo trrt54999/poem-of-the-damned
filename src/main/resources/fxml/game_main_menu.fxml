@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.canvas.Canvas?>
-
 <?import javafx.scene.control.Label?>
 <StackPane styleClass="main-menu-root" fx:id="rootPane" prefHeight="400.0" prefWidth="600.0"
   xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
@@ -39,10 +38,10 @@
     <Label text="Poem of the" fx:id="titleTop" rotate="7" styleClass="game-name-text" AnchorPane.leftAnchor="50"/>
     <Label text="Damned" fx:id="titleBottom" rotate="-9" styleClass="game-name-text" AnchorPane.leftAnchor="50"/>
     <VBox spacing="15" alignment="BOTTOM_LEFT" AnchorPane.leftAnchor="60" AnchorPane.bottomAnchor="50">
-      <Button text="New Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
-      <Button text="Load Game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
-      <Button text="Settings" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
-      <Button text="Exit" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="%menu.new_game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="%menu.load_game" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="%menu.settings" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
+      <Button text="%menu.exit" styleClass="main-menu-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound"/>
     </VBox>
   </AnchorPane>
 </StackPane>
