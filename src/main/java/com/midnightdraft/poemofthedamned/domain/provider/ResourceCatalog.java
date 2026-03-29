@@ -4,13 +4,15 @@ public interface ResourceCatalog {
   enum Css implements ConfigKey {
     GAME_MAIN_MENU,
     GAME_SCENE,
+    AUTH_MENU,
     FONT_EN,
     FONT_UK
   }
 
   enum Fxml implements ConfigKey {
     GAME_MAIN_MENU,
-    GAME_SCENE
+    GAME_SCENE,
+    AUTH_MENU
   }
 
   enum Fonts implements ConfigKey {
