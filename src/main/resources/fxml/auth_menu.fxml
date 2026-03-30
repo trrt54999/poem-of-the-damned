@@ -3,61 +3,73 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 <StackPane fx:id="rootPane" styleClass="auth-menu-root" xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.AuthMenuController"
   prefHeight="400.0" prefWidth="600.0">
   <VBox fx:id="authCard" styleClass="auth-card" alignment="CENTER">
     <HBox fx:id="tabSwitcher" styleClass="tab-switcher" alignment="CENTER">
-      <Button fx:id="loginTab" text="Login" styleClass="tab-switcher-btn">
+      <ToggleButton fx:id="loginTab" text="Login" maxWidth="Infinity" prefWidth="0"
+        HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn">
         <graphic>
           <ImageView fx:id="loginTabIcon"/>
         </graphic>
-      </Button>
-      <Button fx:id="registrationTab" text="Registration" styleClass="tab-switcher-btn">
+      </ToggleButton>
+      <ToggleButton fx:id="registrationTab" text="Registration" maxWidth="Infinity" prefWidth="0"
+        HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn">
         <graphic>
           <ImageView fx:id="registrationTabIcon"/>
         </graphic>
-      </Button>
+      </ToggleButton>
     </HBox>
     <VBox fx:id="usernameGroup" styleClass="field-group">
       <Label text="Login" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <ImageView fx:id="usernameIcon" preserveRatio="true"/>
-        <TextField fx:id="usernameInput" promptText="your_username"/>
+        <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
     <VBox fx:id="emailGroup" styleClass="field-group">
       <Label text="Email" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <ImageView fx:id="emailIcon" preserveRatio="true"/>
-        <TextField fx:id="emailInput" promptText="email@example.com"></TextField>
+        <TextField fx:id="emailInput" promptText="email@example.com" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
     <VBox fx:id="passwordGroup" styleClass="field-group">
       <Label text="Password" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <ImageView fx:id="passwordIcon" preserveRatio="true"/>
-        <PasswordField fx:id="passwordInput" promptText="••••••••••"></PasswordField>
+        <TextField fx:id="passwordInput" promptText="••••••••••" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
       <Label text="Confirm password" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
-        <PasswordField fx:id="confirmPasswordInput" promptText="••••••••••"></PasswordField>
+        <TextField fx:id="confirmPasswordInput" promptText="••••••••••" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
-    <Button fx:id="actionButton" styleClass="auth-action-btn"/>
-    <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
-      <Separator/>
-      <Label text="Or" styleClass="or-divider-text"/>
-      <Separator/>
-    </HBox>
-    <Button fx:id="googleButton" styleClass="auth-action-btn" text="Continue with google">
-      <graphic>
-        <ImageView fx:id="googleIcon"/>
-      </graphic>
+    <Button fx:id="actionButton" maxWidth="Infinity" text="Create account"
+      styleClass="auth-action-btn">
+      <VBox.margin>
+        <Insets top="20.0"/>
+      </VBox.margin>
     </Button>
+    <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
+      <Separator HBox.hgrow="ALWAYS"/>
+      <Label text="Or" styleClass="or-divider-text"/>
+      <Separator HBox.hgrow="ALWAYS"/>
+    </HBox>
+    <StackPane maxWidth="Infinity">
+      <Button fx:id="googleButton" maxWidth="Infinity" styleClass="auth-action-btn"
+        text="Continue with google"/>
+      <ImageView fx:id="googleIcon" StackPane.alignment="CENTER_LEFT">
+        <StackPane.margin>
+          <Insets left="30"/>
+        </StackPane.margin>
+      </ImageView>
+    </StackPane>
   </VBox>
 </StackPane>

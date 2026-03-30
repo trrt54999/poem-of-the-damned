@@ -73,6 +73,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case ALLER_REGULAR -> "/assets/fonts/aller_regular.ttf";
         case NUNITO_BLACK -> "/assets/fonts/nunito_black.ttf";
         case UBUNTU_BOLD -> "/assets/fonts/ubuntu_bold.ttf";
+        case INTER_MEDIUM -> "/assets/fonts/inter_medium.otf";
       };
 
       case Backgrounds backgrounds -> switch (backgrounds) {
@@ -89,6 +90,13 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case LOGO -> "/assets/ui/logo.jpg";
         case GITHUB_LOGO -> "/assets/ui/github_logo.png";
         case DIALOGUE_RECTANGLE -> "/assets/ui/dialogue_rectangle.png";
+        case LOGIN_TAB_ICON -> "/assets/ui/login_tab_icon.png";
+        case REGISTRATION_TAB_ICON -> "/assets/ui/registration_tab_icon.png";
+        case USERNAME_ICON -> "/assets/ui/username_icon.png";
+        case EMAIL_ICON -> "/assets/ui/email_icon.png";
+        case PASSWORD_ICON -> "/assets/ui/password_icon.png";
+        case CONFIRM_PASSWORD_ICON -> "/assets/ui/confirm_password_icon.png";
+        case GOOGLE_ICON -> "/assets/ui/google_icon.png";
       };
     };
   }

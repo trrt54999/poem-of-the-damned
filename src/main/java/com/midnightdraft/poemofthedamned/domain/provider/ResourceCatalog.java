@@ -20,7 +20,8 @@ public interface ResourceCatalog {
     ALLER_BOLD,
     ALLER_REGULAR,
     NUNITO_BLACK,
-    UBUNTU_BOLD
+    UBUNTU_BOLD,
+    INTER_MEDIUM
   }
 
   enum AudioSfx implements AudioKey {
@@ -69,6 +70,13 @@ public interface ResourceCatalog {
     CIRCLES,
     LOGO,
     GITHUB_LOGO,
-    DIALOGUE_RECTANGLE
+    DIALOGUE_RECTANGLE,
+    LOGIN_TAB_ICON,
+    REGISTRATION_TAB_ICON,
+    USERNAME_ICON,
+    EMAIL_ICON,
+    PASSWORD_ICON,
+    CONFIRM_PASSWORD_ICON,
+    GOOGLE_ICON
   }
 }
