@@ -30,7 +30,7 @@
       <Label text="Login" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <StackPane styleClass="icon-wrapper">
-        <ImageView fx:id="usernameIcon" preserveRatio="true"/>
+          <ImageView fx:id="usernameIcon" preserveRatio="true"/>
         </StackPane>
         <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
       </HBox>
@@ -39,7 +39,7 @@
       <Label text="Email" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <StackPane styleClass="icon-wrapper">
-        <ImageView fx:id="emailIcon" preserveRatio="true"/>
+          <ImageView fx:id="emailIcon" preserveRatio="true"/>
         </StackPane>
         <TextField fx:id="emailInput" promptText="email@example.com" HBox.hgrow="ALWAYS"/>
       </HBox>
@@ -48,18 +48,24 @@
       <Label text="Password" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <StackPane styleClass="icon-wrapper">
-        <ImageView fx:id="passwordIcon" preserveRatio="true"/>
+          <ImageView fx:id="passwordIcon" preserveRatio="true"/>
         </StackPane>
         <TextField fx:id="passwordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
+        <StackPane fx:id="passwordEyeWrapper" styleClass="eye-wrapper" onMousePressed="#onPasswordEyePressed">
+        <ImageView fx:id="passwordEyeIcon" styleClass="eye-icon" preserveRatio="true"/>
+        </StackPane>
       </HBox>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
       <Label text="Confirm password" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
         <StackPane styleClass="icon-wrapper">
-        <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
+          <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
         </StackPane>
         <TextField fx:id="confirmPasswordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
+        <StackPane fx:id="confirmPasswordEyeWrapper" styleClass="eye-wrapper" onMousePressed="#onPasswordEyePressed">
+        <ImageView fx:id="confirmPasswordEyeIcon" styleClass="eye-icon" preserveRatio="true"/>
+        </StackPane>
       </HBox>
     </VBox>
     <Region style="-fx-pref-height: 0.8em"/>

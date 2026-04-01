@@ -77,6 +77,8 @@ public interface ResourceCatalog {
     EMAIL_ICON,
     PASSWORD_ICON,
     CONFIRM_PASSWORD_ICON,
-    GOOGLE_ICON
+    GOOGLE_ICON,
+    EYE_ON_ICON,
+    EYE_OFF_ICON
   }
 }
