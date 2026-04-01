@@ -10,14 +10,17 @@
   prefHeight="400.0" prefWidth="600.0">
   <VBox fx:id="authCard" styleClass="auth-card" alignment="CENTER">
     <HBox fx:id="tabSwitcher" styleClass="tab-switcher" alignment="CENTER">
+      <fx:define>
+        <ToggleGroup fx:id="authToggleGroup"/>
+      </fx:define>
       <ToggleButton fx:id="loginTab" text="Login" maxWidth="Infinity" prefWidth="0"
-        HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn">
+        HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn" toggleGroup="$authToggleGroup">
         <graphic>
           <ImageView fx:id="loginTabIcon"/>
         </graphic>
       </ToggleButton>
       <ToggleButton fx:id="registrationTab" text="Registration" maxWidth="Infinity" prefWidth="0"
-        HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn">
+        HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn" toggleGroup="$authToggleGroup">
         <graphic>
           <ImageView fx:id="registrationTabIcon"/>
         </graphic>
@@ -26,37 +29,41 @@
     <VBox fx:id="usernameGroup" styleClass="field-group">
       <Label text="Login" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
+        <StackPane styleClass="icon-wrapper">
         <ImageView fx:id="usernameIcon" preserveRatio="true"/>
+        </StackPane>
         <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
     <VBox fx:id="emailGroup" styleClass="field-group">
       <Label text="Email" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
+        <StackPane styleClass="icon-wrapper">
         <ImageView fx:id="emailIcon" preserveRatio="true"/>
+        </StackPane>
         <TextField fx:id="emailInput" promptText="email@example.com" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
     <VBox fx:id="passwordGroup" styleClass="field-group">
       <Label text="Password" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
+        <StackPane styleClass="icon-wrapper">
         <ImageView fx:id="passwordIcon" preserveRatio="true"/>
-        <TextField fx:id="passwordInput" promptText="••••••••••" HBox.hgrow="ALWAYS"/>
+        </StackPane>
+        <TextField fx:id="passwordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
       <Label text="Confirm password" styleClass="field-group-label"/>
       <HBox styleClass="field-group-input">
+        <StackPane styleClass="icon-wrapper">
         <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
-        <TextField fx:id="confirmPasswordInput" promptText="••••••••••" HBox.hgrow="ALWAYS"/>
+        </StackPane>
+        <TextField fx:id="confirmPasswordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
       </HBox>
     </VBox>
-    <Button fx:id="actionButton" maxWidth="Infinity" text="Create account"
-      styleClass="auth-action-btn">
-      <VBox.margin>
-        <Insets top="20.0"/>
-      </VBox.margin>
-    </Button>
+    <Region style="-fx-pref-height: 0.8em"/>
+    <Button fx:id="actionButton" maxWidth="Infinity" styleClass="auth-action-btn"/>
     <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
       <Separator HBox.hgrow="ALWAYS"/>
       <Label text="Or" styleClass="or-divider-text"/>

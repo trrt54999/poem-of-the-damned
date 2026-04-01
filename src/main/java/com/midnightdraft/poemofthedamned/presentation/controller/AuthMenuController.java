@@ -5,12 +5,17 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -22,6 +27,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -43,6 +49,8 @@ public class AuthMenuController {
   private HBox tabSwitcher;
   @FXML
   private HBox orDivider;
+  @FXML
+  private ToggleGroup authToggleGroup;
   @FXML
   private ToggleButton loginTab;
   @FXML
@@ -89,6 +97,22 @@ public class AuthMenuController {
     setupFocusHighlight(confirmPasswordInput);
     setupPasswordMasking(passwordInput, passwordValue);
     setupPasswordMasking(confirmPasswordInput, confirmPasswordValue);
+
+    usernameGroup.setPrefHeight(0.0);
+    usernameGroup.setMinHeight(0.0);
+    usernameGroup.setOpacity(0);
+    usernameGroup.setVisible(false);
+    confirmPasswordGroup.setVisible(false);
+    confirmPasswordGroup.setPrefHeight(0.0);
+    confirmPasswordGroup.setMinHeight(0.0);
+    confirmPasswordGroup.setOpacity(0);
+
+    rootPane.styleProperty().bind(Bindings.createStringBinding(() -> {
+      double calculatedSize = rootPane.getHeight() * 0.016;
+      double clampedSize = Math.clamp(calculatedSize, 12, 32);
+
+      return String.format("-fx-font-size: %.1fpx;", clampedSize);
+    }, rootPane.heightProperty()));
   }
 
   private void loadResources() {
@@ -99,8 +123,89 @@ public class AuthMenuController {
 
   private void setupAuthCard() {
     // 0.47 to 45 or 50
-    authCard.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.47));
+    authCard.maxWidthProperty().bind(Bindings.min(rootPane.widthProperty().multiply(0.40), 800)
+        // rootPane.widthProperty().multiply(0.47),
+        //     rootPane.heightProperty().multiply(0.80)
+    );
+
     authCard.maxHeightProperty().set(Region.USE_PREF_SIZE);
+
+    authToggleGroup.selectedToggleProperty().addListener((_, oldToggle, newToggle) -> {
+      if (newToggle == null) {
+        oldToggle.setSelected(true);
+      } else if (newToggle == loginTab) {
+        playLoginTransition();
+        actionButton.setText("Login");
+      } else if (newToggle == registrationTab) {
+        playRegistrationTransition();
+        actionButton.setText("Create account");
+      }
+    });
+    loginTab.setSelected(true);
+  }
+
+  private void playLoginTransition() {
+    double startHeight = usernameGroup.getHeight();
+
+    usernameGroup.setPrefHeight(startHeight);
+    usernameGroup.setMinHeight(startHeight);
+    confirmPasswordGroup.setPrefHeight(startHeight);
+    confirmPasswordGroup.setMinHeight(startHeight);
+
+    Timeline timeline = new Timeline(
+        new KeyFrame(Duration.millis(200),
+            new KeyValue(usernameGroup.prefHeightProperty(), 0.0),
+            new KeyValue(usernameGroup.minHeightProperty(), 0.0),
+            new KeyValue(usernameGroup.opacityProperty(), 0.0),
+
+            new KeyValue(confirmPasswordGroup.prefHeightProperty(), 0.0),
+            new KeyValue(confirmPasswordGroup.minHeightProperty(), 0.0),
+            new KeyValue(confirmPasswordGroup.opacityProperty(), 0.0)
+        )
+    );
+
+    timeline.setOnFinished(_ -> {
+      usernameGroup.setVisible(false);
+      confirmPasswordGroup.setVisible(false);
+    });
+
+    timeline.play();
+  }
+
+  private void playRegistrationTransition() {
+    usernameGroup.setPrefHeight(Region.USE_COMPUTED_SIZE);
+    usernameGroup.setMinHeight(Region.USE_COMPUTED_SIZE);
+
+    double targetHeight = usernameGroup.prefHeight(-1);
+
+    usernameGroup.setPrefHeight(0.0);
+    usernameGroup.setMinHeight(0.0);
+    confirmPasswordGroup.setPrefHeight(0.0);
+    confirmPasswordGroup.setMinHeight(0.0);
+
+    usernameGroup.setVisible(true);
+    confirmPasswordGroup.setVisible(true);
+
+    Timeline timeline = new Timeline(
+        new KeyFrame(Duration.millis(200),
+            new KeyValue(usernameGroup.prefHeightProperty(), targetHeight),
+            new KeyValue(usernameGroup.minHeightProperty(), targetHeight),
+            new KeyValue(usernameGroup.opacityProperty(), 1.0),
+
+            new KeyValue(confirmPasswordGroup.prefHeightProperty(), targetHeight),
+            new KeyValue(confirmPasswordGroup.minHeightProperty(), targetHeight),
+            new KeyValue(confirmPasswordGroup.opacityProperty(), 1.0)
+        )
+    );
+
+    timeline.setOnFinished(_ -> {
+      usernameGroup.setPrefHeight(Region.USE_COMPUTED_SIZE);
+      usernameGroup.setMinHeight(Region.USE_COMPUTED_SIZE);
+      confirmPasswordGroup.setPrefHeight(Region.USE_COMPUTED_SIZE);
+      confirmPasswordGroup.setMinHeight(Region.USE_COMPUTED_SIZE);
+    });
+
+    timeline.play();
   }
 
   private void setupFocusHighlight(TextField field) {
@@ -114,18 +219,18 @@ public class AuthMenuController {
   }
 
   private void setupIcons() {
-    double defMultiply = 0.015;
+    double defMultiply = 0.022;
 
     // Login Tab
     loginTabIcon.setImage(new Image(resourceProvider.getUrl(Ui.LOGIN_TAB_ICON).toExternalForm()));
-    loginTabIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.025));
-    loginTabIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.025));
+    loginTabIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.028));
+    loginTabIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.028));
 
     // Registration Tab
     registrationTabIcon.setImage(
         new Image(resourceProvider.getUrl(Ui.REGISTRATION_TAB_ICON).toExternalForm()));
-    registrationTabIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.025));
-    registrationTabIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.033));
+    registrationTabIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.028));
+    registrationTabIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.028));
 
     // Username Input
     usernameIcon.setImage(new Image(resourceProvider.getUrl(Ui.USERNAME_ICON).toExternalForm()));

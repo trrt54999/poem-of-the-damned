@@ -3,8 +3,8 @@
 }
 
 .auth-card {
-  -fx-padding: 3em 5em 1.5em 5em;
-  -fx-spacing: 12;
+  -fx-padding: 2em 5em 1.5em 5em;
+  -fx-spacing: 0.8em;
   -fx-background-radius: 16;
   -fx-border-radius: 16;
   -fx-background-color: rgba(255, 255, 255, 0.15);
@@ -14,8 +14,9 @@
 .tab-switcher {
   -fx-background-radius: 16;
   -fx-background-color: rgba(0, 0, 0, 0.15);
-  -fx-padding: 5;
+  -fx-padding: 5 6;
   -fx-pref-height: 3.15em;
+  -fx-spacing: 0.5;
 }
 
 .tab-switcher-btn {
@@ -23,13 +24,22 @@
   -fx-background-insets: 0;
   -fx-font-family: "Inter Medium";
   -fx-font-size: 1.5em;
-  -fx-graphic-text-gap: 0.75em;
+  -fx-graphic-text-gap: 0.5em;
   -fx-text-fill: rgba(255, 255, 255, 0.40);
   -fx-padding: 6;
 }
 
 .tab-switcher-btn:hover {
   -fx-cursor: hand;
+  -fx-background-color: rgba(255, 255, 255, 0.05);
+  -fx-background-radius: 10;
+  -fx-text-fill: rgba(255, 255, 255, 0.70);
+}
+
+.tab-switcher-btn:pressed {
+  -fx-background-color: rgba(0, 0, 0, 0.1);
+  -fx-text-fill: rgba(255, 255, 255, 0.40);
+  -fx-translate-y: 2px;
 }
 
 .tab-switcher-btn:selected {
@@ -81,6 +91,14 @@
   -fx-faint-focus-color: transparent;
 }
 
+.icon-wrapper {
+  -fx-min-width: 2.2em;
+  -fx-pref-width: 2.2em;
+  -fx-max-width: 2.2em;
+
+  -fx-alignment: center;
+}
+
 .auth-action-btn {
   -fx-background-color: transparent;
   -fx-background-insets: 0;
@@ -92,10 +110,23 @@
   -fx-font-family: 'Inter Medium';
   -fx-font-size: 1.5em;
   -fx-pref-height: 2.1em;
-  -fx-padding: 10 20; /* ось в цій хріні треба paddin create account 10 верх низ 20 ліво право */
+  -fx-font-smoothing-type: gray;
+  -fx-padding: 10 20;
   -fx-cursor: hand;
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
+}
+
+.auth-action-btn:hover {
+  -fx-background-color: rgba(255, 255, 255, 0.1);
+  -fx-border-color: rgba(255, 255, 255, 0.5);
+  -fx-text-fill: #ffffff;
+  -fx-cursor: hand;
+}
+
+.auth-action-btn:pressed {
+  -fx-background-color: rgba(255, 255, 255, 0.2);
+  -fx-border-color: rgba(255, 255, 255, 0.8);
 }
 
 .or-divider {
