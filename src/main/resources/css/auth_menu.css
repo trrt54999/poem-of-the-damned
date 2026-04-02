@@ -92,19 +92,23 @@
   -fx-faint-focus-color: transparent;
 }
 
-.eye-icon {
-  -fx-spacing: 0 50 0 0;
-  -fx-cursor: hand;
-}
-
-.eye-wrapper {
+.eye-button {
+  -fx-background-color: transparent;
   -fx-padding: 0 0.3em 0 0;
   -fx-cursor: hand;
 }
 
-/*.eye-wrapper:hover .eye-icon {*/
-/*  -fx-opacity: 0.85;*/
-/*}*/
+.eye-button .image-view {
+  -fx-opacity: 0.45;
+}
+
+.eye-button:hover .image-view {
+  -fx-opacity: 0.85;
+}
+
+.eye-button:selected .image-view {
+  -fx-opacity: 0.90;
+}
 
 .icon-wrapper {
   -fx-min-width: 2.2em;

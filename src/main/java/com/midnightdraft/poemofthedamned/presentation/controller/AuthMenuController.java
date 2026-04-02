@@ -5,7 +5,7 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
-import java.util.function.Supplier;
+import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -13,17 +13,12 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -38,9 +33,9 @@ public class AuthMenuController {
   @FXML
   private StackPane rootPane;
   @FXML
-  private StackPane passwordEyeWrapper;
+  private ToggleButton passwordEyeBtn;
   @FXML
-  private StackPane confirmPasswordEyeWrapper;
+  private ToggleButton confirmPasswordEyeBtn;
   @FXML
   private VBox authCard;
   @FXML
@@ -88,30 +83,25 @@ public class AuthMenuController {
   @FXML
   private TextField emailInput;
   @FXML
-  private TextField passwordInput;
+  private PasswordField passwordInput;
   @FXML
-  private TextField confirmPasswordInput;
+  private PasswordField confirmPasswordInput;
 
-  private boolean isPasswordVisible = false;
-  private boolean isConfirmPasswordVisible = false;
-  private boolean isSystemUpdate = false;
+  private PasswordFieldSkin passwordSkin;
+  private PasswordFieldSkin confirmPasswordSkin;
 
-  private final StringBuilder passwordValue = new StringBuilder();
-  private final StringBuilder confirmPasswordValue = new StringBuilder();
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   @FXML
   public void initialize() {
     loadResources();
     setupAuthCard();
+    setupPasswordFields();
     setupIcons();
     setupFocusHighlight(usernameInput);
     setupFocusHighlight(emailInput);
     setupFocusHighlight(passwordInput);
     setupFocusHighlight(confirmPasswordInput);
-    setupPasswordMasking(passwordInput, passwordValue, () -> isPasswordVisible);
-    setupPasswordMasking(confirmPasswordInput, confirmPasswordValue,
-        () -> isConfirmPasswordVisible);
 
     usernameGroup.setPrefHeight(0.0);
     usernameGroup.setMinHeight(0.0);
@@ -125,39 +115,9 @@ public class AuthMenuController {
     rootPane.styleProperty().bind(Bindings.createStringBinding(() -> {
       double calculatedSize = rootPane.getHeight() * 0.016;
       double clampedSize = Math.clamp(calculatedSize, 12, 32);
-
       return String.format("-fx-font-size: %.1fpx;", clampedSize);
     }, rootPane.heightProperty()));
   }
-
-  @FXML
-  private void onPasswordEyePressed(MouseEvent e) {
-    if (e.getSource() == passwordEyeWrapper) {
-      isPasswordVisible = !isPasswordVisible;
-      togglePasswordMasking(isPasswordVisible, passwordInput, passwordValue, passwordEyeIcon);
-    }
-    else if (e.getSource() == confirmPasswordEyeWrapper) {
-      isConfirmPasswordVisible = !isConfirmPasswordVisible;
-      togglePasswordMasking(isConfirmPasswordVisible, confirmPasswordInput, confirmPasswordValue, confirmPasswordEyeIcon);
-    }
-  }
-
-  private void togglePasswordMasking(boolean isVisible, TextField input, StringBuilder value, ImageView icon) {
-    icon.setImage(new Image(resourceProvider.getUrl(isVisible ? Ui.EYE_OFF_ICON : Ui.EYE_ON_ICON).toExternalForm()));
-
-    isSystemUpdate = true;
-
-    int textFieldPosition = input.getCaretPosition();
-
-    if (isVisible) {
-      input.setText(value.toString());
-    } else {
-      input.setText("•".repeat(value.length()));
-    }
-    input.positionCaret(textFieldPosition);
-    isSystemUpdate = false;
-  }
-
 
   private void loadResources() {
     String css = resourceProvider.getUrl(Css.AUTH_MENU).toExternalForm();
@@ -167,7 +127,6 @@ public class AuthMenuController {
 
   private void setupAuthCard() {
     authCard.maxWidthProperty().bind(Bindings.min(rootPane.widthProperty().multiply(0.40), 800));
-
     authCard.maxHeightProperty().set(Region.USE_PREF_SIZE);
 
     authToggleGroup.selectedToggleProperty().addListener((_, oldToggle, newToggle) -> {
@@ -184,6 +143,17 @@ public class AuthMenuController {
     loginTab.setSelected(true);
   }
 
+  private void setupPasswordFields() {
+    passwordInput.setContextMenu(new ContextMenu());
+    confirmPasswordInput.setContextMenu(new ContextMenu());
+
+    passwordSkin = new PasswordFieldSkin(passwordInput);
+    passwordInput.setSkin(passwordSkin);
+
+    confirmPasswordSkin = new PasswordFieldSkin(confirmPasswordInput);
+    confirmPasswordInput.setSkin(confirmPasswordSkin);
+  }
+
   private void playLoginTransition() {
     double startHeight = usernameGroup.getHeight();
 
@@ -196,7 +166,6 @@ public class AuthMenuController {
         new KeyFrame(Duration.millis(200), new KeyValue(usernameGroup.prefHeightProperty(), 0.0),
             new KeyValue(usernameGroup.minHeightProperty(), 0.0),
             new KeyValue(usernameGroup.opacityProperty(), 0.0),
-
             new KeyValue(confirmPasswordGroup.prefHeightProperty(), 0.0),
             new KeyValue(confirmPasswordGroup.minHeightProperty(), 0.0),
             new KeyValue(confirmPasswordGroup.opacityProperty(), 0.0)));
@@ -227,7 +196,6 @@ public class AuthMenuController {
         new KeyValue(usernameGroup.prefHeightProperty(), targetHeight),
         new KeyValue(usernameGroup.minHeightProperty(), targetHeight),
         new KeyValue(usernameGroup.opacityProperty(), 1.0),
-
         new KeyValue(confirmPasswordGroup.prefHeightProperty(), targetHeight),
         new KeyValue(confirmPasswordGroup.minHeightProperty(), targetHeight),
         new KeyValue(confirmPasswordGroup.opacityProperty(), 1.0)));
@@ -249,6 +217,19 @@ public class AuthMenuController {
       if (Boolean.TRUE.equals(focused)) {
         container.getStyleClass().add("active-field");
       }
+    });
+  }
+
+  private void setupEyeToggle(ToggleButton btn, ImageView icon, PasswordFieldSkin skin,
+      double multiply) {
+    icon.setImage(new Image(resourceProvider.getUrl(Ui.EYE_ON_ICON).toExternalForm()));
+    icon.fitHeightProperty().bind(rootPane.heightProperty().multiply(multiply));
+    icon.fitWidthProperty().bind(rootPane.heightProperty().multiply(multiply));
+
+    btn.selectedProperty().addListener((_, _, isSelected) -> {
+      skin.setMasked(!isSelected);
+      icon.setImage(new Image(
+          resourceProvider.getUrl(isSelected ? Ui.EYE_OFF_ICON : Ui.EYE_ON_ICON).toExternalForm()));
     });
   }
 
@@ -285,63 +266,7 @@ public class AuthMenuController {
     googleIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.025));
     googleIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.025));
 
-    passwordEyeIcon.setImage(new Image(resourceProvider.getUrl(Ui.EYE_ON_ICON).toExternalForm()));
-    passwordEyeIcon.setOpacity(0.45);
-    passwordEyeIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(defMultiply));
-    passwordEyeIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(defMultiply));
-    passwordEyeIcon.setPickOnBounds(true);
-
-    passwordEyeWrapper.setOnMouseEntered(_ -> passwordEyeIcon.setOpacity(0.85));
-    passwordEyeWrapper.setOnMouseExited(
-        _ -> passwordEyeIcon.setOpacity(isPasswordVisible ? 0.90 : 0.45));
-
-    confirmPasswordEyeIcon.setImage(
-        new Image(resourceProvider.getUrl(Ui.EYE_ON_ICON).toExternalForm()));
-    confirmPasswordEyeIcon.setOpacity(0.45);
-    confirmPasswordEyeIcon.fitHeightProperty()
-        .bind(rootPane.heightProperty().multiply(defMultiply));
-    confirmPasswordEyeIcon.fitWidthProperty().bind(rootPane.heightProperty().multiply(defMultiply));
-    confirmPasswordEyeIcon.setPickOnBounds(true);
-
-    confirmPasswordEyeWrapper.setOnMouseEntered(_ -> confirmPasswordEyeIcon.setOpacity(0.85));
-    confirmPasswordEyeWrapper.setOnMouseExited(
-        _ -> confirmPasswordEyeIcon.setOpacity(isConfirmPasswordVisible ? 0.90 : 0.45));
-  }
-
-  private void setupPasswordMasking(TextField field, StringBuilder password,
-      Supplier<Boolean> isVisibleSupplier) {
-    field.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      KeyCombination copy = new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN);
-      KeyCombination cut = new KeyCodeCombination(KeyCode.X, KeyCombination.SHORTCUT_DOWN);
-      if (copy.match(event) || cut.match(event)) {
-        event.consume();
-      }
-    });
-
-    field.setContextMenu(new ContextMenu());
-
-    field.setTextFormatter(new TextFormatter<>(change -> {
-      if (isSystemUpdate) {
-        return change;
-      }
-      int start = change.getRangeStart();
-      int end = change.getRangeEnd();
-      String inserted = change.getText();
-
-      if (end > start) {
-        password.delete(start, end);
-      }
-      if (!inserted.isEmpty()) {
-        password.insert(start, inserted);
-      }
-
-      if (isVisibleSupplier.get()) {
-        change.setText(inserted);
-      } else {
-        change.setText("•".repeat(inserted.length()));
-      }
-
-      return change;
-    }));
+    setupEyeToggle(passwordEyeBtn, passwordEyeIcon, passwordSkin, defMultiply);
+    setupEyeToggle(confirmPasswordEyeBtn, confirmPasswordEyeIcon, confirmPasswordSkin, defMultiply);
   }
 }

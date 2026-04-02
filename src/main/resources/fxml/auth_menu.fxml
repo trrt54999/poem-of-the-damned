@@ -50,10 +50,12 @@
         <StackPane styleClass="icon-wrapper">
           <ImageView fx:id="passwordIcon" preserveRatio="true"/>
         </StackPane>
-        <TextField fx:id="passwordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
-        <StackPane fx:id="passwordEyeWrapper" styleClass="eye-wrapper" onMousePressed="#onPasswordEyePressed">
-        <ImageView fx:id="passwordEyeIcon" styleClass="eye-icon" preserveRatio="true"/>
-        </StackPane>
+        <PasswordField fx:id="passwordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
+        <ToggleButton fx:id="passwordEyeBtn" styleClass="eye-button" focusTraversable="false">
+          <graphic>
+            <ImageView fx:id="passwordEyeIcon" preserveRatio="true"/>
+          </graphic>
+        </ToggleButton>
       </HBox>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
@@ -62,10 +64,13 @@
         <StackPane styleClass="icon-wrapper">
           <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
         </StackPane>
-        <TextField fx:id="confirmPasswordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
-        <StackPane fx:id="confirmPasswordEyeWrapper" styleClass="eye-wrapper" onMousePressed="#onPasswordEyePressed">
-        <ImageView fx:id="confirmPasswordEyeIcon" styleClass="eye-icon" preserveRatio="true"/>
-        </StackPane>
+        <PasswordField fx:id="confirmPasswordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
+        <ToggleButton fx:id="confirmPasswordEyeBtn" styleClass="eye-button"
+          focusTraversable="false">
+          <graphic>
+            <ImageView fx:id="confirmPasswordEyeIcon" preserveRatio="true"/>
+          </graphic>
+        </ToggleButton>
       </HBox>
     </VBox>
     <Region style="-fx-pref-height: 0.8em"/>
