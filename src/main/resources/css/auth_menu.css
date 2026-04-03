@@ -110,13 +110,12 @@
   -fx-opacity: 0.90;
 }
 
-.field-error-label{
+.field-error-label {
   -fx-text-fill: rgba(255, 111, 111, 0.90);
-  -fx-font-size: 0.8em;
+  -fx-font-size: 1em;
+  -fx-padding: 0.4em 0 0 0.6em;
   -fx-font-family: 'Inter Medium';
 }
-
-/* погратися з кольорами */
 
 .field-error > .field-group-input {
   -fx-border-color: rgba(255, 111, 111, 0.90);

@@ -13,6 +13,7 @@ module com.midnightdraft.poemofthedamned {
   requires org.slf4j;
   requires org.apache.logging.log4j;
   requires org.apache.logging.log4j.core;
+  requires jbcrypt;
 
   opens com.midnightdraft.poemofthedamned to javafx.fxml;
   exports com.midnightdraft.poemofthedamned;

@@ -78,6 +78,7 @@
       <Label fx:id="confirmPasswordError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <Region style="-fx-pref-height: 0.8em"/>
+    <Label fx:id="authError" styleClass="field-error-label" visible="false"/>
     <Button fx:id="actionButton" maxWidth="Infinity"  styleClass="auth-action-btn"/>
     <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
       <Separator HBox.hgrow="ALWAYS"/>

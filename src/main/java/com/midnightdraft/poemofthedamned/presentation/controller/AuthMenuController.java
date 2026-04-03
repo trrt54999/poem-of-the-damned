@@ -1,6 +1,10 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.application.exception.InvalidCredentialsException;
+import com.midnightdraft.poemofthedamned.application.exception.UserAlreadyExistsException;
+import com.midnightdraft.poemofthedamned.application.usecase.LoginUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.RegistrationUseCase;
+import com.midnightdraft.poemofthedamned.domain.model.User;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
@@ -8,11 +12,16 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.domain.repository.UserRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.UserRepositoryImpl;
+import com.midnightdraft.poemofthedamned.presentation.AuthValidator;
 import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -91,6 +100,8 @@ public class AuthMenuController {
   @FXML
   private PasswordField confirmPasswordInput;
   @FXML
+  private Label authError;
+  @FXML
   private Label usernameError;
   @FXML
   private Label emailError;
@@ -104,6 +115,7 @@ public class AuthMenuController {
 
   private final UserRepository userRepository = new UserRepositoryImpl();
   private final RegistrationUseCase registrationUseCase = new RegistrationUseCase(userRepository);
+  private final LoginUseCase loginUseCase = new LoginUseCase(userRepository);
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   @FXML
@@ -112,10 +124,13 @@ public class AuthMenuController {
     setupAuthCard();
     setupPasswordFields();
     setupIcons();
-    setupFocusHighlight(usernameInput);
-    setupFocusHighlight(emailInput);
-    setupFocusHighlight(passwordInput);
-    setupFocusHighlight(confirmPasswordInput);
+    setupFieldValidation(usernameInput, usernameGroup, usernameError,
+        AuthValidator::validateUsername);
+    setupFieldValidation(emailInput, emailGroup, emailError, AuthValidator::validateEmail);
+    setupFieldValidation(passwordInput, passwordGroup, passwordError,
+        AuthValidator::validatePassword);
+    setupFieldValidation(confirmPasswordInput, confirmPasswordGroup, confirmPasswordError,
+        text -> AuthValidator.validateConfirmPassword(passwordInput.getText(), text));
 
     usernameGroup.setPrefHeight(0.0);
     usernameGroup.setMinHeight(0.0);
@@ -133,14 +148,112 @@ public class AuthMenuController {
     }, rootPane.heightProperty()));
   }
 
+  private void toggleValidationState(VBox container, Label errorLabel, String error) {
+    container.getStyleClass().removeAll("field-error", "field-success");
+    if (error != null) {
+      container.getStyleClass().add("field-error");
+      errorLabel.setText("•  " + error);
+      errorLabel.setVisible(true);
+      errorLabel.setManaged(true);
+    } else {
+      container.getStyleClass().add("field-success");
+      errorLabel.setVisible(false);
+      errorLabel.setManaged(false);
+    }
+  }
+
+  private void showAuthError(String message) {
+    authError.setText(message);
+    authError.setVisible(true);
+    authError.setManaged(true);
+  }
 
   private void handleRegistration() {
-    registrationUseCase.execute(usernameInput.getText(), emailInput.getText(),
-        passwordInput.getText());
+    String username = usernameInput.getText().strip();
+    String email = emailInput.getText().strip();
+    String password = passwordInput.getText();
+    String confirmPassword = confirmPasswordInput.getText();
+
+    String usernameValidation = AuthValidator.validateUsername(username).orElse(null);
+    String emailValidation = AuthValidator.validateEmail(email).orElse(null);
+    String passwordValidation = AuthValidator.validatePassword(password).orElse(null);
+    String confirmPasswordValidation = AuthValidator.validateConfirmPassword(password,
+        confirmPassword).orElse(null);
+
+    toggleValidationState(usernameGroup, usernameError, usernameValidation);
+    toggleValidationState(emailGroup, emailError, emailValidation);
+    toggleValidationState(passwordGroup, passwordError, passwordValidation);
+    toggleValidationState(confirmPasswordGroup, confirmPasswordError, confirmPasswordValidation);
+
+    if (Stream.of(usernameValidation, emailValidation, passwordValidation,
+        confirmPasswordValidation).anyMatch(java.util.Objects::nonNull)) {
+      return;
+    }
+
+    actionButton.setDisable(true);
+    Task<User> task = new Task<>() {
+      @Override
+      protected User call() {
+        return registrationUseCase.execute(username, email, password);
+      }
+    };
+
+    task.setOnSucceeded(_ -> {
+      actionButton.setDisable(false);
+      // todo load main menu
+    });
+
+    task.setOnFailed(_ -> {
+      Throwable ex = task.getException();
+      if (ex instanceof UserAlreadyExistsException) {
+        showAuthError("User already exists!");
+        actionButton.setDisable(false);
+      }
+    });
+
+    Thread taskThread = new Thread(task);
+    taskThread.setDaemon(true);
+    taskThread.start();
   }
 
   private void handleLogin() {
-    // todo impl login
+    String email = emailInput.getText().strip();
+    String password = passwordInput.getText();
+
+    String emailValidation = AuthValidator.validateEmail(email).orElse(null);
+    String passwordValidation = AuthValidator.validatePassword(password).orElse(null);
+
+    toggleValidationState(emailGroup, emailError, emailValidation);
+    toggleValidationState(passwordGroup, passwordError, passwordValidation);
+
+    if (Stream.of(emailValidation, passwordValidation).anyMatch(java.util.Objects::nonNull)) {
+      return;
+    }
+
+    actionButton.setDisable(true);
+    Task<User> task = new Task<>() {
+      @Override
+      protected User call() {
+        return loginUseCase.execute(email, password);
+      }
+    };
+
+    task.setOnSucceeded(_ -> {
+      actionButton.setDisable(false);
+      // todo load main menu
+    });
+
+    task.setOnFailed(_ -> {
+      Throwable ex = task.getException();
+      if (ex instanceof InvalidCredentialsException) {
+        showAuthError("Invalid email or password!");
+        actionButton.setDisable(false);
+      }
+    });
+
+    Thread taskThread = new Thread(task);
+    taskThread.setDaemon(true);
+    taskThread.start();
   }
 
   private void loadResources() {
@@ -160,10 +273,12 @@ public class AuthMenuController {
         playLoginTransition();
         actionButton.setText("Login");
         actionButton.setOnAction(_ -> handleLogin());
+        authError.setVisible(false);
       } else if (newToggle == registrationTab) {
         playRegistrationTransition();
         actionButton.setText("Create account");
         actionButton.setOnAction(_ -> handleRegistration());
+        authError.setVisible(false);
       }
     });
     loginTab.setSelected(true);
@@ -236,14 +351,21 @@ public class AuthMenuController {
     timeline.play();
   }
 
-  private void setupFocusHighlight(TextField field) {
-    HBox container = (HBox) field.getParent();
+  private void setupFieldValidation(TextField field, VBox group, Label errorLabel,
+      Function<String, Optional<String>> validator) {
+
     field.focusedProperty().addListener((_, _, focused) -> {
+      HBox container = (HBox) field.getParent();
       container.getStyleClass().remove("active-field");
-      if (Boolean.TRUE.equals(focused)) {
+      if (focused) {
         container.getStyleClass().add("active-field");
+      } else {
+        toggleValidationState(group, errorLabel, validator.apply(field.getText()).orElse(null));
       }
     });
+
+    field.textProperty().addListener((_, _, _) -> toggleValidationState(group, errorLabel,
+        validator.apply(field.getText()).orElse(null)));
   }
 
   private void setupEyeToggle(ToggleButton btn, ImageView icon, PasswordFieldSkin skin,
