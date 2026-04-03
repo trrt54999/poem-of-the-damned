@@ -23,12 +23,13 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public void save(T entity){
+  public T save(T entity){
     Transaction tx = null;
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       tx = session.beginTransaction();
       session.persist(entity);
       tx.commit();
+      return entity;
     }catch (Exception e) {
       if (tx != null)
       {
@@ -42,12 +43,13 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public void update(T entity){
+  public T update(T entity){
     Transaction tx = null;
     try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       tx = session.beginTransaction();
-      session.merge(entity);
+      T managedEntity = session.merge(entity);
       tx.commit();
+      return managedEntity;
     } catch (Exception e) {
       if (tx != null)
       {

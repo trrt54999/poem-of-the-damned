@@ -1,10 +1,13 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.application.usecase.RegistrationUseCase;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
+import com.midnightdraft.poemofthedamned.domain.repository.UserRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.UserRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -13,6 +16,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -86,10 +90,20 @@ public class AuthMenuController {
   private PasswordField passwordInput;
   @FXML
   private PasswordField confirmPasswordInput;
+  @FXML
+  private Label usernameError;
+  @FXML
+  private Label emailError;
+  @FXML
+  private Label passwordError;
+  @FXML
+  private Label confirmPasswordError;
 
   private PasswordFieldSkin passwordSkin;
   private PasswordFieldSkin confirmPasswordSkin;
 
+  private final UserRepository userRepository = new UserRepositoryImpl();
+  private final RegistrationUseCase registrationUseCase = new RegistrationUseCase(userRepository);
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   @FXML
@@ -119,6 +133,16 @@ public class AuthMenuController {
     }, rootPane.heightProperty()));
   }
 
+
+  private void handleRegistration() {
+    registrationUseCase.execute(usernameInput.getText(), emailInput.getText(),
+        passwordInput.getText());
+  }
+
+  private void handleLogin() {
+    // todo impl login
+  }
+
   private void loadResources() {
     String css = resourceProvider.getUrl(Css.AUTH_MENU).toExternalForm();
     rootPane.getStylesheets().add(css);
@@ -135,9 +159,11 @@ public class AuthMenuController {
       } else if (newToggle == loginTab) {
         playLoginTransition();
         actionButton.setText("Login");
+        actionButton.setOnAction(_ -> handleLogin());
       } else if (newToggle == registrationTab) {
         playRegistrationTransition();
         actionButton.setText("Create account");
+        actionButton.setOnAction(_ -> handleRegistration());
       }
     });
     loginTab.setSelected(true);

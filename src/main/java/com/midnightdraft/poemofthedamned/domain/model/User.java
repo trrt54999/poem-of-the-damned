@@ -22,7 +22,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
 public class User extends BaseEntity {
 
   @NotBlank(message = "Name cannot be empty!")
@@ -46,4 +45,10 @@ public class User extends BaseEntity {
       inverseJoinColumns = @JoinColumn(name = "choice_id")
   )
   private Set<Choice> unlockedChoices = new HashSet<>();
+
+  public User(String username, String email, String passwordHash) {
+    this.username = username;
+    this.email = email;
+    this.passwordHash = passwordHash;
+  }
 }

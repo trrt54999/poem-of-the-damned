@@ -34,6 +34,7 @@
         </StackPane>
         <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
       </HBox>
+      <Label fx:id="usernameError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="emailGroup" styleClass="field-group">
       <Label text="Email" styleClass="field-group-label"/>
@@ -43,6 +44,7 @@
         </StackPane>
         <TextField fx:id="emailInput" promptText="email@example.com" HBox.hgrow="ALWAYS"/>
       </HBox>
+      <Label fx:id="emailError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="passwordGroup" styleClass="field-group">
       <Label text="Password" styleClass="field-group-label"/>
@@ -57,6 +59,7 @@
           </graphic>
         </ToggleButton>
       </HBox>
+      <Label fx:id="passwordError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
       <Label text="Confirm password" styleClass="field-group-label"/>
@@ -72,9 +75,10 @@
           </graphic>
         </ToggleButton>
       </HBox>
+      <Label fx:id="confirmPasswordError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <Region style="-fx-pref-height: 0.8em"/>
-    <Button fx:id="actionButton" maxWidth="Infinity" styleClass="auth-action-btn"/>
+    <Button fx:id="actionButton" maxWidth="Infinity"  styleClass="auth-action-btn"/>
     <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
       <Separator HBox.hgrow="ALWAYS"/>
       <Label text="Or" styleClass="or-divider-text"/>
