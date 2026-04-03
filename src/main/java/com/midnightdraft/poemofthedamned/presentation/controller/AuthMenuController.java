@@ -12,7 +12,7 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.domain.repository.UserRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.UserRepositoryImpl;
-import com.midnightdraft.poemofthedamned.presentation.AuthValidator;
+import com.midnightdraft.poemofthedamned.presentation.util.AuthValidator;
 import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
 import java.util.Optional;
 import java.util.function.Function;
@@ -120,6 +120,7 @@ public class AuthMenuController {
 
   @FXML
   public void initialize() {
+    log.info("Initializing Auth Menu...");
     loadResources();
     setupAuthCard();
     setupPasswordFields();
@@ -205,6 +206,7 @@ public class AuthMenuController {
 
     task.setOnFailed(_ -> {
       Throwable ex = task.getException();
+      log.error("Registration failed: {}", ex.getMessage());
       if (ex instanceof UserAlreadyExistsException) {
         showAuthError("User already exists!");
         actionButton.setDisable(false);
@@ -245,6 +247,7 @@ public class AuthMenuController {
 
     task.setOnFailed(_ -> {
       Throwable ex = task.getException();
+      log.error("Login failed: {}", ex.getMessage());
       if (ex instanceof InvalidCredentialsException) {
         showAuthError("Invalid email or password!");
         actionButton.setDisable(false);

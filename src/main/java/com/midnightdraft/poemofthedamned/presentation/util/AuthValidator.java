@@ -1,4 +1,4 @@
-package com.midnightdraft.poemofthedamned.presentation;
+package com.midnightdraft.poemofthedamned.presentation.util;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
