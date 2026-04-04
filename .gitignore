@@ -48,3 +48,8 @@ out/
 ### Game Engine Logs ###
 logs/
 *.log
+
+### Database ###
+poem.db
+*.db
+*.sqlite
