@@ -257,10 +257,12 @@ public class AuthMenuController {
     });
 
     task.setOnFailed(_ -> {
+      actionButton.setDisable(false);
       Throwable ex = task.getException();
       if (expectedEx.isInstance(ex)) {
         showAuthError(resources.getString(errorMsg));
-        actionButton.setDisable(false);
+      } else {
+        log.error("Unexpected auth error", ex);
       }
     });
 
