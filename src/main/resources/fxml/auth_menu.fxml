@@ -28,58 +28,75 @@
     </HBox>
     <VBox fx:id="usernameGroup" styleClass="field-group">
       <Label text="Login" styleClass="field-group-label"/>
-      <HBox styleClass="field-group-input">
-        <StackPane styleClass="icon-wrapper">
-          <ImageView fx:id="usernameIcon" preserveRatio="true"/>
-        </StackPane>
-        <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
-      </HBox>
+      <StackPane alignment="CENTER_RIGHT">
+        <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
+          <StackPane styleClass="icon-wrapper">
+            <ImageView fx:id="usernameIcon" preserveRatio="true"/>
+          </StackPane>
+          <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <ImageView fx:id="usernameValidationIcon" styleClass="validation-icon" preserveRatio="true"
+          visible="false"/>
+      </StackPane>
       <Label fx:id="usernameError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="emailGroup" styleClass="field-group">
       <Label text="Email" styleClass="field-group-label"/>
-      <HBox styleClass="field-group-input">
-        <StackPane styleClass="icon-wrapper">
-          <ImageView fx:id="emailIcon" preserveRatio="true"/>
-        </StackPane>
-        <TextField fx:id="emailInput" promptText="email@example.com" HBox.hgrow="ALWAYS"/>
-      </HBox>
+      <StackPane alignment="CENTER_RIGHT">
+        <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
+          <StackPane styleClass="icon-wrapper">
+            <ImageView fx:id="emailIcon" preserveRatio="true"/>
+          </StackPane>
+          <TextField fx:id="emailInput" promptText="email@example.com" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <ImageView fx:id="emailValidationIcon" styleClass="validation-icon" preserveRatio="true"
+          visible="false"/>
+      </StackPane>
       <Label fx:id="emailError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="passwordGroup" styleClass="field-group">
       <Label text="Password" styleClass="field-group-label"/>
-      <HBox styleClass="field-group-input">
-        <StackPane styleClass="icon-wrapper">
-          <ImageView fx:id="passwordIcon" preserveRatio="true"/>
-        </StackPane>
-        <PasswordField fx:id="passwordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
-        <ToggleButton fx:id="passwordEyeBtn" styleClass="eye-button" focusTraversable="false">
-          <graphic>
-            <ImageView fx:id="passwordEyeIcon" preserveRatio="true"/>
-          </graphic>
-        </ToggleButton>
-      </HBox>
+      <StackPane alignment="CENTER_RIGHT">
+        <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
+          <StackPane styleClass="icon-wrapper">
+            <ImageView fx:id="passwordIcon" preserveRatio="true"/>
+          </StackPane>
+          <PasswordField fx:id="passwordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
+          <ToggleButton fx:id="passwordEyeBtn" styleClass="eye-button" focusTraversable="false">
+            <graphic>
+              <ImageView fx:id="passwordEyeIcon" preserveRatio="true"/>
+            </graphic>
+          </ToggleButton>
+        </HBox>
+        <ImageView fx:id="passwordValidationIcon" styleClass="validation-icon" preserveRatio="true"
+          visible="false"/>
+      </StackPane>
       <Label fx:id="passwordError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
       <Label text="Confirm password" styleClass="field-group-label"/>
-      <HBox styleClass="field-group-input">
-        <StackPane styleClass="icon-wrapper">
-          <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
-        </StackPane>
-        <PasswordField fx:id="confirmPasswordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
-        <ToggleButton fx:id="confirmPasswordEyeBtn" styleClass="eye-button"
-          focusTraversable="false">
-          <graphic>
-            <ImageView fx:id="confirmPasswordEyeIcon" preserveRatio="true"/>
-          </graphic>
-        </ToggleButton>
-      </HBox>
-      <Label fx:id="confirmPasswordError" styleClass="field-error-label" managed="false" visible="false"/>
+      <StackPane alignment="CENTER_RIGHT">
+        <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
+          <StackPane styleClass="icon-wrapper">
+            <ImageView fx:id="confirmPasswordIcon" preserveRatio="true"/>
+          </StackPane>
+          <PasswordField fx:id="confirmPasswordInput" promptText="•••••••••••" HBox.hgrow="ALWAYS"/>
+          <ToggleButton fx:id="confirmPasswordEyeBtn" styleClass="eye-button"
+            focusTraversable="false">
+            <graphic>
+              <ImageView fx:id="confirmPasswordEyeIcon" preserveRatio="true"/>
+            </graphic>
+          </ToggleButton>
+        </HBox>
+        <ImageView fx:id="confirmPasswordValidationIcon" styleClass="validation-icon"
+          preserveRatio="true" visible="false"/>
+      </StackPane>
+      <Label fx:id="confirmPasswordError" styleClass="field-error-label" managed="false"
+        visible="false"/>
     </VBox>
     <Region style="-fx-pref-height: 0.8em"/>
     <Label fx:id="authError" styleClass="field-error-label" visible="false"/>
-    <Button fx:id="actionButton" maxWidth="Infinity"  styleClass="auth-action-btn"/>
+    <Button fx:id="actionButton" maxWidth="Infinity" styleClass="auth-action-btn"/>
     <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
       <Separator HBox.hgrow="ALWAYS"/>
       <Label text="Or" styleClass="or-divider-text"/>

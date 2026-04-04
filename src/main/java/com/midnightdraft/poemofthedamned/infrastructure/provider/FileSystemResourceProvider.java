@@ -99,6 +99,8 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case GOOGLE_ICON -> "/assets/ui/google_icon.png";
         case EYE_ON_ICON -> "/assets/ui/eye_on_icon.png";
         case EYE_OFF_ICON -> "/assets/ui/eye_off_icon.png";
+        case FIELD_REFUSE_ICON -> "/assets/ui/field_refuse_icon.png";
+        case FIELD_SUCCESS_ICON -> "/assets/ui/field_success_icon.png";
       };
     };
   }

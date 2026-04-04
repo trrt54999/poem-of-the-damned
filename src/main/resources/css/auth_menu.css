@@ -54,6 +54,10 @@
   -fx-background-radius: 10;
 }
 
+.validation-icon {
+  -fx-translate-x: 2.2em;
+}
+
 .field-group-input.active-field {
   -fx-border-color: rgba(255, 255, 255, 0.35);
   -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.12), 20, 0, 0, 0);
@@ -115,6 +119,8 @@
   -fx-font-size: 1em;
   -fx-padding: 0.4em 0 0 0.6em;
   -fx-font-family: 'Inter Medium';
+  -fx-wrap-text: true;
+  -fx-max-width: Infinity;
 }
 
 .field-error > .field-group-input {

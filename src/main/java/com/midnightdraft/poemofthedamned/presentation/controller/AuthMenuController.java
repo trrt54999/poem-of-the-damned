@@ -36,6 +36,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +93,14 @@ public class AuthMenuController {
   @FXML
   private ImageView confirmPasswordEyeIcon;
   @FXML
+  private ImageView usernameValidationIcon;
+  @FXML
+  private ImageView emailValidationIcon;
+  @FXML
+  private ImageView passwordValidationIcon;
+  @FXML
+  private ImageView confirmPasswordValidationIcon;
+  @FXML
   private TextField usernameInput;
   @FXML
   private TextField emailInput;
@@ -110,6 +119,8 @@ public class AuthMenuController {
   @FXML
   private Label confirmPasswordError;
 
+  private Image errorIcon;
+  private Image successIcon;
   private PasswordFieldSkin passwordSkin;
   private PasswordFieldSkin confirmPasswordSkin;
 
@@ -125,12 +136,14 @@ public class AuthMenuController {
     setupAuthCard();
     setupPasswordFields();
     setupIcons();
-    setupFieldValidation(usernameInput, usernameGroup, usernameError,
+    setupFieldValidation(usernameInput, usernameGroup, usernameError, usernameValidationIcon,
         AuthValidator::validateUsername);
-    setupFieldValidation(emailInput, emailGroup, emailError, AuthValidator::validateEmail);
-    setupFieldValidation(passwordInput, passwordGroup, passwordError,
+    setupFieldValidation(emailInput, emailGroup, emailError, emailValidationIcon,
+        AuthValidator::validateEmail);
+    setupFieldValidation(passwordInput, passwordGroup, passwordError, passwordValidationIcon,
         AuthValidator::validatePassword);
     setupFieldValidation(confirmPasswordInput, confirmPasswordGroup, confirmPasswordError,
+        confirmPasswordValidationIcon,
         text -> AuthValidator.validateConfirmPassword(passwordInput.getText(), text));
 
     usernameGroup.setPrefHeight(0.0);
@@ -149,18 +162,22 @@ public class AuthMenuController {
     }, rootPane.heightProperty()));
   }
 
-  private void toggleValidationState(VBox container, Label errorLabel, String error) {
+  private void toggleValidationState(VBox container, Label errorLabel, ImageView validationIcon,
+      String error) {
     container.getStyleClass().removeAll("field-error", "field-success");
     if (error != null) {
       container.getStyleClass().add("field-error");
       errorLabel.setText("•  " + error);
       errorLabel.setVisible(true);
       errorLabel.setManaged(true);
+      validationIcon.setImage(errorIcon);
     } else {
       container.getStyleClass().add("field-success");
       errorLabel.setVisible(false);
       errorLabel.setManaged(false);
+      validationIcon.setImage(successIcon);
     }
+    validationIcon.setVisible(true);
   }
 
   private void showAuthError(String message) {
@@ -181,42 +198,25 @@ public class AuthMenuController {
     String confirmPasswordValidation = AuthValidator.validateConfirmPassword(password,
         confirmPassword).orElse(null);
 
-    toggleValidationState(usernameGroup, usernameError, usernameValidation);
-    toggleValidationState(emailGroup, emailError, emailValidation);
-    toggleValidationState(passwordGroup, passwordError, passwordValidation);
-    toggleValidationState(confirmPasswordGroup, confirmPasswordError, confirmPasswordValidation);
+    toggleValidationState(usernameGroup, usernameError, usernameValidationIcon, usernameValidation);
+    toggleValidationState(emailGroup, emailError, emailValidationIcon, emailValidation);
+    toggleValidationState(passwordGroup, passwordError, passwordValidationIcon, passwordValidation);
+    toggleValidationState(confirmPasswordGroup, confirmPasswordError, confirmPasswordValidationIcon,
+        confirmPasswordValidation);
 
     if (Stream.of(usernameValidation, emailValidation, passwordValidation,
         confirmPasswordValidation).anyMatch(java.util.Objects::nonNull)) {
       return;
     }
 
-    actionButton.setDisable(true);
-    Task<User> task = new Task<>() {
+    executeAuthTask(new Task<>() {
       @Override
       protected User call() {
         return registrationUseCase.execute(username, email, password);
       }
-    };
-
-    task.setOnSucceeded(_ -> {
-      actionButton.setDisable(false);
-      // todo load main menu
-    });
-
-    task.setOnFailed(_ -> {
-      Throwable ex = task.getException();
-      log.error("Registration failed: {}", ex.getMessage());
-      if (ex instanceof UserAlreadyExistsException) {
-        showAuthError("User already exists!");
-        actionButton.setDisable(false);
-      }
-    });
-
-    Thread taskThread = new Thread(task);
-    taskThread.setDaemon(true);
-    taskThread.start();
+    }, UserAlreadyExistsException.class, "User already exists!");
   }
+
 
   private void handleLogin() {
     String email = emailInput.getText().strip();
@@ -225,20 +225,24 @@ public class AuthMenuController {
     String emailValidation = AuthValidator.validateEmail(email).orElse(null);
     String passwordValidation = AuthValidator.validatePassword(password).orElse(null);
 
-    toggleValidationState(emailGroup, emailError, emailValidation);
-    toggleValidationState(passwordGroup, passwordError, passwordValidation);
+    toggleValidationState(emailGroup, emailError, emailValidationIcon, emailValidation);
+    toggleValidationState(passwordGroup, passwordError, passwordValidationIcon, passwordValidation);
 
     if (Stream.of(emailValidation, passwordValidation).anyMatch(java.util.Objects::nonNull)) {
       return;
     }
 
-    actionButton.setDisable(true);
-    Task<User> task = new Task<>() {
+    executeAuthTask(new Task<>() {
       @Override
       protected User call() {
         return loginUseCase.execute(email, password);
       }
-    };
+    }, InvalidCredentialsException.class, "Invalid email or password!");
+  }
+
+  private void executeAuthTask(Task<User> task, Class<? extends RuntimeException> expectedEx,
+      String errorMsg) {
+    actionButton.setDisable(true);
 
     task.setOnSucceeded(_ -> {
       actionButton.setDisable(false);
@@ -247,9 +251,8 @@ public class AuthMenuController {
 
     task.setOnFailed(_ -> {
       Throwable ex = task.getException();
-      log.error("Login failed: {}", ex.getMessage());
-      if (ex instanceof InvalidCredentialsException) {
-        showAuthError("Invalid email or password!");
+      if (expectedEx.isInstance(ex)) {
+        showAuthError(errorMsg);
         actionButton.setDisable(false);
       }
     });
@@ -265,6 +268,14 @@ public class AuthMenuController {
     Font.loadFont(resourceProvider.getUrl(Fonts.INTER_MEDIUM).toExternalForm(), 20);
   }
 
+  private void playActionButtonTransition() {
+    actionButton.setTextFill(Color.rgb(255, 255, 255, 0.0));
+
+    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500),
+        new KeyValue(actionButton.textFillProperty(), Color.rgb(255, 255, 255, 0.85))));
+    timeline.play();
+  }
+
   private void setupAuthCard() {
     authCard.maxWidthProperty().bind(Bindings.min(rootPane.widthProperty().multiply(0.40), 800));
     authCard.maxHeightProperty().set(Region.USE_PREF_SIZE);
@@ -274,11 +285,13 @@ public class AuthMenuController {
         oldToggle.setSelected(true);
       } else if (newToggle == loginTab) {
         playLoginTransition();
+        playActionButtonTransition();
         actionButton.setText("Login");
         actionButton.setOnAction(_ -> handleLogin());
         authError.setVisible(false);
       } else if (newToggle == registrationTab) {
         playRegistrationTransition();
+        playActionButtonTransition();
         actionButton.setText("Create account");
         actionButton.setOnAction(_ -> handleRegistration());
         authError.setVisible(false);
@@ -355,7 +368,7 @@ public class AuthMenuController {
   }
 
   private void setupFieldValidation(TextField field, VBox group, Label errorLabel,
-      Function<String, Optional<String>> validator) {
+      ImageView validationIcon, Function<String, Optional<String>> validator) {
 
     field.focusedProperty().addListener((_, _, focused) -> {
       HBox container = (HBox) field.getParent();
@@ -363,12 +376,14 @@ public class AuthMenuController {
       if (focused) {
         container.getStyleClass().add("active-field");
       } else {
-        toggleValidationState(group, errorLabel, validator.apply(field.getText()).orElse(null));
+        toggleValidationState(group, errorLabel, validationIcon,
+            validator.apply(field.getText()).orElse(null));
       }
     });
 
-    field.textProperty().addListener((_, _, _) -> toggleValidationState(group, errorLabel,
-        validator.apply(field.getText()).orElse(null)));
+    field.textProperty().addListener(
+        (_, _, _) -> toggleValidationState(group, errorLabel, validationIcon,
+            validator.apply(field.getText()).orElse(null)));
   }
 
   private void setupEyeToggle(ToggleButton btn, ImageView icon, PasswordFieldSkin skin,
@@ -385,7 +400,17 @@ public class AuthMenuController {
   }
 
   private void setupIcons() {
+    successIcon = new Image(resourceProvider.getUrl(Ui.FIELD_SUCCESS_ICON).toExternalForm());
+    errorIcon = new Image(resourceProvider.getUrl(Ui.FIELD_REFUSE_ICON).toExternalForm());
+
     double defMultiply = 0.022;
+    double validationMultiply = 0.024;
+
+    Stream.of(usernameValidationIcon, emailValidationIcon, passwordValidationIcon,
+        confirmPasswordValidationIcon).forEach(icon -> {
+      icon.fitHeightProperty().bind(rootPane.heightProperty().multiply(validationMultiply));
+      icon.fitWidthProperty().bind(rootPane.heightProperty().multiply(validationMultiply));
+    });
 
     loginTabIcon.setImage(new Image(resourceProvider.getUrl(Ui.LOGIN_TAB_ICON).toExternalForm()));
     loginTabIcon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.028));

@@ -79,6 +79,8 @@ public interface ResourceCatalog {
     CONFIRM_PASSWORD_ICON,
     GOOGLE_ICON,
     EYE_ON_ICON,
-    EYE_OFF_ICON
+    EYE_OFF_ICON,
+    FIELD_REFUSE_ICON,
+    FIELD_SUCCESS_ICON
   }
 }

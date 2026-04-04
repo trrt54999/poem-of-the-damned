@@ -40,7 +40,7 @@ public class AuthValidator {
       return Optional.of("Password cannot be empty!");
     }
     if (password.length() < 6 || password.length() > 30) {
-      return Optional.of("Password must be more than 6 and less than 30 characters!");
+      return Optional.of("Password length must be 6-30 characters!");
     }
     if (!VALID_PASSWORD_ENGLISH_ONLY.matcher(password).matches()) {
       return Optional.of("Password must contain only english letters!");
