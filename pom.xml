@@ -122,6 +122,7 @@
       <artifactId>javafx-media</artifactId>
       <version>25.0.2</version>
     </dependency>
+    <!-- javafx svg -->
   </dependencies>
   <build>
     <plugins>

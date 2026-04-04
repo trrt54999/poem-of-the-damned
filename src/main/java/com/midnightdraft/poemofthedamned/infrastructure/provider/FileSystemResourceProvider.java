@@ -25,6 +25,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case Css css -> switch (css) {
         case GAME_MAIN_MENU -> "/css/game_main_menu.css";
         case GAME_SCENE -> "/css/game_scene.css";
+        case AUTH_MENU -> "/css/auth_menu.css";
         case FONT_EN -> "/css/font_en.css";
         case FONT_UK -> "/css/font_uk.css";
       };
@@ -32,6 +33,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
       case Fxml fxml -> switch (fxml) {
         case GAME_MAIN_MENU -> "/fxml/game_main_menu.fxml";
         case GAME_SCENE -> "/fxml/game_scene.fxml";
+        case AUTH_MENU -> "/fxml/auth_menu.fxml";
       };
 
       case AudioBgm audioBgm -> switch (audioBgm) {
@@ -71,6 +73,7 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case ALLER_REGULAR -> "/assets/fonts/aller_regular.ttf";
         case NUNITO_BLACK -> "/assets/fonts/nunito_black.ttf";
         case UBUNTU_BOLD -> "/assets/fonts/ubuntu_bold.ttf";
+        case INTER_MEDIUM -> "/assets/fonts/inter_medium.otf";
       };
 
       case Backgrounds backgrounds -> switch (backgrounds) {
@@ -87,6 +90,17 @@ public class FileSystemResourceProvider  implements ResourceProvider {
         case LOGO -> "/assets/ui/logo.jpg";
         case GITHUB_LOGO -> "/assets/ui/github_logo.png";
         case DIALOGUE_RECTANGLE -> "/assets/ui/dialogue_rectangle.png";
+        case LOGIN_TAB_ICON -> "/assets/ui/login_tab_icon.png";
+        case REGISTRATION_TAB_ICON -> "/assets/ui/registration_tab_icon.png";
+        case USERNAME_ICON -> "/assets/ui/username_icon.png";
+        case EMAIL_ICON -> "/assets/ui/email_icon.png";
+        case PASSWORD_ICON -> "/assets/ui/password_icon.png";
+        case CONFIRM_PASSWORD_ICON -> "/assets/ui/confirm_password_icon.png";
+        case GOOGLE_ICON -> "/assets/ui/google_icon.png";
+        case EYE_ON_ICON -> "/assets/ui/eye_on_icon.png";
+        case EYE_OFF_ICON -> "/assets/ui/eye_off_icon.png";
+        case FIELD_REFUSE_ICON -> "/assets/ui/field_refuse_icon.png";
+        case FIELD_SUCCESS_ICON -> "/assets/ui/field_success_icon.png";
       };
     };
   }

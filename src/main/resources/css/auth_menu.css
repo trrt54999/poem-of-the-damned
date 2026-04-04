@@ -1,0 +1,186 @@
+.auth-menu-root {
+  -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #354C71, #336353)
+}
+
+.auth-card {
+  -fx-padding: 2em 5em 1.5em 5em;
+  -fx-spacing: 0.8em;
+  -fx-background-radius: 16;
+  -fx-border-radius: 16;
+  -fx-background-color: rgba(255, 255, 255, 0.25);
+  -fx-border-color: rgba(255, 255, 255, 0.35);
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 30, 0, 0, 10);
+}
+
+.tab-switcher {
+  -fx-background-radius: 16;
+  -fx-background-color: rgba(0, 0, 0, 0.15);
+  -fx-padding: 5 6;
+  -fx-pref-height: 3.15em;
+  -fx-spacing: 0.5;
+}
+
+.tab-switcher-btn {
+  -fx-background-color: rgba(255, 255, 255, 0.0);
+  -fx-background-insets: 0;
+  -fx-font-family: "Inter Medium";
+  -fx-font-size: 1.5em;
+  -fx-graphic-text-gap: 0.5em;
+  -fx-text-fill: rgba(255, 255, 255, 0.40);
+  -fx-padding: 6;
+}
+
+.tab-switcher-btn:hover {
+  -fx-cursor: hand;
+  -fx-background-color: rgba(255, 255, 255, 0.05);
+  -fx-background-radius: 10;
+  -fx-text-fill: rgba(255, 255, 255, 0.70);
+}
+
+.tab-switcher-btn:pressed {
+  -fx-background-color: rgba(0, 0, 0, 0.1);
+  -fx-text-fill: rgba(255, 255, 255, 0.40);
+  -fx-translate-y: 2px;
+}
+
+.tab-switcher-btn:selected {
+  -fx-background-color: rgba(255, 255, 255, 0.08);
+  -fx-background-radius: 10;
+  -fx-text-fill: rgba(255, 255, 255, 0.9);
+}
+
+.field-group {
+  -fx-background-color: transparent;
+  -fx-background-radius: 10;
+}
+
+.validation-icon {
+  -fx-translate-x: 2.2em;
+}
+
+.field-group-input.active-field {
+  -fx-border-color: rgba(255, 255, 255, 0.35);
+  -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.12), 20, 0, 0, 0);
+}
+
+.field-group-label {
+  -fx-font-family: "Inter Medium";
+  -fx-text-fill: rgba(255, 255, 255, 0.40);
+  -fx-font-size: 1.25em;
+  -fx-padding: 0.50em 0.75em;
+}
+
+.field-group-input {
+  -fx-background-color: transparent;
+  -fx-background-radius: 10;
+  -fx-border-color: rgba(255, 255, 255, 0.15);
+  -fx-border-radius: 10;
+  -fx-padding: 12 12;
+  -fx-alignment: CENTER_LEFT;
+  -fx-spacing: 8;
+  -fx-pref-height: 3.15em;
+}
+
+.field-group-input .text-input {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-border-color: transparent;
+  -fx-font-family: 'Inter Medium';
+  -fx-font-size: 1.5em;
+  -fx-border-width: 0;
+  -fx-padding: 0;
+  -fx-text-fill: rgba(255, 255, 255, 0.90);
+  -fx-prompt-text-fill: rgba(255, 255, 255, 0.35);
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+
+.eye-button {
+  -fx-background-color: transparent;
+  -fx-padding: 0 0.3em 0 0;
+  -fx-cursor: hand;
+}
+
+.eye-button .image-view {
+  -fx-opacity: 0.45;
+}
+
+.eye-button:hover .image-view {
+  -fx-opacity: 0.85;
+}
+
+.eye-button:selected .image-view {
+  -fx-opacity: 0.90;
+}
+
+.field-error-label {
+  -fx-text-fill: rgba(255, 111, 111, 0.90);
+  -fx-font-size: 1em;
+  -fx-padding: 0.4em 0 0 0.6em;
+  -fx-font-family: 'Inter Medium';
+  -fx-wrap-text: true;
+  -fx-max-width: Infinity;
+}
+
+.field-error > .field-group-input {
+  -fx-border-color: rgba(255, 111, 111, 0.90);
+}
+
+.field-success > .field-group-input {
+  -fx-border-color: rgba(111, 255, 111, 0.90);
+}
+
+.icon-wrapper {
+  -fx-min-width: 2.2em;
+  -fx-pref-width: 2.2em;
+  -fx-max-width: 2.2em;
+
+  -fx-alignment: center;
+}
+
+.auth-action-btn {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: 8;
+  -fx-border-color: rgba(255, 255, 255, 0.25);
+  -fx-border-radius: 8;
+  -fx-border-width: 1;
+  -fx-text-fill: rgba(255, 255, 255, 0.85);
+  -fx-font-family: 'Inter Medium';
+  -fx-font-size: 1.5em;
+  -fx-pref-height: 2.1em;
+  -fx-font-smoothing-type: gray;
+  -fx-padding: 10 20;
+  -fx-cursor: hand;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+
+.auth-action-btn:hover {
+  -fx-background-color: rgba(255, 255, 255, 0.1);
+  -fx-border-color: rgba(255, 255, 255, 0.5);
+  -fx-text-fill: #ffffff;
+  -fx-cursor: hand;
+}
+
+.auth-action-btn:pressed {
+  -fx-background-color: rgba(255, 255, 255, 0.2);
+  -fx-border-color: rgba(255, 255, 255, 0.8);
+}
+
+.or-divider {
+  -fx-padding: 1em 0 0.3em 0;
+}
+
+.or-divider .separator .line {
+  -fx-border-color: rgba(255, 255, 255, 0.25) transparent transparent transparent;
+  -fx-border-width: 1 0 0 0;
+}
+
+.or-divider-text {
+  -fx-font-family: 'Inter Medium';
+  -fx-font-size: 1.35em;
+  -fx-text-fill: rgba(255, 255, 255, 0.35);
+  -fx-padding: 0 30;
+}

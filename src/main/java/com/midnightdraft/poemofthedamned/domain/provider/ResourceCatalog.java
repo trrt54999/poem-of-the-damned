@@ -4,13 +4,15 @@ public interface ResourceCatalog {
   enum Css implements ConfigKey {
     GAME_MAIN_MENU,
     GAME_SCENE,
+    AUTH_MENU,
     FONT_EN,
     FONT_UK
   }
 
   enum Fxml implements ConfigKey {
     GAME_MAIN_MENU,
-    GAME_SCENE
+    GAME_SCENE,
+    AUTH_MENU
   }
 
   enum Fonts implements ConfigKey {
@@ -18,7 +20,8 @@ public interface ResourceCatalog {
     ALLER_BOLD,
     ALLER_REGULAR,
     NUNITO_BLACK,
-    UBUNTU_BOLD
+    UBUNTU_BOLD,
+    INTER_MEDIUM
   }
 
   enum AudioSfx implements AudioKey {
@@ -67,6 +70,17 @@ public interface ResourceCatalog {
     CIRCLES,
     LOGO,
     GITHUB_LOGO,
-    DIALOGUE_RECTANGLE
+    DIALOGUE_RECTANGLE,
+    LOGIN_TAB_ICON,
+    REGISTRATION_TAB_ICON,
+    USERNAME_ICON,
+    EMAIL_ICON,
+    PASSWORD_ICON,
+    CONFIRM_PASSWORD_ICON,
+    GOOGLE_ICON,
+    EYE_ON_ICON,
+    EYE_OFF_ICON,
+    FIELD_REFUSE_ICON,
+    FIELD_SUCCESS_ICON
   }
 }
