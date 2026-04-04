@@ -15,6 +15,7 @@ import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.UserRepo
 import com.midnightdraft.poemofthedamned.presentation.util.AuthValidator;
 import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.animation.KeyFrame;
@@ -118,6 +119,8 @@ public class AuthMenuController {
   private Label passwordError;
   @FXML
   private Label confirmPasswordError;
+  @FXML
+  private ResourceBundle resources;
 
   private Image errorIcon;
   private Image successIcon;
@@ -192,11 +195,14 @@ public class AuthMenuController {
     String password = passwordInput.getText();
     String confirmPassword = confirmPasswordInput.getText();
 
-    String usernameValidation = AuthValidator.validateUsername(username).orElse(null);
-    String emailValidation = AuthValidator.validateEmail(email).orElse(null);
-    String passwordValidation = AuthValidator.validatePassword(password).orElse(null);
+    String usernameValidation = AuthValidator.validateUsername(username).map(resources::getString)
+        .orElse(null);
+    String emailValidation = AuthValidator.validateEmail(email).map(resources::getString)
+        .orElse(null);
+    String passwordValidation = AuthValidator.validatePassword(password).map(resources::getString)
+        .orElse(null);
     String confirmPasswordValidation = AuthValidator.validateConfirmPassword(password,
-        confirmPassword).orElse(null);
+        confirmPassword).map(resources::getString).orElse(null);
 
     toggleValidationState(usernameGroup, usernameError, usernameValidationIcon, usernameValidation);
     toggleValidationState(emailGroup, emailError, emailValidationIcon, emailValidation);
@@ -214,16 +220,17 @@ public class AuthMenuController {
       protected User call() {
         return registrationUseCase.execute(username, email, password);
       }
-    }, UserAlreadyExistsException.class, "User already exists!");
+    }, UserAlreadyExistsException.class, "auth.invalid_registration");
   }
-
 
   private void handleLogin() {
     String email = emailInput.getText().strip();
     String password = passwordInput.getText();
 
-    String emailValidation = AuthValidator.validateEmail(email).orElse(null);
-    String passwordValidation = AuthValidator.validatePassword(password).orElse(null);
+    String emailValidation = AuthValidator.validateEmail(email).map(resources::getString)
+        .orElse(null);
+    String passwordValidation = AuthValidator.validatePassword(password).map(resources::getString)
+        .orElse(null);
 
     toggleValidationState(emailGroup, emailError, emailValidationIcon, emailValidation);
     toggleValidationState(passwordGroup, passwordError, passwordValidationIcon, passwordValidation);
@@ -237,7 +244,7 @@ public class AuthMenuController {
       protected User call() {
         return loginUseCase.execute(email, password);
       }
-    }, InvalidCredentialsException.class, "Invalid email or password!");
+    }, InvalidCredentialsException.class, "auth.invalid_login");
   }
 
   private void executeAuthTask(Task<User> task, Class<? extends RuntimeException> expectedEx,
@@ -252,7 +259,7 @@ public class AuthMenuController {
     task.setOnFailed(_ -> {
       Throwable ex = task.getException();
       if (expectedEx.isInstance(ex)) {
-        showAuthError(errorMsg);
+        showAuthError(resources.getString(errorMsg));
         actionButton.setDisable(false);
       }
     });
@@ -286,13 +293,13 @@ public class AuthMenuController {
       } else if (newToggle == loginTab) {
         playLoginTransition();
         playActionButtonTransition();
-        actionButton.setText("Login");
+        actionButton.setText(resources.getString("auth.login_action"));
         actionButton.setOnAction(_ -> handleLogin());
         authError.setVisible(false);
       } else if (newToggle == registrationTab) {
         playRegistrationTransition();
         playActionButtonTransition();
-        actionButton.setText("Create account");
+        actionButton.setText(resources.getString("auth.registration_action"));
         actionButton.setOnAction(_ -> handleRegistration());
         authError.setVisible(false);
       }
@@ -377,13 +384,13 @@ public class AuthMenuController {
         container.getStyleClass().add("active-field");
       } else {
         toggleValidationState(group, errorLabel, validationIcon,
-            validator.apply(field.getText()).orElse(null));
+            validator.apply(field.getText()).map(resources::getString).orElse(null));
       }
     });
 
     field.textProperty().addListener(
         (_, _, _) -> toggleValidationState(group, errorLabel, validationIcon,
-            validator.apply(field.getText()).orElse(null)));
+            validator.apply(field.getText()).map(resources::getString).orElse(null)));
   }
 
   private void setupEyeToggle(ToggleButton btn, ImageView icon, PasswordFieldSkin skin,

@@ -13,13 +13,13 @@
       <fx:define>
         <ToggleGroup fx:id="authToggleGroup"/>
       </fx:define>
-      <ToggleButton fx:id="loginTab" text="Login" maxWidth="Infinity" prefWidth="0"
+      <ToggleButton fx:id="loginTab" text="%auth.login" maxWidth="Infinity" prefWidth="0"
         HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn" toggleGroup="$authToggleGroup">
         <graphic>
           <ImageView fx:id="loginTabIcon"/>
         </graphic>
       </ToggleButton>
-      <ToggleButton fx:id="registrationTab" text="Registration" maxWidth="Infinity" prefWidth="0"
+      <ToggleButton fx:id="registrationTab" text="%auth.registration" maxWidth="Infinity" prefWidth="0"
         HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn" toggleGroup="$authToggleGroup">
         <graphic>
           <ImageView fx:id="registrationTabIcon"/>
@@ -27,13 +27,13 @@
       </ToggleButton>
     </HBox>
     <VBox fx:id="usernameGroup" styleClass="field-group">
-      <Label text="Login" styleClass="field-group-label"/>
+      <Label text="%auth.username" styleClass="field-group-label"/>
       <StackPane alignment="CENTER_RIGHT">
         <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
           <StackPane styleClass="icon-wrapper">
             <ImageView fx:id="usernameIcon" preserveRatio="true"/>
           </StackPane>
-          <TextField fx:id="usernameInput" promptText="your_username" HBox.hgrow="ALWAYS"/>
+          <TextField fx:id="usernameInput" promptText="%auth.username_hint" HBox.hgrow="ALWAYS"/>
         </HBox>
         <ImageView fx:id="usernameValidationIcon" styleClass="validation-icon" preserveRatio="true"
           visible="false"/>
@@ -41,7 +41,7 @@
       <Label fx:id="usernameError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="emailGroup" styleClass="field-group">
-      <Label text="Email" styleClass="field-group-label"/>
+      <Label text="%auth.email" styleClass="field-group-label"/>
       <StackPane alignment="CENTER_RIGHT">
         <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
           <StackPane styleClass="icon-wrapper">
@@ -55,7 +55,7 @@
       <Label fx:id="emailError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="passwordGroup" styleClass="field-group">
-      <Label text="Password" styleClass="field-group-label"/>
+      <Label text="%auth.password" styleClass="field-group-label"/>
       <StackPane alignment="CENTER_RIGHT">
         <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
           <StackPane styleClass="icon-wrapper">
@@ -74,7 +74,7 @@
       <Label fx:id="passwordError" styleClass="field-error-label" managed="false" visible="false"/>
     </VBox>
     <VBox fx:id="confirmPasswordGroup" styleClass="field-group">
-      <Label text="Confirm password" styleClass="field-group-label"/>
+      <Label text="%auth.confirm_password" styleClass="field-group-label"/>
       <StackPane alignment="CENTER_RIGHT">
         <HBox styleClass="field-group-input" HBox.hgrow="ALWAYS">
           <StackPane styleClass="icon-wrapper">
@@ -95,16 +95,16 @@
         visible="false"/>
     </VBox>
     <Region style="-fx-pref-height: 0.8em"/>
-    <Label fx:id="authError" styleClass="field-error-label" visible="false"/>
+    <Label fx:id="authError" alignment="CENTER" styleClass="field-error-label" visible="false"/>
     <Button fx:id="actionButton" maxWidth="Infinity" styleClass="auth-action-btn"/>
     <HBox fx:id="orDivider" styleClass="or-divider" alignment="CENTER">
       <Separator HBox.hgrow="ALWAYS"/>
-      <Label text="Or" styleClass="or-divider-text"/>
+      <Label text="%auth.or" styleClass="or-divider-text"/>
       <Separator HBox.hgrow="ALWAYS"/>
     </HBox>
     <StackPane maxWidth="Infinity">
       <Button fx:id="googleButton" maxWidth="Infinity" styleClass="auth-action-btn"
-        text="Continue with google"/>
+        text="%auth.continue_google"/>
       <ImageView fx:id="googleIcon" StackPane.alignment="CENTER_LEFT">
         <StackPane.margin>
           <Insets left="30"/>

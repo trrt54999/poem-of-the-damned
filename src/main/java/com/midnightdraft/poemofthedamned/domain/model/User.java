@@ -25,7 +25,7 @@ import lombok.Setter;
 public class User extends BaseEntity {
 
   @NotBlank(message = "Name cannot be empty!")
-  @Size(min = 2, max = 15, message = "Name must be between 2 and 15 characters!")
+  @Size(min = 1, max = 15, message = "Name must be between 1 and 15 characters!")
   @Column(name = "username", nullable = false)
   private String username;
 

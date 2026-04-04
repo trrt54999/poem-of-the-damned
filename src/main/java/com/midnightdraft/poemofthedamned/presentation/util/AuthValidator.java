@@ -17,55 +17,55 @@ public class AuthValidator {
 
   public Optional<String> validateUsername(String username) {
     if (username.isBlank()) {
-      return Optional.of("Username cannot be empty!");
+      return Optional.of("auth.error.username_empty");
     }
     if (username.length() > 6) {
-      return Optional.of("Username must contain up to 6 characters!");
+      return Optional.of("auth.error.username_length");
     }
     return Optional.empty();
   }
 
   public Optional<String> validateEmail(String email) {
     if (email.isBlank()) {
-      return Optional.of("Email cannot be empty!");
+      return Optional.of("auth.error.email_empty");
     }
     if (!VALID_EMAIL_ADDRESS_REGEX.matcher(email).matches()) {
-      return Optional.of("Email is not valid!");
+      return Optional.of("auth.error.email_valid");
     }
     return Optional.empty();
   }
 
   public Optional<String> validatePassword(String password) {
     if (password.isBlank()) {
-      return Optional.of("Password cannot be empty!");
+      return Optional.of("auth.error.password_empty");
     }
     if (password.length() < 6 || password.length() > 30) {
-      return Optional.of("Password length must be 6-30 characters!");
+      return Optional.of("auth.error.password_length");
     }
     if (!VALID_PASSWORD_ENGLISH_ONLY.matcher(password).matches()) {
-      return Optional.of("Password must contain only english letters!");
+      return Optional.of("auth.error.password_english");
     }
     if (!VALID_PASSWORD_LOWERCASE.matcher(password).matches()) {
-      return Optional.of("Password must contain at least one lowercase letter!");
+      return Optional.of("auth.error.password_lowercase");
     }
     if (!VALID_PASSWORD_UPPERCASE.matcher(password).matches()) {
-      return Optional.of("Password must contain at least one uppercase letter!");
+      return Optional.of("auth.error.password_uppercase");
     }
     if (!VALID_PASSWORD_DIGIT.matcher(password).matches()) {
-      return Optional.of("Password must contain at least one digit!");
+      return Optional.of("auth.error.password_digit");
     }
     if (!VALID_PASSWORD_SPECIAL.matcher(password).matches()) {
-      return Optional.of("Password must contain at least one special symbol!");
+      return Optional.of("auth.error.password_special");
     }
     return Optional.empty();
   }
 
   public Optional<String> validateConfirmPassword(String password, String confirm) {
     if (confirm.isBlank()) {
-      return Optional.of("Password confirm cannot be empty!");
+      return Optional.of("auth.error.confirm_password_empty");
     }
     if (!password.equals(confirm)) {
-      return Optional.of("Password do not match!");
+      return Optional.of("auth.error.confirm_password_match");
     }
     return Optional.empty();
   }

@@ -123,12 +123,12 @@
   -fx-max-width: Infinity;
 }
 
-.field-error > .field-group-input {
-  -fx-border-color: rgba(255, 111, 111, 0.90);
+.field-error .field-group-input {
+  -fx-border-color: rgba(255, 100, 100, 0.85);
 }
 
-.field-success > .field-group-input {
-  -fx-border-color: rgba(111, 255, 111, 0.90);
+.field-success .field-group-input {
+  -fx-border-color: rgba(80, 220, 140, 0.85);
 }
 
 .icon-wrapper {
