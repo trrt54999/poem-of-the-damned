@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +25,7 @@ import lombok.Setter;
 public class User extends BaseEntity {
 
   @NotBlank(message = "Name cannot be empty!")
-  @Size(min = 1, max = 6, message = "Name must be between 1 and 6 characters!")
+  @Size(min = 1, max = 15, message = "Name must be between 1 and 15 characters!")
   @Column(name = "username", nullable = false)
   private String username;
 
@@ -34,7 +35,6 @@ public class User extends BaseEntity {
   private String email;
 
   @NotBlank(message = "Password cannot be empty!")
-  @Size(min = 6, max = 30, message = "Password length must be 6-30 characters!")
   @Column(name = "password_hash", nullable = false)
   private String passwordHash;
 
