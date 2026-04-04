@@ -16,7 +16,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @MappedSuperclass
 @NoArgsConstructor
-public abstract class BaseEntity implements Identifiable<Long>{
+public abstract class BaseEntity implements Identifiable<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +33,12 @@ public abstract class BaseEntity implements Identifiable<Long>{
 
   @Override
   public final boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof BaseEntity that)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof BaseEntity that)) {
+      return false;
+    }
     return id != null && id.equals(that.id);
   }
 

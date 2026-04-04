@@ -17,8 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "user_achievements", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"user_id", "achievement_id"})
-})
+    @UniqueConstraint(columnNames = {"user_id", "achievement_id"})})
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAchievement extends BaseEntity {

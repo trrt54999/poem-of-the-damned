@@ -163,17 +163,21 @@ public class GameSceneController {
 
   @FXML
   public void playHoverSound() {
-    if (hoverSound != null) hoverSound.play();
+    if (hoverSound != null) {
+      hoverSound.play();
+    }
   }
 
   @FXML
   public void playSelectSound() {
-    if (selectSound != null) selectSound.play();
+    if (selectSound != null) {
+      selectSound.play();
+    }
   }
 
   @FXML
   public void handleScreenClick() {
-    if(isInputLocked) {
+    if (isInputLocked) {
       return;
     }
 
@@ -197,7 +201,8 @@ public class GameSceneController {
     Font.loadFont(resourceProvider.getUrl(Fonts.ALLER_REGULAR).toExternalForm(), 24);
 
     dialoguePanel.styleProperty().bind(
-        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(16.0 / BASE_HEIGHT), "px;")
+        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(
+            16.0 / BASE_HEIGHT), "px;")
     );
   }
 
@@ -238,7 +243,8 @@ public class GameSceneController {
 
   private void setupNextIndicator() {
     nextIndicator.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.02));
-    nextIndicator.setImage(new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
+    nextIndicator.setImage(
+        new Image(resourceProvider.getUrl(Ui.DIALOGUE_RECTANGLE).toExternalForm()));
 
     rootPane.heightProperty().addListener((_, _, newVal) -> {
       double dynamicOffset = newVal.doubleValue() * (7.0 / BASE_HEIGHT);
@@ -285,7 +291,7 @@ public class GameSceneController {
   }
 
   private void playTransition(TransitionType transitionType) {
-    switch (transitionType){
+    switch (transitionType) {
       case TransitionType.FADE_BLACK -> startFadeOut();
       case TransitionType.NONE -> {
         clearSprites();
@@ -304,10 +310,11 @@ public class GameSceneController {
   }
 
   // погратися з налаштуваннями мілісекунд
-  private void startFadeOut(){
+  private void startFadeOut() {
     fadeOverlay.setVisible(true);
     isInputLocked = true;
-    FadeTransition eclipseBeginningTransition = new FadeTransition(Duration.millis(1000), fadeOverlay);
+    FadeTransition eclipseBeginningTransition = new FadeTransition(Duration.millis(1000),
+        fadeOverlay);
     eclipseBeginningTransition.setFromValue(0.0);
     eclipseBeginningTransition.setToValue(1.0);
     eclipseBeginningTransition.play();
@@ -316,7 +323,8 @@ public class GameSceneController {
       clearSprites();
       handleResponse(completeSceneTransitionUseCase.execute());
 
-    FadeTransition eclipseEndingTransition = new FadeTransition(Duration.millis(1000), fadeOverlay);
+      FadeTransition eclipseEndingTransition = new FadeTransition(Duration.millis(1000),
+          fadeOverlay);
       eclipseEndingTransition.setFromValue(1.0);
       eclipseEndingTransition.setToValue(0.0);
       eclipseEndingTransition.play();
@@ -333,8 +341,8 @@ public class GameSceneController {
     selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
   }
 
-  private void renderDialogueStep(DialogueStep step){
-    if(step == null || step.text().isBlank() || step.backgroundPath().isBlank()) {
+  private void renderDialogueStep(DialogueStep step) {
+    if (step == null || step.text().isBlank() || step.backgroundPath().isBlank()) {
       log.warn("Received empty or null DialogueStep");
       return;
     }
@@ -386,12 +394,14 @@ public class GameSceneController {
   private MediaPlayer switchTrack(MediaPlayer current, AudioKey key) {
     String fullPath = resourceProvider.getUrl(key).toExternalForm();
 
-    if (current != null && current.getMedia().getSource().equals(fullPath))
+    if (current != null && current.getMedia().getSource().equals(fullPath)) {
       return current;
+    }
 
     MediaPlayer player = SoundHelper.createBackgroundMusic(fullPath, 0.5);
-    if (player == null)
+    if (player == null) {
       return null;
+    }
 
     player.setCycleCount(MediaPlayer.INDEFINITE);
 
@@ -416,14 +426,16 @@ public class GameSceneController {
     AudioBgm key = AudioBgm.valueOf(newMusicKey);
     log.debug("Switching music to: {}", key);
     if (key == AudioBgm.SILENCE) {
-      if (currentMusic != null) currentMusic.stop();
+      if (currentMusic != null) {
+        currentMusic.stop();
+      }
       currentMusic = null;
       return;
     }
-    if(key == AudioBgm.FADE_OUT) {
-     fadeOutAndStop(currentMusic);
-     currentMusic = null;
-     return;
+    if (key == AudioBgm.FADE_OUT) {
+      fadeOutAndStop(currentMusic);
+      currentMusic = null;
+      return;
     }
     currentMusic = switchTrack(currentMusic, key);
   }
@@ -432,7 +444,9 @@ public class GameSceneController {
     AudioAmbient key = AudioAmbient.valueOf(newAmbientKey);
     log.debug("Switching ambient to: {}", key);
     if (key == AudioAmbient.SILENCE) {
-      if (currentAmbient != null) currentAmbient.stop();
+      if (currentAmbient != null) {
+        currentAmbient.stop();
+      }
       currentAmbient = null;
       return;
     }
@@ -446,7 +460,9 @@ public class GameSceneController {
   }
 
   private void fadeOutAndStop(MediaPlayer player) {
-    if (player == null) return;
+    if (player == null) {
+      return;
+    }
 
     MediaPlayer oldPlayer = player;
     Timeline timeline = new Timeline(
@@ -468,7 +484,9 @@ public class GameSceneController {
   }
 
   private void updateSprites(DialogueStep step) {
-    if (step.characterSpritePath().isEmpty() || step.spritePosition().isEmpty()) return;
+    if (step.characterSpritePath().isEmpty() || step.spritePosition().isEmpty()) {
+      return;
+    }
 
     String spriteName = step.characterSpritePath().orElseThrow();
     SpritePosition position = step.spritePosition().orElseThrow();

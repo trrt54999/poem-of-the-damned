@@ -11,17 +11,17 @@ import org.hibernate.Session;
 @Slf4j
 public class FlagRepositoryImpl extends BaseRepositoryImpl<Flag> implements FlagRepository {
 
-  public FlagRepositoryImpl(){
+  public FlagRepositoryImpl() {
     super(Flag.class);
   }
 
   @Override
   public Optional<Flag> findByName(String name) {
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       return session.createQuery("FROM Flag WHERE name = :name", Flag.class)
           .setParameter("name", name)
           .uniqueResultOptional();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch Flag by name: {}", name, e);
       throw new EntityFetchException(Flag.class.getSimpleName(), e);
     }

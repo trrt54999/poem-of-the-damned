@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface GameCharacterSpriteRepository extends BaseRepository<GameCharacterSprite> {
 
   Optional<GameCharacterSprite> findByCharacterIdAndEmotion(Long characterId, String emotion);
+
   List<GameCharacterSprite> findByCharacterId(Long characterId);
 }

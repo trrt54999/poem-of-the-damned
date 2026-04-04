@@ -12,7 +12,7 @@ import org.hibernate.Session;
 @Slf4j
 public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements ChoiceRepository {
 
-  public ChoiceRepositoryImpl(){
+  public ChoiceRepositoryImpl() {
     super(Choice.class);
   }
 
@@ -27,15 +27,15 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
                   + "WHERE c.id = :id", Choice.class)
           .setParameter("id", id)
           .uniqueResultOptional();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch Choice by id: {}", id, e);
       throw new EntityFetchException(Choice.class.getSimpleName(), e);
     }
   }
 
   @Override
-  public List<Choice> findBySceneId(Long sceneId){
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
+  public List<Choice> findBySceneId(Long sceneId) {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       return session.createQuery(
               "SELECT DISTINCT c FROM Choice c "
                   + "LEFT JOIN FETCH c.choiceEffects "
@@ -45,7 +45,7 @@ public class ChoiceRepositoryImpl extends BaseRepositoryImpl<Choice> implements 
               Choice.class)
           .setParameter("sceneId", sceneId)
           .getResultList();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch Choices by sceneId: {}", sceneId, e);
       throw new EntityFetchException(Choice.class.getSimpleName(), e);
     }

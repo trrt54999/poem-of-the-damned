@@ -16,11 +16,10 @@ public class LoginUseCase {
   }
 
   public User execute(String email, String password) {
-    User user = userRepository.findByEmail(email)
-        .orElseThrow(() -> {
-          log.warn("Failed login attempt");
-          return new InvalidCredentialsException("User not found!");
-        });
+    User user = userRepository.findByEmail(email).orElseThrow(() -> {
+      log.warn("Failed login attempt");
+      return new InvalidCredentialsException("User not found!");
+    });
 
     if (!BCrypt.checkpw(password, user.getPasswordHash())) {
       log.warn("Failed login attempt");

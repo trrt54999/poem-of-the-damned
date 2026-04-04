@@ -24,8 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "save_slots", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"slot_number", "user_id"})
-})
+    @UniqueConstraint(columnNames = {"slot_number", "user_id"})})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaveSlot extends BaseEntity {
@@ -42,7 +41,8 @@ public class SaveSlot extends BaseEntity {
   @Column(name = "play_time_seconds", nullable = false)
   private Long playTimeSeconds;
 
-  @OneToMany(mappedBy = "saveSlot", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "saveSlot", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.LAZY)
   private List<SaveFlag> saveFlags = new ArrayList<>();
 
   @NotNull(message = "User id cannot be empty!")

@@ -9,13 +9,16 @@
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.GameSceneController"
   prefHeight="400.0" prefWidth="600.0" onMouseClicked="#handleScreenClick">
-<ImageView fx:id="backgroundImage"/>
+  <ImageView fx:id="backgroundImage"/>
   <AnchorPane fx:id="spritePosition" mouseTransparent="true">
-    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
-    <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+    <ImageView fx:id="leftSpritePosition" preserveRatio="true" AnchorPane.leftAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0"/>
+    <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0">
       <ImageView fx:id="centralSpritePosition" preserveRatio="true"/>
     </StackPane>
-    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+    <ImageView fx:id="rightSpritePosition" preserveRatio="true" AnchorPane.rightAnchor="0.0"
+      AnchorPane.bottomAnchor="0.0"/>
   </AnchorPane>
   <AnchorPane fx:id="dialoguePanel" styleClass="dialoguePanel" StackPane.alignment="BOTTOM_CENTER">
     <StackPane fx:id="nameplatePanel" styleClass="nameplate-panel">
@@ -26,12 +29,18 @@
       AnchorPane.bottomAnchor="0.0"/>
     <HBox fx:id="dialogueButtons" alignment="CENTER"
       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <Button fx:id="historyButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="%dialogue.history"/>
-      <Button fx:id="skipButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="%dialogue.skip"/>
-      <Button fx:id="autoButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="%dialogue.auto"/>
-      <Button fx:id="saveButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="%dialogue.save"/>
-      <Button fx:id="loadButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="%dialogue.load"/>
-      <Button fx:id="settingsButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound" onAction="#playSelectSound" text="%dialogue.settings"/>
+      <Button fx:id="historyButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound"
+        onAction="#playSelectSound" text="%dialogue.history"/>
+      <Button fx:id="skipButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound"
+        onAction="#playSelectSound" text="%dialogue.skip"/>
+      <Button fx:id="autoButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound"
+        onAction="#playSelectSound" text="%dialogue.auto"/>
+      <Button fx:id="saveButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound"
+        onAction="#playSelectSound" text="%dialogue.save"/>
+      <Button fx:id="loadButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound"
+        onAction="#playSelectSound" text="%dialogue.load"/>
+      <Button fx:id="settingsButton" styleClass="dialogue-btn" onMouseEntered="#playHoverSound"
+        onAction="#playSelectSound" text="%dialogue.settings"/>
     </HBox>
     <ImageView fx:id="nextIndicator" visible="false" preserveRatio="true"/>
   </AnchorPane>

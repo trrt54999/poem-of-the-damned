@@ -23,7 +23,7 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
       return session.createQuery("FROM Achievement WHERE title = :title", Achievement.class)
           .setParameter("title", title)
           .uniqueResultOptional();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch Achievement by title: {}", title, e);
       throw new EntityFetchException(Achievement.class.getSimpleName(), e);
     }
@@ -35,7 +35,7 @@ public class AchievementRepositoryImpl extends BaseRepositoryImpl<Achievement> i
       return session.createQuery("FROM Achievement WHERE isHidden = :isHidden", Achievement.class)
           .setParameter("isHidden", isHidden)
           .getResultList();
-    }catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch Achievements by isHidden: {}", isHidden, e);
       throw new EntityFetchException(Achievement.class.getSimpleName(), e);
     }

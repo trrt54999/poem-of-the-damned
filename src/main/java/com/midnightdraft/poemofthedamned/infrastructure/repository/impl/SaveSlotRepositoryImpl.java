@@ -12,17 +12,17 @@ import org.hibernate.Session;
 public class SaveSlotRepositoryImpl extends BaseRepositoryImpl<SaveSlot> implements
     SaveSlotRepository {
 
-  public SaveSlotRepositoryImpl(){
+  public SaveSlotRepositoryImpl() {
     super(SaveSlot.class);
   }
 
   @Override
   public List<SaveSlot> findByUserId(Long userId) {
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       return session.createQuery("FROM SaveSlot WHERE user.id = :userId", SaveSlot.class)
           .setParameter("userId", userId)
           .getResultList();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch SaveSlots by userId: {}", userId, e);
       throw new EntityFetchException(SaveSlot.class.getSimpleName(), e);
     }

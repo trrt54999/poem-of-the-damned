@@ -38,11 +38,8 @@ public class User extends BaseEntity {
   private String passwordHash;
 
   @ManyToMany
-  @JoinTable(
-      name = "user_unlocked_choices",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "choice_id")
-  )
+  @JoinTable(name = "user_unlocked_choices", joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "choice_id"))
   private Set<Choice> unlockedChoices = new HashSet<>();
 
   public User(String username, String email, String passwordHash) {

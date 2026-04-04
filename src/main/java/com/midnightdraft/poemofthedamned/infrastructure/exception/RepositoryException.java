@@ -6,30 +6,30 @@ public class RepositoryException extends RuntimeException {
     super(message, cause);
   }
 
-  public static class EntitySaveException extends RepositoryException{
+  public static class EntitySaveException extends RepositoryException {
 
     public EntitySaveException(String entityName, Throwable cause) {
       super("Failed to save entity: " + entityName, cause);
     }
   }
 
-  public static class EntityUpdateException extends RepositoryException{
+  public static class EntityUpdateException extends RepositoryException {
 
-    public EntityUpdateException(String entityName, Throwable cause){
+    public EntityUpdateException(String entityName, Throwable cause) {
       super("Failed to update entity: " + entityName, cause);
     }
   }
 
-  public static class EntityDeleteException extends RepositoryException{
+  public static class EntityDeleteException extends RepositoryException {
 
-    public EntityDeleteException(String entityName, Throwable cause){
+    public EntityDeleteException(String entityName, Throwable cause) {
       super("Failed to delete entity: " + entityName, cause);
     }
   }
 
-  public static class EntityFetchException extends RepositoryException{
+  public static class EntityFetchException extends RepositoryException {
 
-    public EntityFetchException(String entityName, Throwable cause){
+    public EntityFetchException(String entityName, Throwable cause) {
       super("Failed to fetch entity: " + entityName, cause);
     }
   }

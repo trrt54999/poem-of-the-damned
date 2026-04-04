@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory;
 
 public final class HibernateSessionFactory {
 
-  private HibernateSessionFactory(){}
+  private HibernateSessionFactory() {
+  }
 
   private static final Logger log = LoggerFactory.getLogger(HibernateSessionFactory.class);
-  private static final class SessionFactoryHolder{
+
+  private static final class SessionFactoryHolder {
 
     private static final SessionFactory HOLDER_INSTANCE = buildSessionFactory();
 
@@ -24,7 +26,7 @@ public final class HibernateSessionFactory {
     }
   }
 
-  public static SessionFactory getSessionFactory(){
+  public static SessionFactory getSessionFactory() {
     return SessionFactoryHolder.HOLDER_INSTANCE;
   }
 

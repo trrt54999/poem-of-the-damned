@@ -19,7 +19,8 @@
           <ImageView fx:id="loginTabIcon"/>
         </graphic>
       </ToggleButton>
-      <ToggleButton fx:id="registrationTab" text="%auth.registration" maxWidth="Infinity" prefWidth="0"
+      <ToggleButton fx:id="registrationTab" text="%auth.registration" maxWidth="Infinity"
+        prefWidth="0"
         HBox.hgrow="ALWAYS" styleClass="tab-switcher-btn" toggleGroup="$authToggleGroup">
         <graphic>
           <ImageView fx:id="registrationTabIcon"/>

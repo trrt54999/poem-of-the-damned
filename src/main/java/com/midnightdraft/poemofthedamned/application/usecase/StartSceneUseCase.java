@@ -13,15 +13,16 @@ public class StartSceneUseCase {
   private final DialogueRepository dialogueRepository;
   private final GameStateMachine gameStateMachine;
 
-  public StartSceneUseCase(DialogueRepository dialogueRepository, GameStateMachine gameStateMachine){
+  public StartSceneUseCase(DialogueRepository dialogueRepository,
+      GameStateMachine gameStateMachine) {
     this.dialogueRepository = dialogueRepository;
     this.gameStateMachine = gameStateMachine;
   }
 
-  public void execute(GameScene gameScene){
+  public void execute(GameScene gameScene) {
     List<Dialogue> dialogues = dialogueRepository.findBySceneIdOrderByOrderIndex(gameScene.getId());
-    log.info("Starting Scene '{}' (ID: {}). Loaded {} dialogues.",
-        gameScene.getTitle(), gameScene.getId(), dialogues.size());
+    log.info("Starting Scene '{}' (ID: {}). Loaded {} dialogues.", gameScene.getTitle(),
+        gameScene.getId(), dialogues.size());
     gameStateMachine.loadGameScene(gameScene, dialogues);
   }
 }

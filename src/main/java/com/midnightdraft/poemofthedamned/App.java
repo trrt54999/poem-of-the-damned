@@ -43,8 +43,10 @@ public class App extends Application {
       Scene scene = new Scene(root, 1280, 720);
 
       switch (currentLang) {
-        case "uk" -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_UK).toExternalForm());
-        default -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_EN).toExternalForm());
+        case "uk" ->
+            scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_UK).toExternalForm());
+        default ->
+            scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_EN).toExternalForm());
       }
 
       primaryStage.setTitle("Hello!");

@@ -31,8 +31,8 @@ public class GetAvailableChoicesUseCase {
       return currentValue != null && currentValue.equals(choice.getRequiredFlagValue());
     }).toList();
 
-    log.debug("Available choices for scene '{}': {}/{}",
-        currentScene.getTitle(), filtered.size(), choices.size());
+    log.debug("Available choices for scene '{}': {}/{}", currentScene.getTitle(), filtered.size(),
+        choices.size());
     return filtered;
   }
 }

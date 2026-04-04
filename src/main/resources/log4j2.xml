@@ -2,7 +2,8 @@
 <Configuration status="warn">
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout disableAnsi="false" pattern="%style{%d{HH:mm:ss}}{bright_black} %highlight{[%level]}{ERROR=red, WARN=yellow, INFO=green, DEBUG=bright_black} %style{%logger{36}}{cyan} - %msg%n"/>
+      <PatternLayout disableAnsi="false"
+        pattern="%style{%d{HH:mm:ss}}{bright_black} %highlight{[%level]}{ERROR=red, WARN=yellow, INFO=green, DEBUG=bright_black} %style{%logger{36}}{cyan} - %msg%n"/>
     </Console>
     <RollingFile name="RollingFile" fileName="logs/game.log"
       filePattern="logs/game-%d{yyyy-MM-dd_HH-mm-ss}.log">
@@ -13,8 +14,8 @@
       </Policies>
       <DefaultRolloverStrategy>
         <Delete basePath="logs" maxDepth="1">
-          <IfFileName glob="game-*.log" />
-          <IfAccumulatedFileCount exceeds="5" />
+          <IfFileName glob="game-*.log"/>
+          <IfAccumulatedFileCount exceeds="5"/>
         </Delete>
       </DefaultRolloverStrategy>
     </RollingFile>

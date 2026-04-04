@@ -1,6 +1,5 @@
 package com.midnightdraft.poemofthedamned.application.usecase;
 
-import com.midnightdraft.poemofthedamned.domain.engine.DialogueStep;
 import com.midnightdraft.poemofthedamned.domain.engine.EngineResponse;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.engine.TransitionResult;
@@ -22,9 +21,9 @@ public class SelectChoiceUseCase {
   public EngineResponse execute(Long choiceId) {
     Optional<Choice> choiceOpt = choiceRepository.findById(choiceId);
 
-    if(choiceOpt.isEmpty()) {
+    if (choiceOpt.isEmpty()) {
       log.warn("Attempted to select non-existent choice ID: {}", choiceId);
-     return advanceDialogueUseCase.execute();
+      return advanceDialogueUseCase.execute();
     }
 
     Choice choice = choiceOpt.get();
@@ -33,7 +32,7 @@ public class SelectChoiceUseCase {
 
     GameScene nextScene = choice.getNextGameScene();
 
-    if(nextScene != null){
+    if (nextScene != null) {
       log.info("Choice leads to scene: '{}' (ID: {})", nextScene.getTitle(), nextScene.getId());
       gameStateMachine.queueSceneTransition(nextScene);
       return new TransitionResult(gameStateMachine.getCurrentScene().getTransitionType());

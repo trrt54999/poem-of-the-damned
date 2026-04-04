@@ -19,8 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "save_flags", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"save_slot_id", "flag_id"})
-})
+    @UniqueConstraint(columnNames = {"save_slot_id", "flag_id"})})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaveFlag extends BaseEntity {

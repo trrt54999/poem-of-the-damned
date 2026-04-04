@@ -15,18 +15,18 @@ public class AdvanceDialogueUseCase {
 
   private final GameStateMachine gameStateMachine;
 
-  public AdvanceDialogueUseCase(GameStateMachine gameStateMachine){
+  public AdvanceDialogueUseCase(GameStateMachine gameStateMachine) {
     this.gameStateMachine = gameStateMachine;
   }
 
-  public EngineResponse execute(){
+  public EngineResponse execute() {
     Optional<DialogueStep> step = gameStateMachine.continueScene();
 
     if (step.isPresent()) {
       return new DialogueResult(step.get());
     }
 
-    if(gameStateMachine.getCurrentState() == GameState.WAITING_FOR_CHOICE){
+    if (gameStateMachine.getCurrentState() == GameState.WAITING_FOR_CHOICE) {
       log.debug("Waiting for player choice");
       return new ChoiceResult();
     }

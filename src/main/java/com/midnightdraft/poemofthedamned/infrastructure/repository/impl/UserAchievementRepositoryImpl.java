@@ -12,17 +12,18 @@ import org.hibernate.Session;
 public class UserAchievementRepositoryImpl extends BaseRepositoryImpl<UserAchievement> implements
     UserAchievementRepository {
 
-  public UserAchievementRepositoryImpl(){
+  public UserAchievementRepositoryImpl() {
     super(UserAchievement.class);
   }
 
   @Override
   public List<UserAchievement> findByUserId(Long userId) {
     try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-      return session.createQuery("FROM UserAchievement WHERE user.id = :userId", UserAchievement.class)
+      return session.createQuery("FROM UserAchievement WHERE user.id = :userId",
+              UserAchievement.class)
           .setParameter("userId", userId)
           .getResultList();
-     } catch (Exception e) {
+    } catch (Exception e) {
       log.error("Failed to fetch UserAchievements by userId: {}", userId, e);
       throw new EntityFetchException(UserAchievement.class.getSimpleName(), e);
     }

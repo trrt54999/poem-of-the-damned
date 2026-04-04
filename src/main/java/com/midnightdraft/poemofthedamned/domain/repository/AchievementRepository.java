@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface AchievementRepository extends BaseRepository<Achievement> {
 
   Optional<Achievement> findByTitle(String title);
+
   List<Achievement> findByIsHidden(Boolean isHidden);
 }

@@ -84,16 +84,20 @@ public class GameMainMenuController {
 
   @FXML
   public void playHoverSound() {
-    if (hoverSound != null) hoverSound.play();
+    if (hoverSound != null) {
+      hoverSound.play();
+    }
   }
 
   @FXML
   public void playSelectSound() {
-    if (selectSound != null) selectSound.play();
+    if (selectSound != null) {
+      selectSound.play();
+    }
   }
 
   @FXML
-  public void openGithub(){
+  public void openGithub() {
     try {
       Desktop.getDesktop().browse(new URI(GITHUB_URL));
     } catch (UnsupportedOperationException e) {
@@ -109,7 +113,8 @@ public class GameMainMenuController {
 
     logoImage.setImage(new Image(resourceProvider.getUrl(Ui.LOGO).toExternalForm()));
     githubLogo.setImage(new Image(resourceProvider.getUrl(Ui.GITHUB_LOGO).toExternalForm()));
-    haruka.setImage(new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
+    haruka.setImage(
+        new Image(resourceProvider.getUrl(GameCharacters.HARUKA_LAUGH).toExternalForm()));
     aya.setImage(new Image(resourceProvider.getUrl(GameCharacters.AYA_HAPPY).toExternalForm()));
     mio.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
 
@@ -135,20 +140,18 @@ public class GameMainMenuController {
     logoClip.centerXProperty().bind(logoImage.fitWidthProperty().divide(2));
     logoClip.centerYProperty().bind(logoImage.fitWidthProperty().divide(2));
 
-    logoContainer.translateXProperty().bind(
-        leftPanel.widthProperty().subtract(logoImage.fitWidthProperty().divide(2))
-    );
+    logoContainer.translateXProperty()
+        .bind(leftPanel.widthProperty().subtract(logoImage.fitWidthProperty().divide(2)));
 
     githubLogo.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.12));
   }
 
-  private void setupTextBindings(){
+  private void setupTextBindings() {
     titleTop.translateYProperty().bind(rootPane.heightProperty().multiply(0.16));
     titleBottom.translateYProperty().bind(rootPane.heightProperty().multiply(0.30));
 
-    rootPane.styleProperty().bind(
-        Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(0.02), "px;")
-    );
+    rootPane.styleProperty()
+        .bind(Bindings.concat("-fx-font-size: ", rootPane.heightProperty().multiply(0.02), "px;"));
   }
 
   private void setupCharacterBindings() {
@@ -163,11 +166,8 @@ public class GameMainMenuController {
   private void setupBackgroundClip() {
     Rectangle clip = new Rectangle();
     clip.xProperty().bind(leftPanel.widthProperty().add(dividerLine.widthProperty()));
-    clip.widthProperty().bind(
-        rootPane.widthProperty()
-            .subtract(leftPanel.widthProperty())
-            .subtract(dividerLine.widthProperty())
-    );
+    clip.widthProperty().bind(rootPane.widthProperty().subtract(leftPanel.widthProperty())
+        .subtract(dividerLine.widthProperty()));
     clip.heightProperty().bind(rootPane.heightProperty());
     backgroundCanvas.setClip(clip);
   }

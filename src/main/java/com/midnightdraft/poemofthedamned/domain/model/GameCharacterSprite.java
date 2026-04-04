@@ -18,12 +18,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(
-    name = "character_sprites",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"character_id", "emotion"})
-    }
-)
+@Table(name = "character_sprites", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"character_id", "emotion"})})
 @NoArgsConstructor
 @AllArgsConstructor
 public class GameCharacterSprite extends BaseEntity {

@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.domain.provider;
 
 public interface ResourceCatalog {
+
   enum Css implements ConfigKey {
     GAME_MAIN_MENU,
     GAME_SCENE,
@@ -35,7 +36,7 @@ public interface ResourceCatalog {
     SILENCE,
     FADE_OUT
   }
-  
+
   enum AudioAmbient implements AudioKey {
     RAIN_WINDOW,
     FOOTSTEPS_WOOD,

@@ -105,15 +105,11 @@ public class GameStateMachine {
     Optional<String> translatedName = Optional.ofNullable(dialogue.getGameCharacter())
         .map(c -> c.getTranslationNames().getOrDefault(lang, c.getName()));
 
-    return Optional.of(new DialogueStep(
-        translatedName,
+    return Optional.of(new DialogueStep(translatedName,
         Optional.ofNullable(dialogue.getGameCharacterSprite())
-            .map(GameCharacterSprite::getSpritePath),
-        Optional.ofNullable(musicToPlay),
-        Optional.ofNullable(ambientToPlay),
-        Optional.ofNullable(dialogue.getSpritePosition()),
-        translatedText,
-        currentScene.getBackgroundPath()));
+            .map(GameCharacterSprite::getSpritePath), Optional.ofNullable(musicToPlay),
+        Optional.ofNullable(ambientToPlay), Optional.ofNullable(dialogue.getSpritePosition()),
+        translatedText, currentScene.getBackgroundPath()));
   }
 
   public void queueSceneTransition(GameScene targetScene) {

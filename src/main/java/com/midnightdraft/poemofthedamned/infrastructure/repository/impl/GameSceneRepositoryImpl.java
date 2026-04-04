@@ -9,9 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
 @Slf4j
-public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> implements GameSceneRepository {
+public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> implements
+    GameSceneRepository {
 
-  public GameSceneRepositoryImpl(){
+  public GameSceneRepositoryImpl() {
     super(GameScene.class);
   }
 
@@ -23,7 +24,7 @@ public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> imple
               GameScene.class)
           .setParameter("id", id)
           .uniqueResultOptional();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch GameScene by id: {}", id, e);
       throw new EntityFetchException(GameScene.class.getSimpleName(), e);
     }
@@ -35,7 +36,7 @@ public class GameSceneRepositoryImpl extends BaseRepositoryImpl<GameScene> imple
       return session.createQuery("FROM GameScene WHERE title = :title", GameScene.class)
           .setParameter("title", title)
           .uniqueResultOptional();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch GameScene by title: {}", title, e);
       throw new EntityFetchException(GameScene.class.getSimpleName(), e);
     }

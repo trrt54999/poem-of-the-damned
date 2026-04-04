@@ -13,7 +13,7 @@ import org.hibernate.Session;
 public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> implements
     DialogueRepository {
 
-  public DialogueRepositoryImpl(){
+  public DialogueRepositoryImpl() {
     super(Dialogue.class);
   }
 
@@ -37,7 +37,7 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
 
   @Override
   public List<Dialogue> findBySceneIdOrderByOrderIndex(Long sceneId) {
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       return session.createQuery(
               "SELECT d FROM Dialogue d "
                   + "LEFT JOIN FETCH d.gameCharacter "
@@ -47,7 +47,7 @@ public class DialogueRepositoryImpl extends BaseRepositoryImpl<Dialogue> impleme
               Dialogue.class)
           .setParameter("sceneId", sceneId)
           .getResultList();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch Dialogues by sceneId: {}", sceneId, e);
       throw new EntityFetchException(Dialogue.class.getSimpleName(), e);
     }

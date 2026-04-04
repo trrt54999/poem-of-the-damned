@@ -16,7 +16,7 @@ import java.net.URL;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FileSystemResourceProvider  implements ResourceProvider {
+public class FileSystemResourceProvider implements ResourceProvider {
 
   @Override
   public String getPath(ResourceKey key) {

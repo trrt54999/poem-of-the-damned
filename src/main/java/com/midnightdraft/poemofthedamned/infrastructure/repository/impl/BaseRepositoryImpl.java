@@ -23,16 +23,15 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public T save(T entity){
+  public T save(T entity) {
     Transaction tx = null;
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       tx = session.beginTransaction();
       session.persist(entity);
       tx.commit();
       return entity;
-    }catch (Exception e) {
-      if (tx != null)
-      {
+    } catch (Exception e) {
+      if (tx != null) {
         log.error("SQL Transaction failed! Rolling back changes for: {}",
             entityClass.getSimpleName());
         tx.rollback();
@@ -43,16 +42,15 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public T update(T entity){
+  public T update(T entity) {
     Transaction tx = null;
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       tx = session.beginTransaction();
       T managedEntity = session.merge(entity);
       tx.commit();
       return managedEntity;
     } catch (Exception e) {
-      if (tx != null)
-      {
+      if (tx != null) {
         log.error("SQL Transaction failed! Rolling back changes for: {}",
             entityClass.getSimpleName());
         tx.rollback();
@@ -63,15 +61,14 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public void delete(T entity){
+  public void delete(T entity) {
     Transaction tx = null;
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       tx = session.beginTransaction();
       session.remove(session.contains(entity) ? entity : session.merge(entity));
       tx.commit();
     } catch (Exception e) {
-      if (tx != null)
-      {
+      if (tx != null) {
         log.error("SQL Transaction failed! Rolling back changes for: {}",
             entityClass.getSimpleName());
         tx.rollback();
@@ -82,8 +79,8 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public Optional<T> findById(Long id){
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
+  public Optional<T> findById(Long id) {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       T entity = session.find(entityClass, id);
       return Optional.ofNullable(entity);
     } catch (Exception e) {
@@ -93,11 +90,11 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity> implements BaseRe
   }
 
   @Override
-  public List<T> findAll(){
-    try(Session session = HibernateSessionFactory.getSessionFactory().openSession()){
+  public List<T> findAll() {
+    try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
       return session.createQuery("FROM " + entityClass.getSimpleName(), entityClass)
           .getResultList();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error("Failed to fetch entity", e);
       throw new EntityFetchException(entityClass.getSimpleName(), e);
     }
