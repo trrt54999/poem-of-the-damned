@@ -6,6 +6,7 @@ public interface ResourceCatalog {
     GAME_MAIN_MENU,
     GAME_SCENE,
     AUTH_MENU,
+    MAIN_MENU,
     FONT_EN,
     FONT_UK
   }
@@ -13,7 +14,8 @@ public interface ResourceCatalog {
   enum Fxml implements ConfigKey {
     GAME_MAIN_MENU,
     GAME_SCENE,
-    AUTH_MENU
+    AUTH_MENU,
+    MAIN_MENU
   }
 
   enum Fonts implements ConfigKey {
@@ -71,6 +73,7 @@ public interface ResourceCatalog {
     CIRCLES,
     LOGO,
     GITHUB_LOGO,
+    MIDNIGHT_LOGO,
     DIALOGUE_RECTANGLE,
     LOGIN_TAB_ICON,
     REGISTRATION_TAB_ICON,
@@ -82,6 +85,7 @@ public interface ResourceCatalog {
     EYE_ON_ICON,
     EYE_OFF_ICON,
     FIELD_REFUSE_ICON,
-    FIELD_SUCCESS_ICON
+    FIELD_SUCCESS_ICON,
+    MAIN_MENU_LOGIN_ICON
   }
 }

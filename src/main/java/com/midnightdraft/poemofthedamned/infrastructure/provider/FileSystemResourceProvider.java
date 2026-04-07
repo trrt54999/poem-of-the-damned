@@ -26,6 +26,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case GAME_MAIN_MENU -> "/css/game_main_menu.css";
         case GAME_SCENE -> "/css/game_scene.css";
         case AUTH_MENU -> "/css/auth_menu.css";
+        case MAIN_MENU -> "/css/main_menu.css";
         case FONT_EN -> "/css/font_en.css";
         case FONT_UK -> "/css/font_uk.css";
       };
@@ -34,6 +35,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case GAME_MAIN_MENU -> "/fxml/game_main_menu.fxml";
         case GAME_SCENE -> "/fxml/game_scene.fxml";
         case AUTH_MENU -> "/fxml/auth_menu.fxml";
+        case MAIN_MENU -> "/fxml/main_menu.fxml";
       };
 
       case AudioBgm audioBgm -> switch (audioBgm) {
@@ -89,6 +91,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case CIRCLES -> "/assets/ui/circles.png";
         case LOGO -> "/assets/ui/logo.jpg";
         case GITHUB_LOGO -> "/assets/ui/github_logo.png";
+        case MIDNIGHT_LOGO -> "/assets/ui/midnight_logo.png";
         case DIALOGUE_RECTANGLE -> "/assets/ui/dialogue_rectangle.png";
         case LOGIN_TAB_ICON -> "/assets/ui/login_tab_icon.png";
         case REGISTRATION_TAB_ICON -> "/assets/ui/registration_tab_icon.png";
@@ -101,6 +104,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case EYE_OFF_ICON -> "/assets/ui/eye_off_icon.png";
         case FIELD_REFUSE_ICON -> "/assets/ui/field_refuse_icon.png";
         case FIELD_SUCCESS_ICON -> "/assets/ui/field_success_icon.png";
+        case MAIN_MENU_LOGIN_ICON -> "/assets/ui/main_menu_login_icon.png";
       };
     };
   }
