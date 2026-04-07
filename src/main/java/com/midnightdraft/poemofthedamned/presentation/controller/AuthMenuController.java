@@ -1,10 +1,12 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.application.dto.UserAuthDTO;
+import com.midnightdraft.poemofthedamned.application.dto.UserLoginDTO;
+import com.midnightdraft.poemofthedamned.application.dto.UserRegistrationDTO;
 import com.midnightdraft.poemofthedamned.application.exception.InvalidCredentialsException;
 import com.midnightdraft.poemofthedamned.application.exception.UserAlreadyExistsException;
 import com.midnightdraft.poemofthedamned.application.usecase.LoginUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.RegistrationUseCase;
-import com.midnightdraft.poemofthedamned.domain.model.User;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
@@ -215,10 +217,12 @@ public class AuthMenuController {
       return;
     }
 
+    UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO(username, email, password);
+
     executeAuthTask(new Task<>() {
       @Override
-      protected User call() {
-        return registrationUseCase.execute(username, email, password);
+      protected UserAuthDTO call() {
+        return registrationUseCase.execute(userRegistrationDTO);
       }
     }, UserAlreadyExistsException.class, "auth.invalid_registration");
   }
@@ -239,15 +243,17 @@ public class AuthMenuController {
       return;
     }
 
+    UserLoginDTO userLoginDTO = new UserLoginDTO(email, password);
+
     executeAuthTask(new Task<>() {
       @Override
-      protected User call() {
-        return loginUseCase.execute(email, password);
+      protected UserAuthDTO call() {
+        return loginUseCase.execute(userLoginDTO);
       }
     }, InvalidCredentialsException.class, "auth.invalid_login");
   }
 
-  private void executeAuthTask(Task<User> task, Class<? extends RuntimeException> expectedEx,
+  private void executeAuthTask(Task<UserAuthDTO> task, Class<? extends RuntimeException> expectedEx,
       String errorMsg) {
     actionButton.setDisable(true);
 

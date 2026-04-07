@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.application.dto.ChoiceDTO;
 import com.midnightdraft.poemofthedamned.application.usecase.AdvanceDialogueUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.CompleteSceneTransitionUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.GetAvailableChoicesUseCase;
@@ -363,15 +364,15 @@ public class GameSceneController {
   }
 
   private void showChoices() {
-    List<Choice> choices = getAvailableChoicesUseCase.execute();
+    List<ChoiceDTO> choices = getAvailableChoicesUseCase.execute();
 
     choiceContainer.getChildren().clear();
 
     dialoguePanel.setVisible(false);
     choiceContainer.setVisible(true);
 
-    for (Choice choice : choices) {
-      Button btn = new Button(choice.getChoiceText());
+    for (ChoiceDTO choice : choices) {
+      Button btn = new Button(choice.choiceText());
       btn.getStyleClass().add("choice-plaque");
       btn.setWrapText(true);
       btn.setAlignment(javafx.geometry.Pos.CENTER);
@@ -385,7 +386,7 @@ public class GameSceneController {
         choiceContainer.setVisible(false);
         dialoguePanel.setVisible(true);
 
-        handleResponse(selectChoiceUseCase.execute(choice.getId()));
+        handleResponse(selectChoiceUseCase.execute(choice.id()));
       });
       choiceContainer.getChildren().add(btn);
     }
