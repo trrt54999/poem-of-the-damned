@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<StackPane fx:id="rootPane" styleClass="main-menu-root" xmlns="http://javafx.com/javafx"
+<StackPane fx:id="rootPane" styleClass="main-menu-root" focusTraversable="true" xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.MainMenuController"
   prefHeight="400.0" prefWidth="600.0">
   <StackPane fx:id="mainMenuEnter">
-    <VBox alignment="CENTER" spacing="10">
-    <ImageView fx:id="companyLogo"/>
-    <Button fx:id="loginButton" styleClass="login-button" text="%main_menu.login">
-      <graphic>
-        <ImageView fx:id="loginIcon"/>
-      </graphic>
-    </Button>
+    <VBox alignment="CENTER">
+      <ImageView fx:id="companyLogo"/>
+      <StackPane>
+        <Button fx:id="enterLoginButton" onMousePressed="#onEnterLoginPressed"
+          styleClass="enter-login-button" StackPane.alignment="TOP_CENTER" text="%main_menu.login">
+          <graphic>
+            <ImageView fx:id="loginIcon"/>
+          </graphic>
+        </Button>
+        <VBox fx:id="loadingBox" StackPane.alignment="TOP_CENTER" alignment="CENTER" spacing="30"
+          visible="false">
+          <Label fx:id="usernameLabel" styleClass="enter-label"/>
+          <Label fx:id="loggingInLabel" styleClass="enter-label" text="%main_menu.login.in"/>
+          <ImageView fx:id="loadingAnimation"/>
+        </VBox>
+      </StackPane>
     </VBox>
   </StackPane>
 </StackPane>

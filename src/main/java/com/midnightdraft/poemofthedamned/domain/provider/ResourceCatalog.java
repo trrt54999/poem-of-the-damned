@@ -86,6 +86,7 @@ public interface ResourceCatalog {
     EYE_OFF_ICON,
     FIELD_REFUSE_ICON,
     FIELD_SUCCESS_ICON,
-    MAIN_MENU_LOGIN_ICON
+    MAIN_MENU_LOGIN_ICON,
+    LOADING_CIRCLE_ANIMATION
   }
 }

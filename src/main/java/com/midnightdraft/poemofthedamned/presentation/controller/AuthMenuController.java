@@ -7,8 +7,10 @@ import com.midnightdraft.poemofthedamned.application.exception.InvalidCredential
 import com.midnightdraft.poemofthedamned.application.exception.UserAlreadyExistsException;
 import com.midnightdraft.poemofthedamned.application.usecase.LoginUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.RegistrationUseCase;
+import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
+import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.domain.repository.UserRepository;
@@ -16,6 +18,7 @@ import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResou
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.UserRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.AuthValidator;
 import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -26,6 +29,8 @@ import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -259,7 +264,17 @@ public class AuthMenuController {
 
     task.setOnSucceeded(_ -> {
       actionButton.setDisable(false);
-      // todo load main menu
+      GameStateMachine.getInstance().setSessionContext(task.getValue());
+
+      FXMLLoader loader = new FXMLLoader(
+          resourceProvider.getUrl(Fxml.MAIN_MENU));
+      loader.setResources(resources);
+      try {
+        Parent nextView = loader.load();
+        rootPane.getScene().setRoot(nextView);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     });
 
     task.setOnFailed(_ -> {

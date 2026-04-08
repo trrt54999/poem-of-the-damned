@@ -1,6 +1,7 @@
 package com.midnightdraft.poemofthedamned.domain.engine;
 
 import com.midnightdraft.poemofthedamned.App;
+import com.midnightdraft.poemofthedamned.application.dto.UserAuthDTO;
 import com.midnightdraft.poemofthedamned.domain.model.ChoiceEffect;
 import com.midnightdraft.poemofthedamned.domain.model.Dialogue;
 import com.midnightdraft.poemofthedamned.domain.model.GameCharacter;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter(AccessLevel.NONE)
@@ -31,6 +33,9 @@ public class GameStateMachine {
   private List<Dialogue> dialogues;
   private int index = 0;
 
+  @Getter
+  @Setter
+  private UserAuthDTO sessionContext;
   private GameScene queuedTransitionScene;
 
   private final Map<String, String> activeFlags = new HashMap<>();

@@ -2,7 +2,7 @@
   -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #354C71, #336353)
 }
 
-.login-button {
+.enter-login-button {
   -fx-background-color: transparent;
   -fx-border-color: transparent;
   -fx-text-fill: #FFFFFF;
@@ -10,4 +10,10 @@
   -fx-font-size: 2em;
   -fx-content-display: left;
   -fx-graphic-text-gap: 0.6em;
+}
+
+.enter-label {
+  -fx-font-family: 'Inter Medium';
+  -fx-font-size: 2em;
+  -fx-text-fill: #FFFFFF;
 }
