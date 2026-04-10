@@ -35,6 +35,7 @@
     <left>
       <VBox>
         <Region VBox.vgrow="ALWAYS"/>
+        <Pane fx:id="topStripe" styleClass="top-stripe"/>
         <Button fx:id="poemButton" styleClass="main-menu-btn"
           onMousePressed="#onLoadGameMenuButtonPressed" text="PotD"/>
         <Button fx:id="picturesButton" styleClass="main-menu-btn"

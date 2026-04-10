@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -71,6 +72,8 @@ public class MainMenuController {
   @FXML
   private Label timeLabel;
   @FXML
+  private Pane topStripe;
+  @FXML
   private ResourceBundle resources;
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
@@ -85,14 +88,11 @@ public class MainMenuController {
     setupKeyHandlers();
     setupScaling();
 
-    rootPane.sceneProperty().addListener((_, _, newScene) -> {
-      if (newScene != null) {
-        clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
-      }
-    });
+    topStripe.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.005));
 
     rootPane.sceneProperty().addListener((_, _, newScene) -> {
       if (newScene != null) {
+        clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
         rootPane.requestFocus();
       }
     });

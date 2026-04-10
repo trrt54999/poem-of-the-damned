@@ -59,6 +59,10 @@
   -fx-spacing: 3em;
 }
 
+.top-stripe {
+  -fx-background-color: linear-gradient(to right, #F4E6E6, #E62D57);
+}
+
 .profile-btn {
   -fx-background-color: rgba(251, 245, 245, 0.9);
   -fx-border-color: transparent;
