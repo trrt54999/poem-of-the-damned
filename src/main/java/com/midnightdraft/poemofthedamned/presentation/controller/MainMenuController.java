@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.App;
 import com.midnightdraft.poemofthedamned.application.dto.UserAuthDTO;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
@@ -8,10 +9,13 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import com.midnightdraft.poemofthedamned.presentation.util.BindLocalTime;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,6 +75,8 @@ public class MainMenuController {
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
+  private Timeline clockTimeLine;
+
   @FXML
   public void initialize() {
     loadResources();
@@ -78,6 +84,13 @@ public class MainMenuController {
     setupUsernameLabel();
     setupKeyHandlers();
     setupScaling();
+
+    rootPane.sceneProperty().addListener((_, _, newScene) -> {
+      if (newScene != null) {
+        clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
+      }
+    });
+
     rootPane.sceneProperty().addListener((_, _, newScene) -> {
       if (newScene != null) {
         rootPane.requestFocus();
@@ -100,8 +113,12 @@ public class MainMenuController {
   private void onLoadGameMenuButtonPressed() {
     FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.GAME_MAIN_MENU));
     loader.setResources(resources);
-    
+
     try {
+      if (clockTimeLine != null) {
+        clockTimeLine.stop();
+      }
+
       Parent nextView = loader.load();
       rootPane.getScene().setRoot(nextView);
     } catch (IOException e) {
@@ -162,8 +179,7 @@ public class MainMenuController {
         new Image(resourceProvider.getUrl(Ui.LOADING_CIRCLE_ANIMATION).toExternalForm()));
     centerLogo.setImage(
         new Image(resourceProvider.getUrl(Ui.CENTRAL_MIDNIGHT_LOGO).toExternalForm()));
-    miniLogo.setImage(
-        new Image(resourceProvider.getUrl(Ui.PINK_MIDNIGHT_LOGO).toExternalForm()));
+    miniLogo.setImage(new Image(resourceProvider.getUrl(Ui.PINK_MIDNIGHT_LOGO).toExternalForm()));
 
     companyLogo.fitWidthProperty().bind(rootPane.widthProperty().multiply(0.35));
     companyLogo.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.55));
@@ -211,8 +227,8 @@ public class MainMenuController {
   }
 
   private void setupButtonHover(Button button, Ui defaultIcon, Ui hoverIcon) {
-    button.hoverProperty().addListener((_, _, hovered) ->
-        setButtonIcon(button, hovered ? hoverIcon : defaultIcon));
+    button.hoverProperty()
+        .addListener((_, _, hovered) -> setButtonIcon(button, hovered ? hoverIcon : defaultIcon));
   }
 
   private void setupUsernameLabel() {

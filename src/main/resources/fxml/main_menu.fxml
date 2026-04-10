@@ -52,7 +52,7 @@
           <ImageView fx:id="miniLogo"/>
         </StackPane>
         <Region HBox.hgrow="ALWAYS"/>
-        <Label fx:id="timeLabel" styleClass="main-menu-label" text="7:03 PM"/>
+        <Label fx:id="timeLabel" styleClass="main-menu-label"/>
         <Button fx:id="profileButton" styleClass="profile-btn"/>
       </HBox>
     </bottom>
