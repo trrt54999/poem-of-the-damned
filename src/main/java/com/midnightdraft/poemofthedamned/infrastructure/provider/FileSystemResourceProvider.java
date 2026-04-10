@@ -76,6 +76,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case NUNITO_BLACK -> "/assets/fonts/nunito_black.ttf";
         case UBUNTU_BOLD -> "/assets/fonts/ubuntu_bold.ttf";
         case INTER_MEDIUM -> "/assets/fonts/inter_medium.otf";
+        case INTER_EXTRA_BOLD -> "/assets/fonts/inter_extra_bold.otf";
       };
 
       case Backgrounds backgrounds -> switch (backgrounds) {
@@ -92,6 +93,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case LOGO -> "/assets/ui/logo.jpg";
         case GITHUB_LOGO -> "/assets/ui/github_logo.png";
         case MIDNIGHT_LOGO -> "/assets/ui/midnight_logo.png";
+        case CENTRAL_MIDNIGHT_LOGO -> "/assets/ui/central_midnight_logo.png";
         case DIALOGUE_RECTANGLE -> "/assets/ui/dialogue_rectangle.png";
         case LOGIN_TAB_ICON -> "/assets/ui/login_tab_icon.png";
         case REGISTRATION_TAB_ICON -> "/assets/ui/registration_tab_icon.png";
@@ -105,6 +107,19 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case FIELD_REFUSE_ICON -> "/assets/ui/field_refuse_icon.png";
         case FIELD_SUCCESS_ICON -> "/assets/ui/field_success_icon.png";
         case MAIN_MENU_LOGIN_ICON -> "/assets/ui/main_menu_login_icon.png";
+        case POEM_ICON -> "/assets/ui/poem_icon.png";
+        case POEM_ICON_WHITE -> "/assets/ui/poem_icon_white.png";
+        case PICTURES_ICON -> "/assets/ui/pictures_icon.png";
+        case PICTURES_ICON_WHITE -> "/assets/ui/pictures_icon_white.png";
+        case MUSIC_ICON -> "/assets/ui/music_icon.png";
+        case MUSIC_ICON_WHITE -> "/assets/ui/music_icon_white.png";
+        case SETTINGS_ICON -> "/assets/ui/settings_icon.png";
+        case SETTINGS_ICON_WHITE -> "/assets/ui/settings_icon_white.png";
+        case QUIT_ICON -> "/assets/ui/quit_icon.png";
+        case QUIT_ICON_WHITE -> "/assets/ui/quit_icon_white.png";
+        case PROFILE_ICON -> "/assets/ui/profile_icon.png";
+        case PROFILE_ICON_WHITE -> "/assets/ui/profile_icon_white.png";
+        case PINK_MIDNIGHT_LOGO -> "/assets/ui/pink_midnight_logo.png";
         case LOADING_CIRCLE_ANIMATION -> "/assets/ui/loading_circle_animation.gif";
       };
     };

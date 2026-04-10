@@ -17,3 +17,61 @@
   -fx-font-size: 2em;
   -fx-text-fill: #FFFFFF;
 }
+
+.main-menu-label {
+  -fx-font-family: 'Inter Medium';
+  -fx-font-size: 2em;
+  -fx-text-fill: #C02E2E;
+}
+
+.main-menu-label, .main-menu-btn {
+  -fx-font-family: 'Inter Extra Bold';
+  -fx-font-size: 2.5em;
+  -fx-text-fill: #C02E2E;
+}
+
+.main-menu-btn {
+  -fx-background-color: #F4E6E6;
+  -fx-border-color: transparent;
+  -fx-background-radius: 0;
+  -fx-border-radius: 0;
+  -fx-content-display: left;
+  -fx-alignment: center-left;
+  -fx-graphic-text-gap: 1em;
+  -fx-padding: 0.4em 3em 0.4em 1em;
+  -fx-max-width: Infinity;
+}
+
+.main-menu-btn:hover {
+  -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #B23AA2, #BF4527);
+  -fx-text-fill: rgba(255, 255, 255, 0.9);
+}
+
+.main-menu-btn:hover .ikonli-font-icon,
+.main-menu-btn:hover .image-view {
+  -fx-opacity: 0.9;
+  -fx-image: none;
+}
+
+.main-menu-footer {
+  -fx-background-color: rgba(255, 189, 189, 0.9);
+  -fx-alignment: center;
+  -fx-spacing: 3em;
+}
+
+.profile-btn {
+  -fx-background-color: rgba(251, 245, 245, 0.9);
+  -fx-border-color: transparent;
+  -fx-background-radius: 0;
+  -fx-padding: 0.3em 2.0em;
+}
+
+.profile-btn:hover {
+  -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #B23AA2, #BF4527);
+  -fx-text-fill: rgba(255, 255, 255, 0.9);
+}
+
+.mini-logo-container {
+  -fx-background-color: rgba(251, 245, 245, 0.9);
+  -fx-padding: 0.3em 1.5em;
+}

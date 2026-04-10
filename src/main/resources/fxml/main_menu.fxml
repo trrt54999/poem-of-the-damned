@@ -4,7 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<StackPane fx:id="rootPane" styleClass="main-menu-root" focusTraversable="true" xmlns="http://javafx.com/javafx"
+<StackPane fx:id="rootPane" styleClass="main-menu-root" focusTraversable="true"
+  xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.midnightdraft.poemofthedamned.presentation.controller.MainMenuController"
   prefHeight="400.0" prefWidth="600.0">
@@ -27,4 +28,33 @@
       </StackPane>
     </VBox>
   </StackPane>
+  <BorderPane fx:id="mainMenu" visible="false" managed="false">
+    <center>
+      <ImageView fx:id="centerLogo"/>
+    </center>
+    <left>
+      <VBox>
+        <Region VBox.vgrow="ALWAYS"/>
+        <Button fx:id="poemButton" styleClass="main-menu-btn"
+          onMousePressed="#onLoadGameMenuButtonPressed" text="PotD"/>
+        <Button fx:id="picturesButton" styleClass="main-menu-btn"
+          text="%main_menu.pictures.button"/>
+        <Button fx:id="musicButton" styleClass="main-menu-btn" text="%main_menu.music.button"/>
+        <Button fx:id="settingsButton" styleClass="main-menu-btn"
+          text="%main_menu.settings.button"/>
+        <Button fx:id="quitButton" styleClass="main-menu-btn" onMousePressed="#onQuitButtonPressed"
+          text="%main_menu.quit.button"/>
+      </VBox>
+    </left>
+    <bottom>
+      <HBox styleClass="main-menu-footer">
+        <StackPane styleClass="mini-logo-container">
+          <ImageView fx:id="miniLogo"/>
+        </StackPane>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="timeLabel" styleClass="main-menu-label" text="7:03 PM"/>
+        <Button fx:id="profileButton" styleClass="profile-btn"/>
+      </HBox>
+    </bottom>
+  </BorderPane>
 </StackPane>

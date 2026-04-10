@@ -273,7 +273,7 @@ public class AuthMenuController {
         Parent nextView = loader.load();
         rootPane.getScene().setRoot(nextView);
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new RuntimeException(e); // todo Логування?
       }
     });
 
