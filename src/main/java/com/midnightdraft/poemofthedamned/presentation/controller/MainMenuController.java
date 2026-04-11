@@ -22,9 +22,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -40,6 +43,8 @@ public class MainMenuController {
   private StackPane mainMenuEnter;
   @FXML
   private BorderPane mainMenu;
+  @FXML
+  private BorderPane modalWindow;
   @FXML
   private ImageView companyLogo;
   @FXML
@@ -65,6 +70,18 @@ public class MainMenuController {
   @FXML
   private Button profileButton;
   @FXML
+  private Button modalTopCloseButton;
+  @FXML
+  private Button prevResolutionButton;
+  @FXML
+  private Button nextResolutionButton;
+  @FXML
+  private Button prevLanguageButton;
+  @FXML
+  private Button nextLanguageButton;
+  @FXML
+  private Button applyButton;
+  @FXML
   private VBox loadingBox;
   @FXML
   private Label usernameLabel;
@@ -72,6 +89,20 @@ public class MainMenuController {
   private Label loggingInLabel;
   @FXML
   private Label timeLabel;
+  @FXML
+  private Label currentResolutionLabel;
+  @FXML
+  private Label modalTopLabel;
+  @FXML
+  private Label currentLanguageLabel;
+  @FXML
+  private Slider musicVolumeSlider;
+  @FXML
+  private Slider soundVolumeSlider;
+  @FXML
+  private ToggleButton resolutionToggle;
+  @FXML
+  private HBox mainMenuFooter;
   @FXML
   private Pane topStripe;
   @FXML
@@ -90,7 +121,7 @@ public class MainMenuController {
     setupUsernameLabel();
     setupKeyHandlers();
     setupScaling();
-
+    setupModalWindow();
     topStripe.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.005));
 
     rootPane.sceneProperty().addListener((_, _, newScene) -> {
@@ -130,8 +161,35 @@ public class MainMenuController {
   }
 
   @FXML
+  private void onSettingsButtonPressed() {
+    backgroundEclipse.setVisible(true);
+    modalWindow.setVisible(true);
+    modalWindow.setManaged(true);
+  }
+
+  @FXML
+  private void onEclipsePressed() {
+    backgroundEclipse.setVisible(false);
+    modalWindow.setVisible(false);
+    modalWindow.setManaged(false);
+  }
+
+  @FXML
   private void onQuitButtonPressed() {
     System.exit(0);
+    // logging slf4j
+  }
+
+
+  private void setupModalWindow() {
+    modalWindow.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.6));
+    modalWindow.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.6));
+    modalWindow.prefHeightProperty().bind(
+        rootPane.heightProperty().subtract(mainMenuFooter.heightProperty())
+    );
+    modalWindow.maxHeightProperty().bind(
+        rootPane.heightProperty().subtract(mainMenuFooter.heightProperty())
+    );
   }
 
   private void playCrossfadeAnimation() {
@@ -209,6 +267,28 @@ public class MainMenuController {
 
     setButtonIcon(profileButton, Ui.PROFILE_ICON);
     setupButtonHover(profileButton, Ui.PROFILE_ICON, Ui.PROFILE_ICON_WHITE);
+
+    setSmallButtonIcon(modalTopCloseButton, Ui.MODAL_DAGGER_ICON);
+
+    setTinyButtonIcon(prevResolutionButton, Ui.ROULETTE_BUTTON_ICON);
+    prevResolutionButton.getGraphic().setRotate(270);
+    setupGraphicImageHover(prevResolutionButton, Ui.ROULETTE_BUTTON_ICON,
+        Ui.ROULETTE_BUTTON_HOVER_ICON);
+
+    setTinyButtonIcon(nextResolutionButton, Ui.ROULETTE_BUTTON_ICON);
+    nextResolutionButton.getGraphic().setRotate(90);
+    setupGraphicImageHover(nextResolutionButton, Ui.ROULETTE_BUTTON_ICON,
+        Ui.ROULETTE_BUTTON_HOVER_ICON);
+
+    setTinyButtonIcon(prevLanguageButton, Ui.ROULETTE_BUTTON_ICON);
+    prevLanguageButton.getGraphic().setRotate(270);
+    setupGraphicImageHover(prevLanguageButton, Ui.ROULETTE_BUTTON_ICON,
+        Ui.ROULETTE_BUTTON_HOVER_ICON);
+
+    setTinyButtonIcon(nextLanguageButton, Ui.ROULETTE_BUTTON_ICON);
+    nextLanguageButton.getGraphic().setRotate(90);
+    setupGraphicImageHover(nextLanguageButton, Ui.ROULETTE_BUTTON_ICON,
+        Ui.ROULETTE_BUTTON_HOVER_ICON);
   }
 
   private void setupScaling() {
@@ -229,9 +309,40 @@ public class MainMenuController {
     button.setGraphic(icon);
   }
 
+  private void setSmallButtonIcon(Button button, Ui iconResource) {
+    ImageView icon = new ImageView(
+        new Image(resourceProvider.getUrl(iconResource).toExternalForm()));
+
+    icon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.033));
+    icon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.033));
+
+    button.setGraphic(icon);
+  }
+
+  private void setTinyButtonIcon(Button button, Ui iconResource) {
+    ImageView icon = new ImageView(
+        new Image(resourceProvider.getUrl(iconResource).toExternalForm()));
+
+    icon.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.0167));
+    icon.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.0167));
+
+    button.setGraphic(icon);
+  }
+
   private void setupButtonHover(Button button, Ui defaultIcon, Ui hoverIcon) {
     button.hoverProperty()
         .addListener((_, _, hovered) -> setButtonIcon(button, hovered ? hoverIcon : defaultIcon));
+  }
+
+  private void setupGraphicImageHover(Button button, Ui defaultIcon, Ui hoverIcon) {
+    Image defaultImg = new Image(resourceProvider.getUrl(defaultIcon).toExternalForm());
+    Image hoverImg = new Image(resourceProvider.getUrl(hoverIcon).toExternalForm());
+
+    button.hoverProperty().addListener((_, _, hovered) -> {
+      if (button.getGraphic() instanceof ImageView imageView) {
+        imageView.setImage(hovered ? hoverImg : defaultImg);
+      }
+    });
   }
 
   private void setupUsernameLabel() {

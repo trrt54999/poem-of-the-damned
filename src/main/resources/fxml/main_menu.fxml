@@ -42,13 +42,13 @@
           text="%main_menu.pictures.button"/>
         <Button fx:id="musicButton" styleClass="main-menu-btn" text="%main_menu.music.button"/>
         <Button fx:id="settingsButton" styleClass="main-menu-btn"
-          text="%main_menu.settings.button"/>
+          onMousePressed="#onSettingsButtonPressed" text="%main_menu.settings.button"/>
         <Button fx:id="quitButton" styleClass="main-menu-btn" onMousePressed="#onQuitButtonPressed"
           text="%main_menu.quit.button"/>
       </VBox>
     </left>
     <bottom>
-      <HBox styleClass="main-menu-footer">
+      <HBox fx:id="mainMenuFooter" styleClass="main-menu-footer">
         <StackPane styleClass="mini-logo-container">
           <ImageView fx:id="miniLogo"/>
         </StackPane>
@@ -58,42 +58,47 @@
       </HBox>
     </bottom>
   </BorderPane>
-  <Region fx:id="backgroundEclipse" styleClass="background-eclipse" visible="false"/>
-  <BorderPane fx:id="modalWindow" visible="false" managed="false">
+  <Region fx:id="backgroundEclipse" styleClass="background-eclipse" visible="false"
+    onMousePressed="#onEclipsePressed"/>
+  <BorderPane fx:id="modalWindow" styleClass="modal-window" visible="false" managed="false"
+    StackPane.alignment="TOP_CENTER">
     <top>
       <HBox styleClass="modal-top-hbox">
-        <Label fx:id="modalTopLabel"/>
+        <Label fx:id="modalTopLabel" styleClass="modal-top-label" text="Settings"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="modalTopCloseButton" styleClass="modal-top-btn"/>
       </HBox>
     </top>
     <center>
       <VBox>
-        <Region styleClass="modal-center-sprite"/>
-        <Label styleClass="default-modal-label" text="Music"/>
+        <Region styleClass="modal-center-divide"/>
+        <Label styleClass="mini-modal-label" text="Game options"/>
+        <Label styleClass="volume-label, first-volume-label" text="Music Volume"/>
         <Slider fx:id="musicVolumeSlider" styleClass="default-modal-slider"/>
-        <Label styleClass="default-modal-label" text="Sound Volume"/>
-        <Slider fx:id="sountVolumeSlider" styleClass="default-modal-slider"/>
-        <Label styleClass="default-modal-label" text="Display"/>
-        <HBox alignment="CENTER">
+        <Label styleClass="volume-label" text="Sound Volume"/>
+        <Slider fx:id="soundVolumeSlider" styleClass="default-modal-slider"/>
+        <Label styleClass="category-label" text="Display"/>
+        <HBox alignment="CENTER_LEFT" styleClass="display-language-hbox">
           <Label styleClass="default-modal-label" text="Windowed"/>
           <ToggleButton fx:id="resolutionToggle" styleClass="default-modal-toggle-btn"/>
           <Label styleClass="default-modal-label" alignment="CENTER" text="Fullscreen"/>
         </HBox>
-        <HBox alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" styleClass="display-language-hbox">
           <Button fx:id="prevResolutionButton" styleClass="arrow-btn"/>
-          <Label fx:id="currentResolutionLabel" styleClass="default-modal-label"
+          <Label fx:id="currentResolutionLabel" styleClass="default-modal-label, carousel-label"
             alignment="CENTER" text="1280x720"/>
           <Button fx:id="nextResolutionButton" styleClass="arrow-btn"/>
         </HBox>
-        <Label styleClass="default-modal-label" text="Language"/>
-        <HBox alignment="CENTER">
+        <Label styleClass="category-label" text="Language"/>
+        <HBox alignment="CENTER_LEFT" styleClass="display-language-hbox">
           <Button fx:id="prevLanguageButton" styleClass="arrow-btn"/>
-          <Label fx:id="currentLanguageLabel" styleClass="default-modal-label"
+          <Label fx:id="currentLanguageLabel" styleClass="default-modal-label, carousel-label"
             alignment="CENTER" text="English"/>
           <Button fx:id="nextLanguageButton" styleClass="arrow-btn"/>
         </HBox>
-        <Button fx:id="applyButton" styleClass="apply-btn" text="Apply"/>
+        <HBox styleClass="apply-btn-wrapper">
+          <Button fx:id="applyButton" styleClass="apply-btn" text="Apply"/>
+        </HBox>
       </VBox>
     </center>
     <bottom>
