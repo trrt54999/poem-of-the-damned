@@ -15,9 +15,12 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 public class App extends Application {
+
+  public static String currentLang = "en";
+
+  private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   public static void main(String[] args) {
     // todo це круті налаштування, але треба буде розбіратися як саме вони прибирають зернистість
@@ -26,10 +29,6 @@ public class App extends Application {
 
     Application.launch();
   }
-
-  public static String currentLang = "en";
-
-  private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   @Override
   public void stop() {

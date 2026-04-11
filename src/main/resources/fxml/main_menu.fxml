@@ -58,4 +58,46 @@
       </HBox>
     </bottom>
   </BorderPane>
+  <Region fx:id="backgroundEclipse" styleClass="background-eclipse" visible="false"/>
+  <BorderPane fx:id="modalWindow" visible="false" managed="false">
+    <top>
+      <HBox styleClass="modal-top-hbox">
+        <Label fx:id="modalTopLabel"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="modalTopCloseButton" styleClass="modal-top-btn"/>
+      </HBox>
+    </top>
+    <center>
+      <VBox>
+        <Region styleClass="modal-center-sprite"/>
+        <Label styleClass="default-modal-label" text="Music"/>
+        <Slider fx:id="musicVolumeSlider" styleClass="default-modal-slider"/>
+        <Label styleClass="default-modal-label" text="Sound Volume"/>
+        <Slider fx:id="sountVolumeSlider" styleClass="default-modal-slider"/>
+        <Label styleClass="default-modal-label" text="Display"/>
+        <HBox alignment="CENTER">
+          <Label styleClass="default-modal-label" text="Windowed"/>
+          <ToggleButton fx:id="resolutionToggle" styleClass="default-modal-toggle-btn"/>
+          <Label styleClass="default-modal-label" alignment="CENTER" text="Fullscreen"/>
+        </HBox>
+        <HBox alignment="CENTER">
+          <Button fx:id="prevResolutionButton" styleClass="arrow-btn"/>
+          <Label fx:id="currentResolutionLabel" styleClass="default-modal-label"
+            alignment="CENTER" text="1280x720"/>
+          <Button fx:id="nextResolutionButton" styleClass="arrow-btn"/>
+        </HBox>
+        <Label styleClass="default-modal-label" text="Language"/>
+        <HBox alignment="CENTER">
+          <Button fx:id="prevLanguageButton" styleClass="arrow-btn"/>
+          <Label fx:id="currentLanguageLabel" styleClass="default-modal-label"
+            alignment="CENTER" text="English"/>
+          <Button fx:id="nextLanguageButton" styleClass="arrow-btn"/>
+        </HBox>
+        <Button fx:id="applyButton" styleClass="apply-btn" text="Apply"/>
+      </VBox>
+    </center>
+    <bottom>
+      <HBox styleClass="modal-bottom-hbox"/>
+    </bottom>
+  </BorderPane>
 </StackPane>

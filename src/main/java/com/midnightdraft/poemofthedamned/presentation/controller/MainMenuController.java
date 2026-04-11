@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -73,6 +74,8 @@ public class MainMenuController {
   private Label timeLabel;
   @FXML
   private Pane topStripe;
+  @FXML
+  private Region backgroundEclipse;
   @FXML
   private ResourceBundle resources;
 
