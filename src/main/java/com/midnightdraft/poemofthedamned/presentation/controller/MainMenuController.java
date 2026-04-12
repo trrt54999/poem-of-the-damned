@@ -180,60 +180,6 @@ public class MainMenuController {
     });
   }
 
-  private void setupApplyButton(Stage stage) {
-    applyButton.setOnAction(_ -> {
-      if (currentResolutionIndex != appliedResolutionIndex && !stage.isFullScreen()) {
-        changeResolutionUseCase.execute(ScreenResolution.values()[currentResolutionIndex], stage);
-        appliedResolutionIndex = currentResolutionIndex;
-      }
-      if (currentLanguageIndex != appliedLanguageIndex) {
-        changeLanguageUseCase.execute(GameLanguage.values()[currentLanguageIndex].getCode());
-        refreshFontStylesheet();
-        refreshLabels();
-        appliedLanguageIndex = currentLanguageIndex;
-      }
-    });
-  }
-
-  private void refreshFontStylesheet() {
-    Scene scene = rootPane.getScene();
-    scene.getStylesheets().removeIf(s -> s.contains("font_en") || s.contains("font_uk"));
-
-    switch (App.currentLang) {
-      case "uk" ->
-          scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_UK).toExternalForm());
-      default -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_EN).toExternalForm());
-    }
-  }
-
-  private void refreshLabels() {
-    ResourceBundle bundle = ResourceBundle.getBundle("localization/ui", Locale.of(App.currentLang));
-    resources = bundle;
-
-    enterLoginButton.setText(bundle.getString("main_menu.login"));
-    loggingInLabel.setText(bundle.getString("main_menu.login.in"));
-    picturesButton.setText(bundle.getString("main_menu.pictures.button"));
-    musicButton.setText(bundle.getString("main_menu.music.button"));
-    settingsButton.setText(bundle.getString("main_menu.settings.button"));
-    quitButton.setText(bundle.getString("main_menu.quit.button"));
-    modalTopLabel.setText(bundle.getString("main_menu.settings.top.label"));
-    applyButton.setText(bundle.getString("main_menu.settings.apply.button"));
-    gameOptionsLabel.setText(bundle.getString("main_menu.settings.game_options.label"));
-    musicVolumeLabel.setText(bundle.getString("main_menu.settings.music_volume.label"));
-    soundVolumeLabel.setText(bundle.getString("main_menu.settings.sound_volume.label"));
-    displayLabel.setText(bundle.getString("main_menu.settings.display.label"));
-    windowedLabel.setText(bundle.getString("main_menu.settings.toggle.window.label"));
-    fullscreenLabel.setText(bundle.getString("main_menu.settings.toggle.fullscreen.label"));
-    languageLabel.setText(bundle.getString("main_menu.settings.language.label"));
-
-    if (clockTimeLine != null) {
-      clockTimeLine.stop();
-    }
-    clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
-
-    setupUsernameLabel();
-  }
-
   @FXML
   private void onEnterLoginPressed() {
     enterLoginButton.setVisible(false);
@@ -288,6 +234,61 @@ public class MainMenuController {
   @FXML
   private void onSettingsCloseButtonClicked() {
     closeModalWindow();
+  }
+
+
+  private void setupApplyButton(Stage stage) {
+    applyButton.setOnAction(_ -> {
+      if (currentResolutionIndex != appliedResolutionIndex && !stage.isFullScreen()) {
+        changeResolutionUseCase.execute(ScreenResolution.values()[currentResolutionIndex], stage);
+        appliedResolutionIndex = currentResolutionIndex;
+      }
+      if (currentLanguageIndex != appliedLanguageIndex) {
+        changeLanguageUseCase.execute(GameLanguage.values()[currentLanguageIndex].getCode());
+        refreshFontStylesheet();
+        refreshLabels();
+        appliedLanguageIndex = currentLanguageIndex;
+      }
+    });
+  }
+
+  private void refreshFontStylesheet() {
+    Scene scene = rootPane.getScene();
+    scene.getStylesheets().removeIf(s -> s.contains("font_en") || s.contains("font_uk"));
+
+    switch (App.currentLang) {
+      case "uk" ->
+          scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_UK).toExternalForm());
+      default -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_EN).toExternalForm());
+    }
+  }
+
+  private void refreshLabels() {
+    ResourceBundle bundle = ResourceBundle.getBundle("localization/ui", Locale.of(App.currentLang));
+    resources = bundle;
+
+    enterLoginButton.setText(bundle.getString("main_menu.login"));
+    loggingInLabel.setText(bundle.getString("main_menu.login.in"));
+    picturesButton.setText(bundle.getString("main_menu.pictures.button"));
+    musicButton.setText(bundle.getString("main_menu.music.button"));
+    settingsButton.setText(bundle.getString("main_menu.settings.button"));
+    quitButton.setText(bundle.getString("main_menu.quit.button"));
+    modalTopLabel.setText(bundle.getString("main_menu.settings.top.label"));
+    applyButton.setText(bundle.getString("main_menu.settings.apply.button"));
+    gameOptionsLabel.setText(bundle.getString("main_menu.settings.game_options.label"));
+    musicVolumeLabel.setText(bundle.getString("main_menu.settings.music_volume.label"));
+    soundVolumeLabel.setText(bundle.getString("main_menu.settings.sound_volume.label"));
+    displayLabel.setText(bundle.getString("main_menu.settings.display.label"));
+    windowedLabel.setText(bundle.getString("main_menu.settings.toggle.window.label"));
+    fullscreenLabel.setText(bundle.getString("main_menu.settings.toggle.fullscreen.label"));
+    languageLabel.setText(bundle.getString("main_menu.settings.language.label"));
+
+    if (clockTimeLine != null) {
+      clockTimeLine.stop();
+    }
+    clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
+
+    setupUsernameLabel();
   }
 
   private void updateResolutionLabel() {
@@ -439,7 +440,7 @@ public class MainMenuController {
       }
     });
   }
-
+  // todo setup icons dublicate fix?
   private void setupIcons() {
     companyLogo.setImage(new Image(resourceProvider.getUrl(Ui.MIDNIGHT_LOGO).toExternalForm()));
     loginIcon.setImage(
@@ -478,25 +479,27 @@ public class MainMenuController {
 
     setSmallButtonIcon(modalTopCloseButton, Ui.MODAL_DAGGER_ICON);
 
-    setTinyButtonIcon(prevResolutionButton, Ui.ROULETTE_BUTTON_ICON);
-    prevResolutionButton.getGraphic().setRotate(270);
+    setupCarouselButton(prevResolutionButton, 270);
     setupGraphicImageHover(prevResolutionButton, Ui.ROULETTE_BUTTON_ICON,
         Ui.ROULETTE_BUTTON_HOVER_ICON);
 
-    setTinyButtonIcon(nextResolutionButton, Ui.ROULETTE_BUTTON_ICON);
-    nextResolutionButton.getGraphic().setRotate(90);
+    setupCarouselButton(nextResolutionButton, 90);
     setupGraphicImageHover(nextResolutionButton, Ui.ROULETTE_BUTTON_ICON,
         Ui.ROULETTE_BUTTON_HOVER_ICON);
 
-    setTinyButtonIcon(prevLanguageButton, Ui.ROULETTE_BUTTON_ICON);
-    prevLanguageButton.getGraphic().setRotate(270);
+    setupCarouselButton(prevLanguageButton, 270);
     setupGraphicImageHover(prevLanguageButton, Ui.ROULETTE_BUTTON_ICON,
         Ui.ROULETTE_BUTTON_HOVER_ICON);
 
-    setTinyButtonIcon(nextLanguageButton, Ui.ROULETTE_BUTTON_ICON);
-    nextLanguageButton.getGraphic().setRotate(90);
+    setupCarouselButton(nextLanguageButton, 90);
     setupGraphicImageHover(nextLanguageButton, Ui.ROULETTE_BUTTON_ICON,
         Ui.ROULETTE_BUTTON_HOVER_ICON);
+  }
+
+  private void setupCarouselButton(Button button, double rotation) {
+    setTinyButtonIcon(button, Ui.ROULETTE_BUTTON_ICON);
+    button.getGraphic().setRotate(rotation);
+    setupGraphicImageHover(button, Ui.ROULETTE_BUTTON_ICON, Ui.ROULETTE_BUTTON_HOVER_ICON);
   }
 
   private void setupScaling() {
