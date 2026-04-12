@@ -2,7 +2,7 @@
   -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #354C71, #336353)
 }
 
-.enter-login-button {
+.enter-login-btn {
   -fx-background-color: transparent;
   -fx-border-color: transparent;
   -fx-text-fill: #FFFFFF;
@@ -53,6 +53,11 @@
   -fx-image: none;
 }
 
+.main-menu-btn-active {
+  -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #B23AA2, #BF4527);
+  -fx-text-fill: rgba(255, 255, 255, 0.9);
+}
+
 .main-menu-footer {
   -fx-background-color: rgba(255, 189, 189, 0.9);
   -fx-alignment: center;
@@ -84,23 +89,27 @@
   -fx-background-color: rgba(34, 26, 26, 0.25);
 }
 
-.modal-top-hbox {
-  -fx-background-color: rgba(255, 255, 255, 0.9);
-  -fx-padding: 1em 0;
-}
-
 .modal-top-label {
   -fx-font-family: 'Inter Extra Bold';
   -fx-text-fill: rgba(192, 46, 46, 0.9);
   -fx-font-size: 1.5em;
-  -fx-padding: 0 0 0.5em 1em;
+  -fx-padding: 0 0 0 1em;
 }
 
 .modal-top-btn {
   -fx-background-color: transparent;
   -fx-border-color: transparent;
-  -fx-padding: 0 0.5em 0em 0;
-  /* todo hover */
+  -fx-padding: 0.4em;
+  -fx-background-radius: 0em;
+}
+
+.modal-top-btn:hover {
+  -fx-background-color: rgba(0, 0, 0, 0.12);
+  -fx-cursor: hand;
+}
+
+.modal-top-btn:pressed {
+  -fx-background-color: rgba(0, 0, 0, 0.25);
 }
 
 .modal-center-divide {
@@ -140,6 +149,7 @@
   -fx-background-radius: 50;
   -fx-pref-width: 1.25em;
   -fx-pref-height: 1.25em;
+  -fx-cursor: hand;
 }
 
 /* Базовий стан: Windowed (повзунок зліва) */
@@ -223,8 +233,10 @@
   -fx-cursor: hand;
 }
 
-.modal-bottom-hbox {
-  -fx-background-color: rgba(253, 126, 126, 0.9);
+.modal-top-hbox {
+  -fx-background-color: rgba(255, 255, 255, 0.9);
+  -fx-padding: 0;
+  -fx-alignment: center-left;
   -fx-min-height: 3em;
 }
 
@@ -257,5 +269,11 @@
 
 .carousel-label {
   -fx-pref-width: 10em;
+  -fx-alignment: center;
+}
+
+.modal-bottom-hbox {
+  -fx-background-color: rgba(253, 126, 126, 0.9);
+  -fx-min-height: 3em;
   -fx-alignment: center;
 }

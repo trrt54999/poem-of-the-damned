@@ -14,7 +14,7 @@
       <ImageView fx:id="companyLogo"/>
       <StackPane>
         <Button fx:id="enterLoginButton" onMousePressed="#onEnterLoginPressed"
-          styleClass="enter-login-button" StackPane.alignment="TOP_CENTER" text="%main_menu.login">
+          styleClass="enter-login-btn" StackPane.alignment="TOP_CENTER" text="%main_menu.login">
           <graphic>
             <ImageView fx:id="loginIcon"/>
           </graphic>
@@ -64,32 +64,41 @@
     StackPane.alignment="TOP_CENTER">
     <top>
       <HBox styleClass="modal-top-hbox">
-        <Label fx:id="modalTopLabel" styleClass="modal-top-label" text="Settings"/>
+        <Label fx:id="modalTopLabel" styleClass="modal-top-label"
+          text="%main_menu.settings.top.label"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button fx:id="modalTopCloseButton" styleClass="modal-top-btn"/>
+        <Button fx:id="modalTopCloseButton" onMouseClicked="#onSettingsCloseButtonClicked"
+          styleClass="modal-top-btn"/>
       </HBox>
     </top>
     <center>
       <VBox>
         <Region styleClass="modal-center-divide"/>
-        <Label styleClass="mini-modal-label" text="Game options"/>
-        <Label styleClass="volume-label, first-volume-label" text="Music Volume"/>
+        <Label fx:id="gameOptionsLabel" styleClass="mini-modal-label"
+          text="%main_menu.settings.game_options.label"/>
+        <Label fx:id="musicVolumeLabel" styleClass="volume-label, first-volume-label"
+          text="%main_menu.settings.music_volume.label"/>
         <Slider fx:id="musicVolumeSlider" styleClass="default-modal-slider"/>
-        <Label styleClass="volume-label" text="Sound Volume"/>
+        <Label fx:id="soundVolumeLabel" styleClass="volume-label"
+          text="%main_menu.settings.sound_volume.label"/>
         <Slider fx:id="soundVolumeSlider" styleClass="default-modal-slider"/>
-        <Label styleClass="category-label" text="Display"/>
+        <Label fx:id="displayLabel" styleClass="category-label"
+          text="%main_menu.settings.display.label"/>
         <HBox alignment="CENTER_LEFT" styleClass="display-language-hbox">
-          <Label styleClass="default-modal-label" text="Windowed"/>
+          <Label fx:id="windowedLabel" styleClass="default-modal-label"
+            text="%main_menu.settings.toggle.window.label"/>
           <ToggleButton fx:id="resolutionToggle" styleClass="default-modal-toggle-btn"/>
-          <Label styleClass="default-modal-label" alignment="CENTER" text="Fullscreen"/>
+          <Label styleClass="default-modal-label" alignment="CENTER" fx:id="fullscreenLabel"
+            text="%main_menu.settings.toggle.fullscreen.label"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" styleClass="display-language-hbox">
           <Button fx:id="prevResolutionButton" styleClass="arrow-btn"/>
           <Label fx:id="currentResolutionLabel" styleClass="default-modal-label, carousel-label"
-            alignment="CENTER" text="1280x720"/>
+            alignment="CENTER"/>
           <Button fx:id="nextResolutionButton" styleClass="arrow-btn"/>
         </HBox>
-        <Label styleClass="category-label" text="Language"/>
+        <Label fx:id="languageLabel" styleClass="category-label"
+          text="%main_menu.settings.language.label"/>
         <HBox alignment="CENTER_LEFT" styleClass="display-language-hbox">
           <Button fx:id="prevLanguageButton" styleClass="arrow-btn"/>
           <Label fx:id="currentLanguageLabel" styleClass="default-modal-label, carousel-label"
@@ -97,7 +106,8 @@
           <Button fx:id="nextLanguageButton" styleClass="arrow-btn"/>
         </HBox>
         <HBox styleClass="apply-btn-wrapper">
-          <Button fx:id="applyButton" styleClass="apply-btn" text="Apply"/>
+          <Button fx:id="applyButton" styleClass="apply-btn"
+            text="%main_menu.settings.apply.button"/>
         </HBox>
       </VBox>
     </center>

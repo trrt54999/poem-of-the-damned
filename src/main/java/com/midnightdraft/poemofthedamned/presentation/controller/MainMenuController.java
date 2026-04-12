@@ -2,7 +2,11 @@ package com.midnightdraft.poemofthedamned.presentation.controller;
 
 import com.midnightdraft.poemofthedamned.App;
 import com.midnightdraft.poemofthedamned.application.dto.UserAuthDTO;
+import com.midnightdraft.poemofthedamned.application.usecase.ChangeLanguageUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.ChangeResolutionUseCase;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
+import com.midnightdraft.poemofthedamned.domain.model.GameLanguage;
+import com.midnightdraft.poemofthedamned.domain.model.ScreenResolution;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
@@ -14,12 +18,18 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -33,6 +43,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainMenuController {
@@ -96,6 +107,20 @@ public class MainMenuController {
   @FXML
   private Label currentLanguageLabel;
   @FXML
+  private Label gameOptionsLabel;
+  @FXML
+  private Label musicVolumeLabel;
+  @FXML
+  private Label soundVolumeLabel;
+  @FXML
+  private Label displayLabel;
+  @FXML
+  private Label windowedLabel;
+  @FXML
+  private Label fullscreenLabel;
+  @FXML
+  private Label languageLabel;
+  @FXML
   private Slider musicVolumeSlider;
   @FXML
   private Slider soundVolumeSlider;
@@ -110,9 +135,15 @@ public class MainMenuController {
   @FXML
   private ResourceBundle resources;
 
+  private final ChangeResolutionUseCase changeResolutionUseCase = new ChangeResolutionUseCase();
+  private final ChangeLanguageUseCase changeLanguageUseCase = new ChangeLanguageUseCase();
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   private Timeline clockTimeLine;
+  private int currentResolutionIndex = 0;
+  private int currentLanguageIndex = 0;
+  private int appliedResolutionIndex = 0;
+  private int appliedLanguageIndex = 0;
 
   @FXML
   public void initialize() {
@@ -122,14 +153,85 @@ public class MainMenuController {
     setupKeyHandlers();
     setupScaling();
     setupModalWindow();
+    setupResolutionCarousel();
+    setupLanguageCarousel();
     topStripe.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.005));
 
     rootPane.sceneProperty().addListener((_, _, newScene) -> {
-      if (newScene != null) {
-        clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
-        rootPane.requestFocus();
+      if (newScene == null) {
+        return;
+      }
+
+      clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
+      rootPane.requestFocus();
+
+      if (newScene.getWindow() instanceof Stage stage) {
+        setupResolutionToggle(stage);
+        setupApplyButton(stage);
+      } else {
+        newScene.windowProperty().addListener((_, _, window) -> {
+          if (!(window instanceof Stage stage)) {
+            return;
+          }
+          setupResolutionToggle(stage);
+          setupApplyButton(stage);
+        });
       }
     });
+  }
+
+  private void setupApplyButton(Stage stage) {
+    applyButton.setOnAction(_ -> {
+      if (currentResolutionIndex != appliedResolutionIndex && !stage.isFullScreen()) {
+        changeResolutionUseCase.execute(ScreenResolution.values()[currentResolutionIndex], stage);
+        appliedResolutionIndex = currentResolutionIndex;
+      }
+      if (currentLanguageIndex != appliedLanguageIndex) {
+        changeLanguageUseCase.execute(GameLanguage.values()[currentLanguageIndex].getCode());
+        refreshFontStylesheet();
+        refreshLabels();
+        appliedLanguageIndex = currentLanguageIndex;
+      }
+    });
+  }
+
+  private void refreshFontStylesheet() {
+    Scene scene = rootPane.getScene();
+    scene.getStylesheets().removeIf(s -> s.contains("font_en") || s.contains("font_uk"));
+
+    switch (App.currentLang) {
+      case "uk" ->
+          scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_UK).toExternalForm());
+      default -> scene.getStylesheets().add(resourceProvider.getUrl(Css.FONT_EN).toExternalForm());
+    }
+  }
+
+  private void refreshLabels() {
+    ResourceBundle bundle = ResourceBundle.getBundle("localization/ui", Locale.of(App.currentLang));
+    resources = bundle;
+
+    enterLoginButton.setText(bundle.getString("main_menu.login"));
+    loggingInLabel.setText(bundle.getString("main_menu.login.in"));
+    picturesButton.setText(bundle.getString("main_menu.pictures.button"));
+    musicButton.setText(bundle.getString("main_menu.music.button"));
+    settingsButton.setText(bundle.getString("main_menu.settings.button"));
+    quitButton.setText(bundle.getString("main_menu.quit.button"));
+    modalTopLabel.setText(bundle.getString("main_menu.settings.top.label"));
+    applyButton.setText(bundle.getString("main_menu.settings.apply.button"));
+    gameOptionsLabel.setText(bundle.getString("main_menu.settings.game_options.label"));
+    musicVolumeLabel.setText(bundle.getString("main_menu.settings.music_volume.label"));
+    soundVolumeLabel.setText(bundle.getString("main_menu.settings.sound_volume.label"));
+    displayLabel.setText(bundle.getString("main_menu.settings.display.label"));
+    windowedLabel.setText(bundle.getString("main_menu.settings.toggle.window.label"));
+    fullscreenLabel.setText(bundle.getString("main_menu.settings.toggle.fullscreen.label"));
+    languageLabel.setText(bundle.getString("main_menu.settings.language.label"));
+
+    if (clockTimeLine != null) {
+      clockTimeLine.stop();
+    }
+    clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
+
+    setupUsernameLabel();
   }
 
   @FXML
@@ -162,16 +264,19 @@ public class MainMenuController {
 
   @FXML
   private void onSettingsButtonPressed() {
-    backgroundEclipse.setVisible(true);
-    modalWindow.setVisible(true);
-    modalWindow.setManaged(true);
+    currentResolutionIndex = appliedResolutionIndex;
+    currentLanguageIndex = appliedLanguageIndex;
+    updateResolutionLabel();
+    updateLanguageLabel();
+
+    settingsButton.getStyleClass().add("main-menu-btn-active");
+    setButtonIcon(settingsButton, Ui.SETTINGS_ICON_WHITE);
+    openModalWindow();
   }
 
   @FXML
   private void onEclipsePressed() {
-    backgroundEclipse.setVisible(false);
-    modalWindow.setVisible(false);
-    modalWindow.setManaged(false);
+    closeModalWindow();
   }
 
   @FXML
@@ -180,16 +285,119 @@ public class MainMenuController {
     // logging slf4j
   }
 
+  @FXML
+  private void onSettingsCloseButtonClicked() {
+    closeModalWindow();
+  }
+
+  private void updateResolutionLabel() {
+    currentResolutionLabel.setText(ScreenResolution.values()[currentResolutionIndex].toString());
+  }
+
+  private void updateLanguageLabel() {
+    currentLanguageLabel.setText(GameLanguage.values()[currentLanguageIndex].toString());
+  }
+
+  private void setupResolutionCarousel() {
+    updateResolutionLabel();
+
+    nextResolutionButton.setOnMouseClicked(_ -> {
+      currentResolutionIndex = (currentResolutionIndex + 1) % ScreenResolution.values().length;
+      updateResolutionLabel();
+    });
+
+    prevResolutionButton.setOnMouseClicked(_ -> {
+      currentResolutionIndex--;
+      if (currentResolutionIndex < 0) {
+        currentResolutionIndex = ScreenResolution.values().length - 1;
+      }
+      updateResolutionLabel();
+    });
+  }
+
+  private void setupLanguageCarousel() {
+    updateLanguageLabel();
+
+    nextLanguageButton.setOnMouseClicked(_ -> {
+      currentLanguageIndex = (currentLanguageIndex + 1) % GameLanguage.values().length;
+      updateLanguageLabel();
+    });
+
+    prevLanguageButton.setOnMouseClicked(_ -> {
+      currentLanguageIndex--;
+      if (currentLanguageIndex < 0) {
+        currentLanguageIndex = GameLanguage.values().length - 1;
+      }
+      updateLanguageLabel();
+    });
+  }
+
+  private void setupResolutionToggle(Stage stage) {
+    resolutionToggle.setSelected(stage.isFullScreen());
+    updateResolutionCarouselState(stage.isFullScreen());
+
+    resolutionToggle.selectedProperty().addListener((_, _, isFullScreen) -> {
+      stage.setFullScreenExitHint("");
+      stage.setFullScreen(isFullScreen);
+      updateResolutionCarouselState(isFullScreen);
+    });
+  }
+
+  private void updateResolutionCarouselState(boolean isFullScreen) {
+    prevResolutionButton.setDisable(isFullScreen);
+    nextResolutionButton.setDisable(isFullScreen);
+    currentResolutionLabel.setOpacity(isFullScreen ? 0.4 : 1.0);
+  }
 
   private void setupModalWindow() {
     modalWindow.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.6));
     modalWindow.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.6));
-    modalWindow.prefHeightProperty().bind(
-        rootPane.heightProperty().subtract(mainMenuFooter.heightProperty())
-    );
-    modalWindow.maxHeightProperty().bind(
-        rootPane.heightProperty().subtract(mainMenuFooter.heightProperty())
-    );
+    modalWindow.prefHeightProperty()
+        .bind(rootPane.heightProperty().subtract(mainMenuFooter.heightProperty()));
+    modalWindow.maxHeightProperty()
+        .bind(rootPane.heightProperty().subtract(mainMenuFooter.heightProperty()));
+  }
+
+  private void openModalWindow() {
+    backgroundEclipse.setVisible(true);
+    modalWindow.setScaleX(0.92);
+    modalWindow.setScaleY(0.92);
+    modalWindow.setOpacity(0.0);
+    modalWindow.setVisible(true);
+    modalWindow.setManaged(true);
+
+    ScaleTransition scaleIn = new ScaleTransition(Duration.millis(150), modalWindow);
+    scaleIn.setToX(1.0);
+    scaleIn.setToY(1.0);
+
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(150), modalWindow);
+    fadeIn.setToValue(1.0);
+
+    new ParallelTransition(scaleIn, fadeIn).play();
+  }
+
+  private void closeModalWindow() {
+    backgroundEclipse.setVisible(false);
+    ScaleTransition scaleOut = new ScaleTransition(Duration.millis(120), modalWindow);
+    scaleOut.setToX(0.92);
+    scaleOut.setToY(0.92);
+
+    FadeTransition fadeOut = new FadeTransition(Duration.millis(120), modalWindow);
+    fadeOut.setToValue(0.0);
+
+    ParallelTransition close = new ParallelTransition(scaleOut, fadeOut);
+    close.setOnFinished(_ -> {
+
+      modalWindow.setVisible(false);
+      modalWindow.setManaged(false);
+      modalWindow.setScaleX(1.0);
+      modalWindow.setScaleY(1.0);
+      modalWindow.setOpacity(1.0);
+
+      settingsButton.getStyleClass().remove("main-menu-btn-active");
+      setButtonIcon(settingsButton, Ui.SETTINGS_ICON);
+    });
+    close.play();
   }
 
   private void playCrossfadeAnimation() {
@@ -330,8 +538,33 @@ public class MainMenuController {
   }
 
   private void setupButtonHover(Button button, Ui defaultIcon, Ui hoverIcon) {
-    button.hoverProperty()
-        .addListener((_, _, hovered) -> setButtonIcon(button, hovered ? hoverIcon : defaultIcon));
+    button.hoverProperty().addListener((_, _, hovered) -> {
+      boolean isActive = button.getStyleClass().contains("main-menu-btn-active");
+      if (isActive) {
+        return;
+      }
+
+      setButtonIcon(button, hovered ? hoverIcon : defaultIcon);
+
+      if (!(button.getGraphic() instanceof ImageView icon)) {
+        return;
+      }
+
+      TranslateTransition nudgeIcon = new TranslateTransition(Duration.millis(120), icon);
+      nudgeIcon.setInterpolator(Interpolator.EASE_OUT);
+      nudgeIcon.setToX(hovered ? 4.0 : 0.0);
+      nudgeIcon.play();
+
+      Node buttonText = button.lookup(".text");
+      if (buttonText == null) {
+        return;
+      }
+
+      TranslateTransition nudgeText = new TranslateTransition(Duration.millis(120), buttonText);
+      nudgeText.setInterpolator(Interpolator.EASE_OUT);
+      nudgeText.setToX(hovered ? 4.0 : 0.0);
+      nudgeText.play();
+    });
   }
 
   private void setupGraphicImageHover(Button button, Ui defaultIcon, Ui hoverIcon) {
