@@ -149,6 +149,7 @@ public class MainMenuController {
   public void initialize() {
     loadResources();
     setupIcons();
+    setupMenuButtons();
     setupUsernameLabel();
     setupKeyHandlers();
     setupScaling();
@@ -156,28 +157,7 @@ public class MainMenuController {
     setupResolutionCarousel();
     setupLanguageCarousel();
     topStripe.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.005));
-
-    rootPane.sceneProperty().addListener((_, _, newScene) -> {
-      if (newScene == null) {
-        return;
-      }
-
-      clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
-      rootPane.requestFocus();
-
-      if (newScene.getWindow() instanceof Stage stage) {
-        setupResolutionToggle(stage);
-        setupApplyButton(stage);
-      } else {
-        newScene.windowProperty().addListener((_, _, window) -> {
-          if (!(window instanceof Stage stage)) {
-            return;
-          }
-          setupResolutionToggle(stage);
-          setupApplyButton(stage);
-        });
-      }
-    });
+    rootPane.sceneProperty().addListener((_, _, newScene) -> onSceneAttached(newScene));
   }
 
   @FXML
@@ -236,6 +216,27 @@ public class MainMenuController {
     closeModalWindow();
   }
 
+  private void onSceneAttached(Scene newScene) {
+    if (newScene == null) {
+      return;
+    }
+
+    clockTimeLine = BindLocalTime.setupCurrentTime(timeLabel, Locale.of(App.currentLang));
+    rootPane.requestFocus();
+
+    if (newScene.getWindow() instanceof Stage stage) {
+      setupResolutionToggle(stage);
+      setupApplyButton(stage);
+    } else {
+      newScene.windowProperty().addListener((_, _, window) -> {
+        if (!(window instanceof Stage stage)) {
+          return;
+        }
+        setupResolutionToggle(stage);
+        setupApplyButton(stage);
+      });
+    }
+  }
 
   private void setupApplyButton(Stage stage) {
     applyButton.setOnAction(_ -> {
@@ -243,6 +244,7 @@ public class MainMenuController {
         changeResolutionUseCase.execute(ScreenResolution.values()[currentResolutionIndex], stage);
         appliedResolutionIndex = currentResolutionIndex;
       }
+
       if (currentLanguageIndex != appliedLanguageIndex) {
         changeLanguageUseCase.execute(GameLanguage.values()[currentLanguageIndex].getCode());
         refreshFontStylesheet();
@@ -458,7 +460,9 @@ public class MainMenuController {
 
     miniLogo.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.0667));
     miniLogo.fitWidthProperty().bind(rootPane.widthProperty().multiply(0.0375));
+  }
 
+  private void setupMenuButtons() {
     setButtonIcon(poemButton, Ui.POEM_ICON);
     setupButtonHover(poemButton, Ui.POEM_ICON, Ui.POEM_ICON_WHITE);
 
@@ -499,7 +503,6 @@ public class MainMenuController {
   private void setupCarouselButton(Button button, double rotation) {
     setTinyButtonIcon(button, Ui.ROULETTE_BUTTON_ICON);
     button.getGraphic().setRotate(rotation);
-    setupGraphicImageHover(button, Ui.ROULETTE_BUTTON_ICON, Ui.ROULETTE_BUTTON_HOVER_ICON);
   }
 
   private void setupScaling() {
