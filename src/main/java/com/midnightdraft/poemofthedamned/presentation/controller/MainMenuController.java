@@ -440,7 +440,7 @@ public class MainMenuController {
       }
     });
   }
-  // todo setup icons dublicate fix?
+
   private void setupIcons() {
     companyLogo.setImage(new Image(resourceProvider.getUrl(Ui.MIDNIGHT_LOGO).toExternalForm()));
     loginIcon.setImage(
