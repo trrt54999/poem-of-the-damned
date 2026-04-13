@@ -1,4 +1,4 @@
 package com.midnightdraft.poemofthedamned.application.dto;
 
-public record UserAuthDTO(String username, String email) {
+public record UserAuthDTO(Long id, String username, String email) {
 }

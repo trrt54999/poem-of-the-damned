@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 public class App extends Application {
 
   public static String currentLang = "en";
+  public static float currentMusicVolume = 0.5f;
+  public static float currentSoundVolume = 0.5f;
 
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
@@ -40,7 +42,7 @@ public class App extends Application {
   public void start(Stage primaryStage) throws IOException {
     log.info("Starting game app");
     try {
-      FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.MAIN_MENU));
+      FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.AUTH_MENU));
       loader.setResources(ResourceBundle.getBundle("localization/ui", Locale.of(currentLang)));
       StackPane root = loader.load();
 

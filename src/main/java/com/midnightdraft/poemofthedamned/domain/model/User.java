@@ -1,11 +1,14 @@
 package com.midnightdraft.poemofthedamned.domain.model;
 
 import com.midnightdraft.poemofthedamned.domain.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,14 +40,24 @@ public class User extends BaseEntity {
   @Column(name = "password_hash", nullable = false)
   private String passwordHash;
 
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "client_settings_id", nullable = false)
+  private ClientSettings settings;
+
   @ManyToMany
-  @JoinTable(name = "user_unlocked_choices", joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "choice_id"))
+  @JoinTable(name = "user_unlocked_choices", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "choice_id"))
   private Set<Choice> unlockedChoices = new HashSet<>();
 
   public User(String username, String email, String passwordHash) {
     this.username = username;
     this.email = email;
     this.passwordHash = passwordHash;
+  }
+
+  public void setSettings(ClientSettings settings) {
+    this.settings = settings;
+    if (settings != null) {
+      settings.setUser(this);
+    }
   }
 }

@@ -1,9 +1,13 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
 import com.midnightdraft.poemofthedamned.App;
+import com.midnightdraft.poemofthedamned.application.dto.ClientSettingsDTO;
 import com.midnightdraft.poemofthedamned.application.dto.UserAuthDTO;
 import com.midnightdraft.poemofthedamned.application.usecase.ChangeLanguageUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.ChangeResolutionUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.ChangeVolumeUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.LoadClientSettingsUseCase;
+import com.midnightdraft.poemofthedamned.application.usecase.SaveClientSettingsUseCase;
 import com.midnightdraft.poemofthedamned.domain.engine.GameStateMachine;
 import com.midnightdraft.poemofthedamned.domain.model.GameLanguage;
 import com.midnightdraft.poemofthedamned.domain.model.ScreenResolution;
@@ -12,7 +16,9 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fxml;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
+import com.midnightdraft.poemofthedamned.domain.repository.ClientSettingsRepository;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
+import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.ClientSettingsRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.BindLocalTime;
 import com.midnightdraft.poemofthedamned.presentation.util.ScreenResolutionFilter;
 import java.io.IOException;
@@ -136,7 +142,13 @@ public class MainMenuController {
   @FXML
   private ResourceBundle resources;
 
+  private final ClientSettingsRepository clientSettingsRepository = new ClientSettingsRepositoryImpl();
+  private final LoadClientSettingsUseCase loadClientSettingsUseCase = new LoadClientSettingsUseCase(
+      clientSettingsRepository);
+  private final SaveClientSettingsUseCase saveClientSettingsUseCase = new SaveClientSettingsUseCase(
+      clientSettingsRepository);
   private final ChangeResolutionUseCase changeResolutionUseCase = new ChangeResolutionUseCase();
+  private final ChangeVolumeUseCase changeVolumeUseCase = new ChangeVolumeUseCase();
   private final ChangeLanguageUseCase changeLanguageUseCase = new ChangeLanguageUseCase();
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
@@ -157,6 +169,8 @@ public class MainMenuController {
     setupModalWindow();
     setupResolutionCarousel();
     setupLanguageCarousel();
+    musicVolumeSlider.setMax(1.0);
+    soundVolumeSlider.setMax(1.0);
     topStripe.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.005));
     rootPane.sceneProperty().addListener((_, _, newScene) -> onSceneAttached(newScene));
   }
@@ -191,6 +205,7 @@ public class MainMenuController {
 
   @FXML
   private void onSettingsButtonPressed() {
+    loadAndApplySettings();
     currentResolutionIndex = appliedResolutionIndex;
     currentLanguageIndex = appliedLanguageIndex;
     updateResolutionLabel();
@@ -239,8 +254,53 @@ public class MainMenuController {
     }
   }
 
+  private void loadAndApplySettings() {
+    UserAuthDTO session = GameStateMachine.getInstance().getSessionContext();
+    if (session == null) {
+      return;
+    }
+
+    ClientSettingsDTO settings = loadClientSettingsUseCase.execute(session.id());
+
+    ScreenResolution[] available = ScreenResolutionFilter.getAvailableResolutions();
+    for (int i = 0; i < available.length; i++) {
+      if (available[i] == settings.screenResolution()) {
+        currentResolutionIndex = i;
+        appliedResolutionIndex = i;
+        break;
+      }
+    }
+
+    GameLanguage[] languages = GameLanguage.values();
+    for (int i = 0; i < languages.length; i++) {
+      if (languages[i] == settings.gameLanguage()) {
+        currentLanguageIndex = i;
+        appliedLanguageIndex = i;
+        break;
+      }
+    }
+
+    musicVolumeSlider.setValue(settings.musicVolume());
+    soundVolumeSlider.setValue(settings.soundVolume());
+
+    updateResolutionLabel();
+    updateLanguageLabel();
+    changeVolumeUseCase.execute(settings.musicVolume(), settings.soundVolume());
+  }
+
   private void setupApplyButton(Stage stage) {
     applyButton.setOnAction(_ -> {
+      UserAuthDTO sessionContext = GameStateMachine.getInstance().getSessionContext();
+      if (sessionContext == null) {
+        return; // todo maybe logging
+      }
+
+      ClientSettingsDTO clientSettings = new ClientSettingsDTO(
+          ScreenResolutionFilter.getAvailableResolutions()[currentResolutionIndex],
+          GameLanguage.values()[currentLanguageIndex], (float) musicVolumeSlider.getValue(),
+          (float) soundVolumeSlider.getValue(), resolutionToggle.isSelected());
+      saveClientSettingsUseCase.execute(clientSettings, sessionContext.id());
+
       if (currentResolutionIndex != appliedResolutionIndex && !stage.isFullScreen()) {
         changeResolutionUseCase.execute(
             ScreenResolutionFilter.getAvailableResolutions()[currentResolutionIndex], stage);
@@ -253,6 +313,8 @@ public class MainMenuController {
         refreshLabels();
         appliedLanguageIndex = currentLanguageIndex;
       }
+
+      changeVolumeUseCase.execute((float) musicVolumeSlider.getValue(), (float) soundVolumeSlider.getValue());
     });
   }
 

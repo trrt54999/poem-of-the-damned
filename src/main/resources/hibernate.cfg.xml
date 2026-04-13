@@ -27,5 +27,6 @@
     <mapping class="com.midnightdraft.poemofthedamned.domain.model.GameCharacterSprite"/>
     <mapping class="com.midnightdraft.poemofthedamned.domain.model.Achievement"/>
     <mapping class="com.midnightdraft.poemofthedamned.domain.model.UserAchievement"/>
+    <mapping class="com.midnightdraft.poemofthedamned.domain.model.ClientSettings"/>
   </session-factory>
 </hibernate-configuration>

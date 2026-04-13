@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.App;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.AudioSfx;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Css;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Fonts;
@@ -85,14 +86,14 @@ public class GameMainMenuController {
   @FXML
   public void playHoverSound() {
     if (hoverSound != null) {
-      hoverSound.play();
+      hoverSound.play(App.currentSoundVolume);
     }
   }
 
   @FXML
   public void playSelectSound() {
     if (selectSound != null) {
-      selectSound.play();
+      selectSound.play(App.currentSoundVolume);
     }
   }
 
@@ -122,8 +123,8 @@ public class GameMainMenuController {
     Font.loadFont(resourceProvider.getUrl(Fonts.NUNITO_BLACK).toExternalForm(), 36);
     patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
 
-    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
-    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
+    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER));
+    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT));
   }
 
   private void setupCanvasBindings() {

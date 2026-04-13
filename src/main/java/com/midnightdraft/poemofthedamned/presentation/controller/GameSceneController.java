@@ -1,5 +1,6 @@
 package com.midnightdraft.poemofthedamned.presentation.controller;
 
+import com.midnightdraft.poemofthedamned.App;
 import com.midnightdraft.poemofthedamned.application.dto.ChoiceDTO;
 import com.midnightdraft.poemofthedamned.application.usecase.AdvanceDialogueUseCase;
 import com.midnightdraft.poemofthedamned.application.usecase.CompleteSceneTransitionUseCase;
@@ -43,7 +44,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
@@ -51,7 +51,6 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -165,14 +164,14 @@ public class GameSceneController {
   @FXML
   public void playHoverSound() {
     if (hoverSound != null) {
-      hoverSound.play();
+      hoverSound.play(App.currentSoundVolume);
     }
   }
 
   @FXML
   public void playSelectSound() {
     if (selectSound != null) {
-      selectSound.play();
+      selectSound.play(App.currentSoundVolume);
     }
   }
 
@@ -338,8 +337,8 @@ public class GameSceneController {
   }
 
   private void setupAudio() {
-    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER), 0.5);
-    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT), 0.8);
+    hoverSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.HOVER));
+    selectSound = SoundHelper.loadSoundEffect(resourceProvider.getPath(AudioSfx.SELECT));
   }
 
   private void renderDialogueStep(DialogueStep step) {
@@ -399,7 +398,7 @@ public class GameSceneController {
       return current;
     }
 
-    MediaPlayer player = SoundHelper.createBackgroundMusic(fullPath, 0.5);
+    MediaPlayer player = SoundHelper.createBackgroundMusic(fullPath);
     if (player == null) {
       return null;
     }

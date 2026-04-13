@@ -29,6 +29,6 @@
       }
 
       log.info("User successfully logged in");
-      return new UserAuthDTO(user.getUsername(), user.getEmail());
+      return new UserAuthDTO(user.getId(), user.getUsername(), user.getEmail());
     }
   }
