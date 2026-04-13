@@ -14,6 +14,7 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.presentation.util.BindLocalTime;
+import com.midnightdraft.poemofthedamned.presentation.util.ScreenResolutionFilter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -241,7 +242,8 @@ public class MainMenuController {
   private void setupApplyButton(Stage stage) {
     applyButton.setOnAction(_ -> {
       if (currentResolutionIndex != appliedResolutionIndex && !stage.isFullScreen()) {
-        changeResolutionUseCase.execute(ScreenResolution.values()[currentResolutionIndex], stage);
+        changeResolutionUseCase.execute(
+            ScreenResolutionFilter.getAvailableResolutions()[currentResolutionIndex], stage);
         appliedResolutionIndex = currentResolutionIndex;
       }
 
@@ -294,7 +296,8 @@ public class MainMenuController {
   }
 
   private void updateResolutionLabel() {
-    currentResolutionLabel.setText(ScreenResolution.values()[currentResolutionIndex].toString());
+    currentResolutionLabel.setText(
+        ScreenResolutionFilter.getAvailableResolutions()[currentResolutionIndex].toString());
   }
 
   private void updateLanguageLabel() {
@@ -305,14 +308,15 @@ public class MainMenuController {
     updateResolutionLabel();
 
     nextResolutionButton.setOnMouseClicked(_ -> {
-      currentResolutionIndex = (currentResolutionIndex + 1) % ScreenResolution.values().length;
+      currentResolutionIndex =
+          (currentResolutionIndex + 1) % ScreenResolutionFilter.getAvailableResolutions().length;
       updateResolutionLabel();
     });
 
     prevResolutionButton.setOnMouseClicked(_ -> {
       currentResolutionIndex--;
       if (currentResolutionIndex < 0) {
-        currentResolutionIndex = ScreenResolution.values().length - 1;
+        currentResolutionIndex = ScreenResolutionFilter.getAvailableResolutions().length - 1;
       }
       updateResolutionLabel();
     });

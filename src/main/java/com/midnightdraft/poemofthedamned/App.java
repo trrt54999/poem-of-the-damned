@@ -44,7 +44,9 @@ public class App extends Application {
       loader.setResources(ResourceBundle.getBundle("localization/ui", Locale.of(currentLang)));
       StackPane root = loader.load();
 
-      Scene scene = new Scene(root, 1280, 720);
+      Scene scene = new Scene(root);
+      primaryStage.setWidth(1280);
+      primaryStage.setHeight(720);
 
       switch (currentLang) {
         case "uk" ->
