@@ -43,6 +43,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -153,6 +154,7 @@ public class MainMenuController {
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   private Timeline clockTimeLine;
+  private boolean pendingFullScreen = false;
   private int currentResolutionIndex = 0;
   private int currentLanguageIndex = 0;
   private int appliedResolutionIndex = 0;
@@ -211,6 +213,11 @@ public class MainMenuController {
     updateResolutionLabel();
     updateLanguageLabel();
 
+    if (rootPane.getScene() != null && rootPane.getScene().getWindow() instanceof Stage stage) {
+      pendingFullScreen = stage.isFullScreen();
+      resolutionToggle.setSelected(pendingFullScreen);
+    }
+
     settingsButton.getStyleClass().add("main-menu-btn-active");
     setButtonIcon(settingsButton, Ui.SETTINGS_ICON_WHITE);
     openModalWindow();
@@ -241,6 +248,8 @@ public class MainMenuController {
     rootPane.requestFocus();
 
     if (newScene.getWindow() instanceof Stage stage) {
+      stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+
       setupResolutionToggle(stage);
       setupApplyButton(stage);
     } else {
@@ -315,6 +324,9 @@ public class MainMenuController {
       }
 
       changeVolumeUseCase.execute((float) musicVolumeSlider.getValue(), (float) soundVolumeSlider.getValue());
+
+      stage.setFullScreenExitHint("");
+      stage.setFullScreen(pendingFullScreen);
     });
   }
 
@@ -402,12 +414,12 @@ public class MainMenuController {
   }
 
   private void setupResolutionToggle(Stage stage) {
+    pendingFullScreen = stage.isFullScreen();
     resolutionToggle.setSelected(stage.isFullScreen());
     updateResolutionCarouselState(stage.isFullScreen());
 
     resolutionToggle.selectedProperty().addListener((_, _, isFullScreen) -> {
-      stage.setFullScreenExitHint("");
-      stage.setFullScreen(isFullScreen);
+      pendingFullScreen = isFullScreen;
       updateResolutionCarouselState(isFullScreen);
     });
   }
