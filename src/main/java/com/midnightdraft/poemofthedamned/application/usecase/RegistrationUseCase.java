@@ -32,7 +32,7 @@ public class RegistrationUseCase {
     ClientSettingsDTO def = ClientSettingsDTO.defaults();
 
     ClientSettings defaultSettings = new ClientSettings(def.screenResolution(), def.gameLanguage(),
-        def.musicVolume(), def.soundVolume(), def.isFullScreen(), null);
+        def.musicVolume(), def.soundVolume(), def.isFullScreen());
     newUser.setSettings(defaultSettings);
 
     User savedUser = userRepository.save(newUser);

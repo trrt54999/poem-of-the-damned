@@ -53,7 +53,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MainMenuController {
 
   @FXML
@@ -162,6 +164,7 @@ public class MainMenuController {
 
   @FXML
   public void initialize() {
+    log.info("Initializing Main Menu Controller...");
     loadResources();
     setupIcons();
     setupMenuButtons();
@@ -190,6 +193,7 @@ public class MainMenuController {
 
   @FXML
   private void onLoadGameMenuButtonPressed() {
+    log.info("Loading Game Main Menu scene...");
     FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.GAME_MAIN_MENU));
     loader.setResources(resources);
 
@@ -200,7 +204,9 @@ public class MainMenuController {
 
       Parent nextView = loader.load();
       rootPane.getScene().setRoot(nextView);
+      log.info("Successfully transitioned to Game Main Menu.");
     } catch (IOException e) {
+      log.error("Failed to load Game Main Menu FXML file.", e);
       throw new RuntimeException(e);
     }
   }
@@ -230,8 +236,8 @@ public class MainMenuController {
 
   @FXML
   private void onQuitButtonPressed() {
+    log.info("Shutdown game app");
     System.exit(0);
-    // logging slf4j
   }
 
   @FXML
@@ -266,6 +272,7 @@ public class MainMenuController {
   private void loadAndApplySettings() {
     UserAuthDTO session = GameStateMachine.getInstance().getSessionContext();
     if (session == null) {
+      log.warn("Attempted to load settings, but no active user session found.");
       return;
     }
 
@@ -301,7 +308,8 @@ public class MainMenuController {
     applyButton.setOnAction(_ -> {
       UserAuthDTO sessionContext = GameStateMachine.getInstance().getSessionContext();
       if (sessionContext == null) {
-        return; // todo maybe logging
+        log.warn("Attempted to apply settings without an active session.");
+        return;
       }
 
       ClientSettingsDTO clientSettings = new ClientSettingsDTO(
@@ -668,6 +676,7 @@ public class MainMenuController {
       usernameLabel.setText(
           resources.getString("main_menu.welcome.label") + ", " + session.username() + "!");
     } else {
+      log.warn("Missing session context. Fallback to guest user.");
       usernameLabel.setText(resources.getString("main_menu.default.name"));
     }
   }

@@ -265,6 +265,7 @@ public class AuthMenuController {
     task.setOnSucceeded(_ -> {
       actionButton.setDisable(false);
       GameStateMachine.getInstance().setSessionContext(task.getValue());
+      log.debug("User authenticated successfully. Loading Main Menu...");
 
       FXMLLoader loader = new FXMLLoader(
           resourceProvider.getUrl(Fxml.MAIN_MENU));
@@ -272,8 +273,10 @@ public class AuthMenuController {
       try {
         Parent nextView = loader.load();
         rootPane.getScene().setRoot(nextView);
+        log.info("Successfully transitioned to Main Menu scene.");
       } catch (IOException e) {
-        throw new RuntimeException(e); // todo Логування?
+        log.error("Failed to load Main Menu FXML file!", e);
+        throw new RuntimeException("Failed to load next scene", e);
       }
     });
 

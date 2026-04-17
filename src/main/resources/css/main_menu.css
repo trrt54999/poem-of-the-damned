@@ -152,48 +152,25 @@
   -fx-cursor: hand;
 }
 
-/* Базовий стан: Windowed (повзунок зліва) */
 .default-modal-toggle-btn {
-  /* Розміри: ~55x33 пікселів (в адаптивних em це 3.5em на 2.1em) */
   -fx-min-width: 3.5em;
   -fx-max-width: 3.5em;
   -fx-min-height: 2.1em;
   -fx-max-height: 2.1em;
-
-  /* Магія 3 шарів:
-     1. #F4E6E6 - фон самої кнопки (прозоро-білий)
-     2. #B23AA2 - колір рамки квадратного повзунка
-     3. #FFFFFF - біла серединка повзунка */
   -fx-background-color: #F4E6E6, #B23AA2, #FFFFFF;
-
-  /* Відступи для кожного шару (Top, Right, Bottom, Left):
-     Шар 1 (фон): 0 (на всю площу)
-     Шар 2 (рамка повзунка): зсуваємо від правого краю на 1.7em, щоб він був зліва!
-     Шар 3 (центр повзунка): робимо на 0.3em меншим за рамку */
   -fx-background-insets:
       0,
       0.3em 1.7em 0.3em 0.3em,
       0.6em 2.0em 0.6em 0.6em;
-
-  /* Заокруглення:
-     Основа - 20px (1.25em),
-     Повзунки - 0 (робимо їх квадратними, як на гучності!) */
   -fx-background-radius: 1.25em, 50, 50;
-
-  /* Зовнішня рамка: колір BF4527, висота ~3px (0.2em), заокруглення 20px (1.25em) */
   -fx-border-color: #BF4527;
   -fx-border-width: 0.2em;
   -fx-border-radius: 1.25em;
-
-  /* Вбиваємо розмите світіння фокусу */
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
   -fx-cursor: hand;
 }
-
-/* Активний стан: Fullscreen (рухаємо повзунок вправо!) */
 .default-modal-toggle-btn:selected {
-  /* Просто міняємо відступи місцями: відштовхуємо повзунок від лівого краю на 1.7em */
   -fx-background-insets:
       0,
       0.3em 0.3em 0.3em 1.7em,

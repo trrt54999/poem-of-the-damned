@@ -20,7 +20,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "client_settings")
 @NoArgsConstructor
-@AllArgsConstructor
 public class ClientSettings extends BaseEntity {
 
   @NotNull(message = "Screen resolution cannot be null!")
@@ -51,4 +50,13 @@ public class ClientSettings extends BaseEntity {
 
   @OneToOne(mappedBy = "settings")
   private User user;
+
+  public ClientSettings(ScreenResolution screenResolution, GameLanguage gameLanguage,
+      Float musicVolume, Float soundVolume, Boolean isFullScreen) {
+    this.screenResolution = screenResolution;
+    this.gameLanguage = gameLanguage;
+    this.musicVolume = musicVolume;
+    this.soundVolume = soundVolume;
+    this.isFullScreen = isFullScreen;
+  }
 }

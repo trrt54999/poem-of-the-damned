@@ -25,10 +25,7 @@ public class App extends Application {
   private final ResourceProvider resourceProvider = new FileSystemResourceProvider();
 
   public static void main(String[] args) {
-    // todo це круті налаштування, але треба буде розбіратися як саме вони прибирають зернистість
     System.setProperty("prism.lcdtext", "false");
-    System.setProperty("prism.text", "t2k");
-
     Application.launch();
   }
 
