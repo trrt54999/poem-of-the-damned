@@ -49,6 +49,7 @@ import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -374,7 +375,7 @@ public class GameSceneController {
       Button btn = new Button(choice.choiceText());
       btn.getStyleClass().add("choice-plaque");
       btn.setWrapText(true);
-      btn.setAlignment(javafx.geometry.Pos.CENTER);
+      btn.setAlignment(Pos.CENTER);
 
       btn.prefWidthProperty().bind(rootPane.widthProperty().multiply(0.45));
       btn.prefHeightProperty().bind(rootPane.heightProperty().multiply(0.06));

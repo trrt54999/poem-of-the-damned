@@ -21,6 +21,7 @@ import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResou
 import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.ClientSettingsRepositoryImpl;
 import com.midnightdraft.poemofthedamned.presentation.util.BindLocalTime;
 import com.midnightdraft.poemofthedamned.presentation.util.ScreenResolutionFilter;
+import com.midnightdraft.poemofthedamned.presentation.util.TransitionHelper;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -28,7 +29,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -318,7 +318,8 @@ public class MainMenuController {
         appliedLanguageIndex = currentLanguageIndex;
       }
 
-      changeVolumeUseCase.execute((float) musicVolumeSlider.getValue(), (float) soundVolumeSlider.getValue());
+      changeVolumeUseCase.execute((float) musicVolumeSlider.getValue(),
+          (float) soundVolumeSlider.getValue());
 
       stage.setFullScreenExitHint("");
       stage.setFullScreen(pendingFullScreen);
@@ -442,28 +443,14 @@ public class MainMenuController {
     modalWindow.setVisible(true);
     modalWindow.setManaged(true);
 
-    ScaleTransition scaleIn = new ScaleTransition(Duration.millis(150), modalWindow);
-    scaleIn.setToX(1.0);
-    scaleIn.setToY(1.0);
-
-    FadeTransition fadeIn = new FadeTransition(Duration.millis(150), modalWindow);
-    fadeIn.setToValue(1.0);
-
-    new ParallelTransition(scaleIn, fadeIn).play();
+    TransitionHelper.popIn(modalWindow, 150).play();
   }
 
   private void closeModalWindow() {
     backgroundEclipse.setVisible(false);
-    ScaleTransition scaleOut = new ScaleTransition(Duration.millis(120), modalWindow);
-    scaleOut.setToX(0.92);
-    scaleOut.setToY(0.92);
 
-    FadeTransition fadeOut = new FadeTransition(Duration.millis(120), modalWindow);
-    fadeOut.setToValue(0.0);
-
-    ParallelTransition close = new ParallelTransition(scaleOut, fadeOut);
+    ParallelTransition close = TransitionHelper.popOut(modalWindow, 120);
     close.setOnFinished(_ -> {
-
       modalWindow.setVisible(false);
       modalWindow.setManaged(false);
       modalWindow.setScaleX(1.0);
@@ -477,10 +464,7 @@ public class MainMenuController {
   }
 
   private void playCrossfadeAnimation() {
-    FadeTransition fadeOut = new FadeTransition(Duration.seconds(1.0), mainMenuEnter);
-    fadeOut.setFromValue(1.0);
-    fadeOut.setToValue(0.0);
-
+    FadeTransition fadeOut = TransitionHelper.fadeOut(mainMenuEnter, 1000);
     fadeOut.setOnFinished(_ -> {
       mainMenuEnter.setVisible(false);
       mainMenuEnter.setManaged(false);
@@ -489,31 +473,21 @@ public class MainMenuController {
       mainMenu.setVisible(true);
       mainMenu.setManaged(true);
 
-      FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.0), mainMenu);
-      fadeIn.setFromValue(0.0);
-      fadeIn.setToValue(1.0);
-      fadeIn.play();
+      TransitionHelper.fadeIn(mainMenu, 1000).play();
     });
     fadeOut.play();
   }
 
   private void playLoadGameTransition() {
     loadGameBackground.setVisible(true);
-
     loadGameBackground.setScaleX(0.80);
     loadGameBackground.setScaleY(0.80);
     loadGameBackground.setOpacity(0.0);
 
-    ScaleTransition scaleIn = new ScaleTransition(Duration.millis(250), loadGameBackground);
-    scaleIn.setToX(1.0);
-    scaleIn.setToY(1.0);
-
-    FadeTransition fadeIn = new FadeTransition(Duration.millis(200), loadGameBackground);
-    fadeIn.setToValue(1.0);
-
-    ParallelTransition gameLoadTransition = new ParallelTransition(scaleIn, fadeIn);
-    gameLoadTransition.play();
+    ParallelTransition gameLoadTransition = TransitionHelper.pop(loadGameBackground, 0.80, 1.0, 0.0,
+        1.0, 250);
     gameLoadTransition.setOnFinished(_ -> loadGameMainMenu());
+    gameLoadTransition.play();
   }
 
   private void loadGameMainMenu() {

@@ -9,10 +9,10 @@ import com.midnightdraft.poemofthedamned.domain.provider.ResourceCatalog.Ui;
 import com.midnightdraft.poemofthedamned.domain.provider.ResourceProvider;
 import com.midnightdraft.poemofthedamned.infrastructure.provider.FileSystemResourceProvider;
 import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
+import com.midnightdraft.poemofthedamned.presentation.util.TransitionHelper;
 import java.awt.Desktop;
 import java.net.URI;
 import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.binding.Bindings;
@@ -204,23 +204,9 @@ public class GameMainMenuController {
       introBlackOverlay.setManaged(false);
     });
 
-    FadeTransition showLogoTransition = new FadeTransition(Duration.millis(350), companyLogoIntro);
-    showLogoTransition.setFromValue(0.0);
-    showLogoTransition.setToValue(1.0);
-
+    PauseTransition afterBlackDelay = new PauseTransition(Duration.millis(150));
     PauseTransition logoPauseTransition = new PauseTransition(Duration.seconds(1.5));
-
-    FadeTransition hideLogoTransition = new FadeTransition(Duration.millis(250), companyLogoIntro);
-    hideLogoTransition.setFromValue(1.0);
-    hideLogoTransition.setToValue(0.0);
-
-    FadeTransition showLabelTransition = new FadeTransition(Duration.millis(200), introLabel);
-    showLabelTransition.setToValue(1.0);
-
     PauseTransition labelPauseTransition = new PauseTransition(Duration.seconds(1.5));
-
-    FadeTransition hideLabelTransition = new FadeTransition(Duration.millis(200), introLabel);
-    hideLabelTransition.setToValue(0.0);
 
     PauseTransition endDelay = new PauseTransition(Duration.seconds(1));
     endDelay.setOnFinished(_ -> {
@@ -229,11 +215,15 @@ public class GameMainMenuController {
       startAnimation();
     });
 
-    PauseTransition afterBlackDelay = new PauseTransition(Duration.millis(150));
-
     SequentialTransition sequentialTransition = new SequentialTransition(
-        startDelay, afterBlackDelay, showLogoTransition, logoPauseTransition, hideLogoTransition,
-        showLabelTransition, labelPauseTransition, hideLabelTransition, endDelay);
+        startDelay, afterBlackDelay,
+        TransitionHelper.fade(companyLogoIntro, 0.0, 1.0, 350),
+        logoPauseTransition,
+        TransitionHelper.fade(companyLogoIntro, 1.0, 0.0, 250),
+        TransitionHelper.fadeIn(introLabel, 200),
+        labelPauseTransition,
+        TransitionHelper.fadeOut(introLabel, 200),
+        endDelay);
     sequentialTransition.play();
   }
 

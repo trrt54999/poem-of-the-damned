@@ -19,6 +19,7 @@ import com.midnightdraft.poemofthedamned.infrastructure.repository.impl.UserRepo
 import com.midnightdraft.poemofthedamned.presentation.util.AuthValidator;
 import com.midnightdraft.poemofthedamned.presentation.util.PasswordFieldSkin;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -218,7 +219,7 @@ public class AuthMenuController {
         confirmPasswordValidation);
 
     if (Stream.of(usernameValidation, emailValidation, passwordValidation,
-        confirmPasswordValidation).anyMatch(java.util.Objects::nonNull)) {
+        confirmPasswordValidation).anyMatch(Objects::nonNull)) {
       return;
     }
 
@@ -244,7 +245,7 @@ public class AuthMenuController {
     toggleValidationState(emailGroup, emailError, emailValidationIcon, emailValidation);
     toggleValidationState(passwordGroup, passwordError, passwordValidationIcon, passwordValidation);
 
-    if (Stream.of(emailValidation, passwordValidation).anyMatch(java.util.Objects::nonNull)) {
+    if (Stream.of(emailValidation, passwordValidation).anyMatch(Objects::nonNull)) {
       return;
     }
 
