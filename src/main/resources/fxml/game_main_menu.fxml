@@ -60,6 +60,6 @@
   <StackPane fx:id="introOverlay" styleClass="intro-overlay">
     <Region fx:id="introBlackOverlay" styleClass="intro-black-overlay"/>
     <ImageView fx:id="companyLogoIntro"/>
-    <Label fx:id="introLabel" text="test test test test" styleClass="intro-label"/>
+    <Label fx:id="introLabel" text="%main_menu.warning.label" styleClass="intro-label"/>
   </StackPane>
 </StackPane>

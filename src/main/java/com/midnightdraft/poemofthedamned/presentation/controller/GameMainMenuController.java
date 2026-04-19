@@ -127,7 +127,6 @@ public class GameMainMenuController {
 
     companyLogoIntro.setImage(
         new Image(resourceProvider.getUrl(Ui.MIDNIGHT_SQUARE_LOGO).toExternalForm()));
-    // todo sizes...
 
     logoImage.setImage(new Image(resourceProvider.getUrl(Ui.LOGO).toExternalForm()));
     githubLogo.setImage(new Image(resourceProvider.getUrl(Ui.GITHUB_LOGO).toExternalForm()));
@@ -170,7 +169,8 @@ public class GameMainMenuController {
   }
 
   private void setupTextBindings() {
-    // todo intro label
+    introLabel.maxWidthProperty().bind(rootPane.widthProperty().multiply(0.45));
+    introLabel.setWrapText(true);
 
     titleTop.translateYProperty().bind(rootPane.heightProperty().multiply(0.16));
     titleBottom.translateYProperty().bind(rootPane.heightProperty().multiply(0.30));
