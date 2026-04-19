@@ -53,3 +53,19 @@
   -fx-stroke-type: outside;
   -fx-stroke-line-join: round;
 }
+
+.intro-label {
+  -fx-opacity: 0;
+  -fx-font-family: 'Inter Extra Bold';
+  -fx-text-fill: #000000;
+  -fx-font-size: 2.5em;
+}
+
+.intro-overlay {
+  -fx-opacity: 1;
+  -fx-background-color: #FFFFFF;
+}
+
+.intro-black-overlay {
+  -fx-background-color: #000000;
+}

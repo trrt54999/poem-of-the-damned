@@ -144,6 +144,8 @@ public class MainMenuController {
   private Region backgroundEclipse;
   @FXML
   private ResourceBundle resources;
+  @FXML
+  private Region loadGameBackground;
 
   private final ClientSettingsRepository clientSettingsRepository = new ClientSettingsRepositoryImpl();
   private final LoadClientSettingsUseCase loadClientSettingsUseCase = new LoadClientSettingsUseCase(
@@ -193,22 +195,7 @@ public class MainMenuController {
 
   @FXML
   private void onLoadGameMenuButtonPressed() {
-    log.info("Loading Game Main Menu scene...");
-    FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.GAME_MAIN_MENU));
-    loader.setResources(resources);
-
-    try {
-      if (clockTimeLine != null) {
-        clockTimeLine.stop();
-      }
-
-      Parent nextView = loader.load();
-      rootPane.getScene().setRoot(nextView);
-      log.info("Successfully transitioned to Game Main Menu.");
-    } catch (IOException e) {
-      log.error("Failed to load Game Main Menu FXML file.", e);
-      throw new RuntimeException(e);
-    }
+    playLoadGameTransition();
   }
 
   @FXML
@@ -508,6 +495,44 @@ public class MainMenuController {
       fadeIn.play();
     });
     fadeOut.play();
+  }
+
+  private void playLoadGameTransition() {
+    loadGameBackground.setVisible(true);
+
+    loadGameBackground.setScaleX(0.85);
+    loadGameBackground.setScaleY(0.85);
+    loadGameBackground.setOpacity(0.0);
+
+    ScaleTransition scaleIn = new ScaleTransition(Duration.millis(250), loadGameBackground);
+    scaleIn.setToX(1.0);
+    scaleIn.setToY(1.0);
+
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(200), loadGameBackground);
+    fadeIn.setToValue(1.0);
+
+    ParallelTransition gameLoadTransition = new ParallelTransition(scaleIn, fadeIn);
+    gameLoadTransition.play();
+    gameLoadTransition.setOnFinished(_ -> loadGameMainMenu());
+  }
+
+  private void loadGameMainMenu() {
+    log.info("Loading Game Main Menu scene...");
+    FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.GAME_MAIN_MENU));
+    loader.setResources(resources);
+
+    try {
+      if (clockTimeLine != null) {
+        clockTimeLine.stop();
+      }
+
+      Parent nextView = loader.load();
+      rootPane.getScene().setRoot(nextView);
+      log.info("Successfully transitioned to Game Main Menu.");
+    } catch (IOException e) {
+      log.error("Failed to load Game Main Menu FXML file.", e);
+      throw new RuntimeException(e);
+    }
   }
 
   private void loadResources() {

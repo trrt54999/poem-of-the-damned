@@ -12,6 +12,9 @@ import com.midnightdraft.poemofthedamned.presentation.util.SoundHelper;
 import java.awt.Desktop;
 import java.net.URI;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -20,11 +23,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,6 +37,8 @@ public class GameMainMenuController {
 
   @FXML
   private StackPane rootPane;
+  @FXML
+  private StackPane introOverlay;
   @FXML
   private Pane leftPanel;
   @FXML
@@ -44,6 +51,8 @@ public class GameMainMenuController {
   private Pane dividerLine;
   @FXML
   private Canvas backgroundCanvas;
+  @FXML
+  private ImageView companyLogoIntro;
   @FXML
   private ImageView logoImage;
   @FXML
@@ -58,6 +67,10 @@ public class GameMainMenuController {
   private Label titleTop;
   @FXML
   private Label titleBottom;
+  @FXML
+  private Label introLabel;
+  @FXML
+  private Region introBlackOverlay;
 
   private static final String GITHUB_URL = "https://github.com/trrt54999";
 
@@ -75,6 +88,7 @@ public class GameMainMenuController {
   public void initialize() {
     log.info("Initializing Game Main Menu...");
     loadResources();
+    setupIntro();
     setupCanvasBindings();
     setupLogoBindings();
     setupTextBindings();
@@ -112,6 +126,10 @@ public class GameMainMenuController {
     String css = resourceProvider.getUrl(Css.GAME_MAIN_MENU).toExternalForm();
     rootPane.getStylesheets().add(css);
 
+//    companyLogoIntro.setImage(
+//        new Image(resourceProvider.getUrl(Ui.MIDNIGHT_LOGO).toExternalForm()));
+    // todo sizes...
+
     logoImage.setImage(new Image(resourceProvider.getUrl(Ui.LOGO).toExternalForm()));
     githubLogo.setImage(new Image(resourceProvider.getUrl(Ui.GITHUB_LOGO).toExternalForm()));
     haruka.setImage(
@@ -120,6 +138,7 @@ public class GameMainMenuController {
     mio.setImage(new Image(resourceProvider.getUrl(GameCharacters.MIO_CAT_SMILE).toExternalForm()));
 
     Font.loadFont(resourceProvider.getUrl(Fonts.RIFFIC_FREE_BOLD).toExternalForm(), 36);
+    Font.loadFont(resourceProvider.getUrl(Fonts.INTER_EXTRA_BOLD).toExternalForm(), 36);
     Font.loadFont(resourceProvider.getUrl(Fonts.NUNITO_BLACK).toExternalForm(), 36);
     patternImage = new Image(resourceProvider.getUrl(Ui.CIRCLES).toExternalForm());
 
@@ -148,6 +167,8 @@ public class GameMainMenuController {
   }
 
   private void setupTextBindings() {
+    // todo intro label
+
     titleTop.translateYProperty().bind(rootPane.heightProperty().multiply(0.16));
     titleBottom.translateYProperty().bind(rootPane.heightProperty().multiply(0.30));
 
@@ -171,6 +192,41 @@ public class GameMainMenuController {
         .subtract(dividerLine.widthProperty()));
     clip.heightProperty().bind(rootPane.heightProperty());
     backgroundCanvas.setClip(clip);
+  }
+
+  private void setupIntro() {
+    FadeTransition hideBlackOverlayTransition = new FadeTransition(Duration.millis(150), introBlackOverlay);
+    hideBlackOverlayTransition.setFromValue(1.0);
+    hideBlackOverlayTransition.setToValue(0.0);
+
+    FadeTransition showLogoTransition = new FadeTransition(Duration.millis(150), companyLogoIntro);
+    showLogoTransition.setToValue(1.0);
+
+    PauseTransition logoPauseTransition = new PauseTransition(Duration.seconds(3));
+
+    FadeTransition hideLogoTransition = new FadeTransition(Duration.millis(150), companyLogoIntro);
+    hideLogoTransition.setToValue(0.0);
+
+    FadeTransition showLabelTransition = new FadeTransition(Duration.millis(150), introLabel);
+    showLabelTransition.setToValue(1.0);
+
+    PauseTransition labelPauseTransition = new PauseTransition(Duration.seconds(3));
+
+    FadeTransition hideLabelTransition = new FadeTransition(Duration.millis(150), introLabel);
+    hideLabelTransition.setToValue(0.0);
+
+    FadeTransition hideIntroTransition = new FadeTransition(Duration.millis(150), introOverlay);
+    hideIntroTransition.setToValue(0.0);
+    hideIntroTransition.setOnFinished(_ -> {
+      introOverlay.setVisible(false);
+      introOverlay.setManaged(false);
+    });
+
+    SequentialTransition sequentialTransition = new SequentialTransition(
+        hideBlackOverlayTransition, showLogoTransition, logoPauseTransition, hideLogoTransition,
+        showLabelTransition, labelPauseTransition, hideLabelTransition, hideIntroTransition);
+
+    sequentialTransition.play();
   }
 
   // todo: це не дуже відноситься до контроллеру, потім винесу, також не забути анімацію офати коли зміна!

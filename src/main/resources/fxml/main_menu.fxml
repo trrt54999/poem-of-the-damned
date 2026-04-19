@@ -115,4 +115,5 @@
       <HBox styleClass="modal-bottom-hbox"/>
     </bottom>
   </BorderPane>
+  <Region fx:id="loadGameBackground" styleClass="load-game-background" visible="false"/>
 </StackPane>

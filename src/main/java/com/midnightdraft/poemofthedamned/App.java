@@ -39,7 +39,7 @@ public class App extends Application {
   public void start(Stage primaryStage) throws IOException {
     log.info("Starting game app");
     try {
-      FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.AUTH_MENU));
+      FXMLLoader loader = new FXMLLoader(resourceProvider.getUrl(Fxml.MAIN_MENU));
       loader.setResources(ResourceBundle.getBundle("localization/ui", Locale.of(currentLang)));
       StackPane root = loader.load();
 
