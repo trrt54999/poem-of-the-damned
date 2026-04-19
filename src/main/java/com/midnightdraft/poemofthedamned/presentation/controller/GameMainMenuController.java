@@ -88,13 +88,12 @@ public class GameMainMenuController {
   public void initialize() {
     log.info("Initializing Game Main Menu...");
     loadResources();
-    setupIntro();
     setupCanvasBindings();
     setupLogoBindings();
     setupTextBindings();
     setupCharacterBindings();
     setupBackgroundClip();
-    startAnimation();
+    rootPane.sceneProperty().addListener((_, _, _) -> setupIntro());
   }
 
   @FXML
@@ -126,8 +125,8 @@ public class GameMainMenuController {
     String css = resourceProvider.getUrl(Css.GAME_MAIN_MENU).toExternalForm();
     rootPane.getStylesheets().add(css);
 
-//    companyLogoIntro.setImage(
-//        new Image(resourceProvider.getUrl(Ui.MIDNIGHT_LOGO).toExternalForm()));
+    companyLogoIntro.setImage(
+        new Image(resourceProvider.getUrl(Ui.MIDNIGHT_SQUARE_LOGO).toExternalForm()));
     // todo sizes...
 
     logoImage.setImage(new Image(resourceProvider.getUrl(Ui.LOGO).toExternalForm()));
@@ -164,6 +163,10 @@ public class GameMainMenuController {
         .bind(leftPanel.widthProperty().subtract(logoImage.fitWidthProperty().divide(2)));
 
     githubLogo.fitWidthProperty().bind(rootPane.heightProperty().multiply(0.12));
+
+    companyLogoIntro.setOpacity(0.0);
+    companyLogoIntro.fitHeightProperty().bind(rootPane.heightProperty().multiply(0.45));
+    companyLogoIntro.setPreserveRatio(true);
   }
 
   private void setupTextBindings() {
@@ -195,37 +198,42 @@ public class GameMainMenuController {
   }
 
   private void setupIntro() {
-    FadeTransition hideBlackOverlayTransition = new FadeTransition(Duration.millis(150), introBlackOverlay);
-    hideBlackOverlayTransition.setFromValue(1.0);
-    hideBlackOverlayTransition.setToValue(0.0);
-
-    FadeTransition showLogoTransition = new FadeTransition(Duration.millis(150), companyLogoIntro);
-    showLogoTransition.setToValue(1.0);
-
-    PauseTransition logoPauseTransition = new PauseTransition(Duration.seconds(3));
-
-    FadeTransition hideLogoTransition = new FadeTransition(Duration.millis(150), companyLogoIntro);
-    hideLogoTransition.setToValue(0.0);
-
-    FadeTransition showLabelTransition = new FadeTransition(Duration.millis(150), introLabel);
-    showLabelTransition.setToValue(1.0);
-
-    PauseTransition labelPauseTransition = new PauseTransition(Duration.seconds(3));
-
-    FadeTransition hideLabelTransition = new FadeTransition(Duration.millis(150), introLabel);
-    hideLabelTransition.setToValue(0.0);
-
-    FadeTransition hideIntroTransition = new FadeTransition(Duration.millis(150), introOverlay);
-    hideIntroTransition.setToValue(0.0);
-    hideIntroTransition.setOnFinished(_ -> {
-      introOverlay.setVisible(false);
-      introOverlay.setManaged(false);
+    PauseTransition startDelay = new PauseTransition(Duration.seconds(0.5));
+    startDelay.setOnFinished(_ -> {
+      introBlackOverlay.setVisible(false);
+      introBlackOverlay.setManaged(false);
     });
 
-    SequentialTransition sequentialTransition = new SequentialTransition(
-        hideBlackOverlayTransition, showLogoTransition, logoPauseTransition, hideLogoTransition,
-        showLabelTransition, labelPauseTransition, hideLabelTransition, hideIntroTransition);
+    FadeTransition showLogoTransition = new FadeTransition(Duration.millis(350), companyLogoIntro);
+    showLogoTransition.setFromValue(0.0);
+    showLogoTransition.setToValue(1.0);
 
+    PauseTransition logoPauseTransition = new PauseTransition(Duration.seconds(1.5));
+
+    FadeTransition hideLogoTransition = new FadeTransition(Duration.millis(250), companyLogoIntro);
+    hideLogoTransition.setFromValue(1.0);
+    hideLogoTransition.setToValue(0.0);
+
+    FadeTransition showLabelTransition = new FadeTransition(Duration.millis(200), introLabel);
+    showLabelTransition.setToValue(1.0);
+
+    PauseTransition labelPauseTransition = new PauseTransition(Duration.seconds(1.5));
+
+    FadeTransition hideLabelTransition = new FadeTransition(Duration.millis(200), introLabel);
+    hideLabelTransition.setToValue(0.0);
+
+    PauseTransition endDelay = new PauseTransition(Duration.seconds(1));
+    endDelay.setOnFinished(_ -> {
+      introOverlay.setVisible(false);
+      introOverlay.setManaged(false);
+      startAnimation();
+    });
+
+    PauseTransition afterBlackDelay = new PauseTransition(Duration.millis(150));
+
+    SequentialTransition sequentialTransition = new SequentialTransition(
+        startDelay, afterBlackDelay, showLogoTransition, logoPauseTransition, hideLogoTransition,
+        showLabelTransition, labelPauseTransition, hideLabelTransition, endDelay);
     sequentialTransition.play();
   }
 

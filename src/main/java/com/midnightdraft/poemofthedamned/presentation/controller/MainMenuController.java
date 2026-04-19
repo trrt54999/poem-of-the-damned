@@ -500,8 +500,8 @@ public class MainMenuController {
   private void playLoadGameTransition() {
     loadGameBackground.setVisible(true);
 
-    loadGameBackground.setScaleX(0.85);
-    loadGameBackground.setScaleY(0.85);
+    loadGameBackground.setScaleX(0.80);
+    loadGameBackground.setScaleY(0.80);
     loadGameBackground.setOpacity(0.0);
 
     ScaleTransition scaleIn = new ScaleTransition(Duration.millis(250), loadGameBackground);

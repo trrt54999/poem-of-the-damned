@@ -124,6 +124,7 @@ public class FileSystemResourceProvider implements ResourceProvider {
         case ROULETTE_BUTTON_ICON -> "/assets/ui/roulette_button_icon.png";
         case ROULETTE_BUTTON_HOVER_ICON -> "/assets/ui/roulette_button_hover_icon.png";
         case LOADING_CIRCLE_ANIMATION -> "/assets/ui/loading_circle_animation.gif";
+        case MIDNIGHT_SQUARE_LOGO -> "/assets/ui/midnight_square_logo.png";
       };
     };
   }
